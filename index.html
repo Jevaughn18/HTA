@@ -3,111 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to Harvest Temple Apostolic, a place of real love and spiritual growth. Join us for worship, community, and inspiration.">
     <title>Harvest Temple Apostolic - Home</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="logo.jpg" alt="Harvest Temple Apostolic Logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
+    <header class="scroll-nav">
+        <nav class="nav-container" aria-label="Main navigation">
+            <div class="logo">
+                <a href="index.html" aria-label="Harvest Temple Apostolic Home">
+                    <img src="logo.png" alt="Harvest Temple Apostolic Logo" loading="lazy">
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active" aria-current="page">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li class="departments-tab"><a href="#">Departments</a></li>
+                <li class="departments-tab">
+                    <a href="#" aria-haspopup="true" aria-expanded="false">Departments</a>
+                    <ul class="dropdown" id="departmentsModal" aria-label="Departments submenu">
+                        <li><a href="national-youth-department.html">National Youth Department</a></li>
+                        <li><a href="sunday-school-department.html">Sunday School Department</a></li>
+                        <li><a href="mens-department.html">Men's Department</a></li>
+                        <li><a href="woman-department.html">Women's Department</a></li>
+                        <li><a href="national-ladies-department.html">National Ladies Department</a></li>
+                    </ul>
+                </li>
                 <li><a href="media.html">Media</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html">Give</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
-            <div class="modal" id="departmentsModal">
-                <ul class="modal-content">
-                    <li><a href="national-youth-department.html">National Youth Department</a></li>
-                    <li><a href="sunday-school-department.html">Sunday School Department</a></li>
-                    <li><a href="men's-department.html">Mens Department</a></li>
-                    <li><a href="woman-department.html">Woman Department</a></li>
-                    <li><a href="national-ladies-department.html">National Ladies Department</a></li>
-                </ul>
-            </div>
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-slideshow">
-            <div class="slide" style="background-image: url('bankspraise.jpg');"></div>
-            <div class="slide" style="background-image: url('Others.jpg');"></div>
-            <div class="slide" style="background-image: url('Choir.jpg');"></div>
-            <div class="slide" style="background-image: url('banksworship.jpg');"></div>
-            <div class="slide" style="background-image: url('banks-exchange.jpg');"></div>
-            <div class="slide" style="background-image: url('mullethall-exchange.jpg');"></div>
-        </div>
-        <div class="hero-content">
-            <h1>Harvest Temple Apostolic</h1>
-            <p>Place with a Real Love</p>
-        </div>
-        <div class="dots"></div>
-    </section>
-    <section class="news">
-        <h2>Meet our Bishop and Pastors</h2>
-        <div class="news-items">
-            <div class="news-item"><img src="Bishop.png" alt="News 1"><p>Presiding Bishop Clifton Campbell & Evangelist Sophia Campbell</p><p>Pastor @</p><p>HTA Banks Clarendon</p></div>
-            <div class="news-item"><img src="Pastor Williams.jpg" alt="News 2"><p>Pastor Calpurnia Williams</p><p>HTA Portsmouth</p><p>St. Catherine</p></div>
-            <div class="news-item"><img src="Pastor Sharon.jpg" alt="News 3"><p>Pastor Sheron Kavanagh</p><p>HTA Slipe Pen Road Kingston</p></div>
-            <div class="news-item"><img src="Pastor Vasell.jpg" alt="News 4"><p>Pastor Yulanda Vassel</p><p>HTA Mullet Hall</p><p>Portland</p></div>
-        </div>
-    </section>
-    <section class="events-container">
-        <div class="events">
-            <h2>Upcoming Events</h2>
-            <div class="event-items">
-                <div class="event-row">
-                    <a href="convocation.jpg" target="_blank">
-                        <img src="convocation.jpg" alt="22nd Annual Holy Convocation">
-                    </a>
-                    <span class="event-name">22nd Annual Holy Convocation</span>
-                    <span class="event-date">7-11 Mar 2025</span>
-                    <span class="event-location">Harvest Temple Portsmouth, St. Catherine</span>
+    <main>
+        <section class="hero" aria-label="Welcome section">
+            <div class="hero-slideshow">
+                <div class="slide" style="background-image: url('bankspraise.jpg');" role="img" aria-label="Worship service at Harvest Temple"></div>
+                <div class="slide" style="background-image: url('Others.jpg');" role="img" aria-label="Community gathering"></div>
+                <div class="slide" style="background-image: url('Choir.jpg');" role="img" aria-label="Church choir performance"></div>
+                <div class="slide" style="background-image: url('banksworship.jpg');" role="img" aria-label="Congregational worship"></div>
+                <div class="slide" style="background-image: url('banks-exchange.jpg');" role="img" aria-label="Church event"></div>
+                <div class="slide" style="background-image: url('mullethall-exchange.jpg');" role="img" aria-label="Mullet Hall service"></div>
+            </div>
+            <div class="hero-content">
+                <h1>Harvest Temple Apostolic</h1>
+                <p>A Place with Real Love and Spiritual Growth</p>
+                <a href="events.html" class="btn" role="button">Join Us This Sunday</a>
+            </div>
+            <div class="dots" aria-label="Slideshow navigation"></div>
+        </section>
+
+        <section class="staff" aria-label="Meet our leadership">
+            <h2>Meet Our Leadership</h2>
+            <div class="staff-grid">
+                <div class="staff-card">
+                    <img src="Bishop.png" alt="Presiding Bishop Clifton Campbell and Evangelist Sophia Campbell" loading="lazy">
+                    <h3>Bishop Clifton & Evangelist Sophia Campbell</h3>
+                    <p>Presiding Bishop</p>
+                    <p>HTA Banks Clarendon</p>
                 </div>
-                <div class="event-row">
-                    <a href="camp.jpg" target="_blank">
-                        <img src="camp.jpg" alt="Youth Camp">
-                    </a>
-                    <span class="event-name">Youth Camp 2025</span>
-                    <span class="event-date">10-16 Aug 2025</span>
-                    <span class="event-location">Knox Community College Cobbla, Manchester</span>
+                <div class="staff-card">
+                    <img src="Pastor Williams.jpg" alt="Pastor Calpurnia Williams" loading="lazy">
+                    <h3>Pastor Calpurnia Williams</h3>
+                    <p>Pastor</p>
+                    <p>HTA Portsmouth, St. Catherine</p>
+                </div>
+                <div class="staff-card">
+                    <img src="Pastor Sharon.jpg" alt="Pastor Sheron Kavanagh" loading="lazy">
+                    <h3>Pastor Sheron Kavanagh</h3>
+                    <p>Pastor</p>
+                    <p>HTA Slipe Pen Road, Kingston</p>
+                </div>
+                <div class="staff-card">
+                    <img src="Pastor Vasell.jpg" alt="Pastor Yulanda Vassel" loading="lazy">
+                    <h3>Pastor Yulanda Vassel</h3>
+                    <p>Pastor</p>
+                    <p>HTA Mullet Hall, Portland</p>
                 </div>
             </div>
-        </div>
-        <div class="sermons">
+        </section>
+
+        <section class="sermons" aria-label="Latest sermons">
             <h2>Latest Sermons</h2>
-            <div class="sermon-items">
-                <div class="sermon-row">
-                    <img src="church-background.jpg" alt="Sermon 1">
-                    <span class="sermon-title">I Believe in God with All My Heart</span>
-                    <span class="sermon-author">Alan Ray</span>
-                    <span class="sermon-date">18 Mar 2014</span>
+            <div class="sermon-grid">
+                <div class="sermon-card">
+                    <img src="church-background.jpg" alt="Sermon: I Believe in God with All My Heart" loading="lazy">
+                    <h3>I Believe in God with All My Heart</h3>
+                    <p><strong>By:</strong> Alan Ray</p>
+                    <p><strong>Date:</strong> 18 Mar 2014</p>
+                    <a href="#" class="btn btn-secondary" role="button">Watch Now</a>
                 </div>
-                <div class="sermon-row">
-                    <img src="praise.jpg" alt="Sermon 2">
-                    <span class="sermon-title">Trusting in Jesus and God</span>
-                    <span class="sermon-author">David Clark</span>
-                    <span class="sermon-date">18 Mar 2014</span>
+                <div class="sermon-card">
+                    <img src="praise.jpg" alt="Sermon: Trusting in Jesus and God" loading="lazy">
+                    <h3>Trusting in Jesus and God</h3>
+                    <p><strong>By:</strong> David Clark</p>
+                    <p><strong>Date:</strong> 18 Mar 2014</p>
+                    <a href="#" class="btn btn-secondary" role="button">Watch Now</a>
                 </div>
-                <div class="sermon-row">
-                    <img src="Baptizam.jpg" alt="Sermon 3">
-                    <span class="sermon-title">Love Your Kids</span>
-                    <span class="sermon-author">Anthony Roberts</span>
-                    <span class="sermon-date">18 Mar 2014</span>
+                <div class="sermon-card">
+                    <img src="Baptizam.jpg" alt="Sermon: Love Your Kids" loading="lazy">
+                    <h3>Love Your Kids</h3>
+                    <p><strong>By:</strong> Anthony Roberts</p>
+                    <p><strong>Date:</strong> 18 Mar 2014</p>
+                    <a href="#" class="btn btn-secondary" role="button">Watch Now</a>
                 </div>
             </div>
+        </section>
+
+        <section class="give" aria-label="Support our mission">
+            <h2>Support Our Mission</h2>
+            <p>Your generosity helps us spread love, faith, and community. Give securely online today.</p>
+            <a href="give.html" class="btn btn-primary" role="button">Give Now</a>
+        </section>
+
+        <section class="newsletter" aria-label="Newsletter signup">
+            <h2>Stay Connected</h2>
+            <p>Join our newsletter for updates on events, sermons, and community news.</p>
+            <form action="#" class="newsletter-form">
+                <input type="email" placeholder="Enter your email" aria-label="Email address" required>
+                <button type="submit" class="btn btn-primary" aria-label="Subscribe to newsletter">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <footer aria-label="Footer">
+        <div class="footer-container">
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: info@harvesttemple.org</p>
+                <p>Phone: (876) 123-4567</p>
+                <p>Address: HTA Banks Clarendon, Jamaica</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="give.html">Give</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
-    </section>
-    <footer>
-        <p>© 2025 Harvest Temple Apostolic</p>
+        <p class="footer-copy">&copy; 2025 Harvest Temple Apostolic. All Rights Reserved.</p>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
     <script src="script.js"></script>
-</body>
 </html>
