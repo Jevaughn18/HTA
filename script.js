@@ -214,4 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', checkScroll);
+
+    // Scroll-triggered background for give.html
+    const messageSection = document.querySelector('.message-section');
+    const giveHero = document.querySelector('.give-hero');
+
+    if (messageSection && giveHero) {
+        window.addEventListener('scroll', () => {
+            const messageTop = messageSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            if (messageTop < windowHeight) {
+                messageSection.style.background = 'url(construction-site.jpg) no-repeat center center / cover';
+            } else {
+                giveHero.style.background = 'url(church-building.jpg) no-repeat center center / cover';
+            }
+        });
+    }
 });

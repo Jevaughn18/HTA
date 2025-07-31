@@ -537,9 +537,9 @@ header.scroll-nav.hidden {
     transform: translateY(-5px);
 }
 
-.sermon-card img {
+.sermon-card iframe {
     max-width: 100%;
-    height: auto;
+    height: 200px;
     border-radius: 8px;
     margin-bottom: 1rem;
 }
@@ -928,5 +928,158 @@ footer {
 
     .media {
         padding: 4rem 2rem;
+    }
+}
+
+/* Give Page Specific Styles */
+.give-header {
+    background: #4B0082;
+    color: #FFFFFF;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.give-header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+}
+
+.give-hero {
+    background: url('church-building.jpg') no-repeat center center / cover;
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+    position: relative;
+}
+
+.give-hero .hero-content {
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+}
+
+.message-section {
+    padding: 4rem 1rem;
+    background: url('construction-site.jpg') no-repeat center center / cover;
+    text-align: center;
+    color: #FFFFFF;
+    position: relative;
+}
+
+.message-section .message-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.message-section .message-card p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #333333;
+}
+
+.impact-section {
+    padding: 4rem 1rem;
+    background: url('community-gathering.jpg') no-repeat center center / cover;
+    text-align: center;
+    color: #FFFFFF;
+    position: relative;
+}
+
+.impact-section .impact-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(75, 0, 130, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.impact-section .impact-card p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #FFFFFF;
+}
+
+.ways-to-give {
+    padding: 4rem 1rem;
+    background: #FFFFFF;
+    text-align: center;
+}
+
+.ways-to-give h2 {
+    color: #4B0082;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+}
+
+.ways-to-give .give-options {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 3rem;
+}
+
+.ways-to-give .give-option {
+    padding: 2rem;
+    background: #F9FAFB;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ways-to-give .give-option h3 {
+    color: #4B0082;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.ways-to-give .give-option p {
+    font-size: 1.1rem;
+    color: #666666;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive Design for Give Page */
+@media (min-width: 601px) {
+    .ways-to-give .give-options {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .give-header h1 {
+        font-size: 2rem;
+    }
+
+    .message-section .message-card p,
+    .impact-section .impact-card p {
+        font-size: 1rem;
+    }
+
+    .ways-to-give .give-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 769px) {
+    .give-header h1 {
+        font-size: 3rem;
+    }
+
+    .ways-to-give .give-options {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 1025px) {
+    .give-hero {
+        min-height: 60vh;
     }
 }
