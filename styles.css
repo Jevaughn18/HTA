@@ -829,6 +829,208 @@ footer {
     text-align: center;
 }
 
+/* Give Page Specific Styles */
+.give-hero {
+    background: url('banks\ choir.jpg') no-repeat center center / cover;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    position: relative;
+}
+
+.give-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #4B0082, #6A0DAD);
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.give-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 800px;
+}
+
+.give-hero h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.give-hero p {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+}
+
+.message-section {
+    padding: 4rem 1rem;
+    background: #F9FAFB;
+    text-align: center;
+}
+
+.message-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.message-card:hover {
+    transform: translateY(-5px);
+}
+
+.message-card h2 {
+    color: #4B0082;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.message-card p {
+    font-size: 1.2rem;
+    color: #666666;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.message-card blockquote {
+    font-style: italic;
+    color: #4B0082;
+    font-size: 1.1rem;
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 4px solid #D4A017;
+}
+
+.message-card cite {
+    display: block;
+    font-size: 1rem;
+    color: #666666;
+    margin-top: 0.5rem;
+}
+
+.impact-section {
+    padding: 4rem 1rem;
+    background: linear-gradient(135deg, #4B0082, #6A0DAD);
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.impact-section h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+}
+
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.impact-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.impact-card:hover {
+    transform: translateY(-5px);
+}
+
+.impact-card img {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.impact-card h3 {
+    color: #4B0082;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.impact-card p {
+    color: #666666;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.ways-to-give {
+    padding: 4rem 1rem;
+    background: #FFFFFF;
+    text-align: center;
+}
+
+.ways-to-give h2 {
+    color: #4B0082;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+}
+
+.give-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.give-option {
+    background: #F9FAFB;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.give-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.give-option h3 {
+    color: #4B0082;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.give-option p {
+    color: #666666;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.give-option .trust-badge {
+    max-width: 100px;
+    height: auto;
+    margin: 1rem 0;
+}
+
+.give-option .btn {
+    margin-top: 1rem;
+}
+
 /* Responsive Design */
 @media (min-width: 601px) {
     .nav-menu {
@@ -872,6 +1074,14 @@ footer {
     .event-item {
         flex-wrap: nowrap;
     }
+
+    .give-hero h1 {
+        font-size: 3.5rem;
+    }
+
+    .give-hero p {
+        font-size: 1.5rem;
+    }
 }
 
 @media (min-width: 769px) {
@@ -911,6 +1121,14 @@ footer {
     .events-container {
         padding: 4rem 2rem;
     }
+
+    .give-hero h1 {
+        font-size: 4rem;
+    }
+
+    .give-hero p {
+        font-size: 1.6rem;
+    }
 }
 
 @media (min-width: 1025px) {
@@ -929,157 +1147,30 @@ footer {
     .media {
         padding: 4rem 2rem;
     }
-}
 
-/* Give Page Specific Styles */
-.give-header {
-    background: #4B0082;
-    color: #FFFFFF;
-    padding: 2rem 1rem;
-    text-align: center;
-}
-
-.give-header h1 {
-    font-size: 2.5rem;
-    font-weight: 900;
-}
-
-.give-hero {
-    background: url('church-building.jpg') no-repeat center center / cover;
-    min-height: 50vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #FFFFFF;
-    position: relative;
-}
-
-.give-hero .hero-content {
-    padding: 2rem;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 8px;
-}
-
-.message-section {
-    padding: 4rem 1rem;
-    background: url('construction-site.jpg') no-repeat center center / cover;
-    text-align: center;
-    color: #FFFFFF;
-    position: relative;
-}
-
-.message-section .message-card {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.message-section .message-card p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #333333;
-}
-
-.impact-section {
-    padding: 4rem 1rem;
-    background: url('community-gathering.jpg') no-repeat center center / cover;
-    text-align: center;
-    color: #FFFFFF;
-    position: relative;
-}
-
-.impact-section .impact-card {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: rgba(75, 0, 130, 0.8);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.impact-section .impact-card p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #FFFFFF;
-}
-
-.ways-to-give {
-    padding: 4rem 1rem;
-    background: #FFFFFF;
-    text-align: center;
-}
-
-.ways-to-give h2 {
-    color: #4B0082;
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 2rem;
-}
-
-.ways-to-give .give-options {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    gap: 3rem;
-}
-
-.ways-to-give .give-option {
-    padding: 2rem;
-    background: #F9FAFB;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.ways-to-give .give-option h3 {
-    color: #4B0082;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.ways-to-give .give-option p {
-    font-size: 1.1rem;
-    color: #666666;
-    margin-bottom: 0.5rem;
-}
-
-/* Responsive Design for Give Page */
-@media (min-width: 601px) {
-    .ways-to-give .give-options {
-        grid-template-columns: 1fr 1fr;
+    .give-hero {
+        min-height: 90vh;
     }
 }
 
 @media (max-width: 767px) {
-    .give-header h1 {
+    .give-hero h1 {
         font-size: 2rem;
     }
 
-    .message-section .message-card p,
-    .impact-section .impact-card p {
+    .give-hero p {
+        font-size: 1.2rem;
+    }
+
+    .message-card h2, .impact-section h2, .ways-to-give h2 {
+        font-size: 1.8rem;
+    }
+
+    .message-card p, .impact-card p, .give-option p {
         font-size: 1rem;
     }
 
-    .ways-to-give .give-options {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (min-width: 769px) {
-    .give-header h1 {
-        font-size: 3rem;
-    }
-
-    .ways-to-give .give-options {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-@media (min-width: 1025px) {
-    .give-hero {
-        min-height: 60vh;
+    .impact-card img {
+        max-width: 100px;
     }
 }
