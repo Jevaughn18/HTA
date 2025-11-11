@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Upcoming events at Harvest Temple Apostolic Church. Join us for convocations, youth camps, and special services.">
     <title>Harvest Temple Apostolic - Events</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="events.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="scroll-nav">
+    <!-- Navigation -->
+    <header class="main-header">
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="Harvest Temple Apostolic Logo" loading="lazy">
+                    <img src="logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -21,97 +25,178 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li class="departments-tab">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Departments</a>
-                    <ul class="dropdown" id="departmentsModal" aria-label="Departments submenu">
-                        <li><a href="national-youth-department.html">National Youth Department</a></li>
-                        <li><a href="sunday-school-department.html">Sunday School Department</a></li>
-                        <li><a href="mens-department.html">Men's Department</a></li>
-                        <li><a href="woman-department.html">Women's Department</a></li>
-                        <li><a href="national-ladies-department.html">National Ladies Department</a></li>
-                    </ul>
-                </li>
+                <li><a href="departments.html">Departments</a></li>
                 <li><a href="media.html">Media</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="events.html" class="active" aria-current="page">Events</a></li>
                 <li><a href="give.html">Give</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="plan-visit.html" class="btn-nav-outline">New Here?</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="events-container" aria-label="Event Details">
-            <h2 class="events-heading">Upcoming Events</h2>
-            <div class="events">
-                <div class="event-item">
-                    <a href="convocation.jpg" target="_blank">
-                        <img src="convocation.jpg" alt="Church Convocation" class="event-poster">
-                    </a>
-                    <div class="event-details">
-                        <h2>22nd Annual Holy Convocation</h2>
-                        <p><strong>Dates:</strong> 7–11 Mar 2025</p>
-                        <p><strong>Location:</strong> Harvest Temple Portsmouth, St. Catherine</p>
-                        <p>Join us for HTA's Annual Convocation — a powerful time of refreshing, restoration, and revival. Featuring dynamic day speakers, anointed nightly preachers, and impactful messages rooted in the Apostolic doctrine, this gathering is designed to strengthen the body of Christ and ignite your spiritual fire. Expect powerful worship, fellowship, and a special emphasis on prayer and fasting.</p>
-                        <p><strong>Schedule Highlights:</strong></p>
-                        <ul>
-                            <li><strong>Day 1 (7 Mar):</strong> Opening Ceremony & Worship Service</li>
-                            <li><strong>Day 3 (9 Mar):</strong> Youth Empowerment Session</li>
-                            <li><strong>Day 5 (11 Mar):</strong> Closing Revival & Celebration</li>
-                        </ul>
-                        <p>All are welcome — come expecting a mighty move of God! Registration is encouraged; contact (876) 123-4567 for more info.</p>
+        <!-- Events Hero Section -->
+        <section class="events-hero">
+            <div class="events-hero-overlay"></div>
+            <div class="events-hero-content">
+                <h1>Upcoming Events</h1>
+                <p>What's happening at Harvest Temple Apostolic</p>
+            </div>
+        </section>
+
+        <!-- Events Intro Section -->
+        <section class="events-intro-section">
+            <div class="events-intro-container">
+                <h2>Upcoming Events</h2>
+                <div class="gold-underline"></div>
+                <p>We're excited about the upcoming events at Harvest Temple Apostolic! Explore what's coming up below and click to register.</p>
+            </div>
+        </section>
+
+        <!-- Events Grid Section -->
+        <section class="events-grid-section">
+            <div class="events-grid-container">
+                <div class="event-card-modern">
+                    <div class="event-card-image">
+                        <img src="convocation.jpg" alt="22nd Annual Holy Convocation" loading="lazy">
+                        <div class="event-date-badge">
+                            <span class="date-day">7-11</span>
+                            <span class="date-month">Mar</span>
+                        </div>
+                    </div>
+                    <div class="event-card-content">
+                        <h3>22nd Annual Holy Convocation</h3>
+                        <div class="event-meta">
+                            <p class="event-date-time">
+                                <i class="far fa-calendar"></i> March 7-11, 2025
+                            </p>
+                            <p class="event-location">
+                                <i class="fas fa-map-marker-alt"></i> Harvest Temple Portsmouth, St. Catherine
+                            </p>
+                        </div>
+                        <p class="event-description">
+                            Join us for HTA's Annual Convocation — a powerful time of refreshing, restoration, and revival. Featuring dynamic day speakers, anointed nightly preachers, and impactful messages rooted in the Apostolic doctrine.
+                        </p>
+                        <a href="#convocation-details" class="btn-event-details">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
 
-                <div class="event-item">
-                    <a href="camp.jpg" target="_blank">
-                        <img src="camp.jpg" alt="HTA Youth Camp" class="event-poster">
-                    </a>
-                    <div class="event-details">
-                        <h2>HTA Youth Camp 2025</h2>
-                        <p><strong>Dates:</strong> 10–16 Aug 2025</p>
-                        <p><strong>Location:</strong> Knox Community College Cobbla, Manchester</p>
-                        <p>Get ready for HTA Youth Camp — a life-changing experience filled with fun, fellowship, and faith-building sessions. This camp features inspiring devotionals, interactive workshops on leadership and faith, powerful worship services, and outdoor activities like sports and team-building exercises. It’s designed to empower young people to grow deeper in Christ and stand boldly in truth.</p>
-                        <p><strong>Activities Include:</strong></p>
-                        <ul>
-                            <li><strong>Day 1 (10 Aug):</strong> Welcome & Icebreaker Games</li>
-                            <li><strong>Day 3 (12 Aug):</strong> Leadership Workshop with Guest Speaker</li>
-                            <li><strong>Day 6 (15 Aug):</strong> Talent Night & Praise Celebration</li>
-                        </ul>
-                        <p>Contact the Youth Department at youth@harvesttemple.org for registration details and fees. Limited spots available—register by 15 Jul 2025!</p>
+                <div class="event-card-modern">
+                    <div class="event-card-image">
+                        <img src="camp.jpg" alt="HTA Youth Camp 2025" loading="lazy">
+                        <div class="event-date-badge">
+                            <span class="date-day">10-16</span>
+                            <span class="date-month">Aug</span>
+                        </div>
                     </div>
+                    <div class="event-card-content">
+                        <h3>HTA Youth Camp 2025</h3>
+                        <div class="event-meta">
+                            <p class="event-date-time">
+                                <i class="far fa-calendar"></i> August 10-16, 2025
+                            </p>
+                            <p class="event-location">
+                                <i class="fas fa-map-marker-alt"></i> Knox Community College, Cobbla, Manchester
+                            </p>
+                        </div>
+                        <p class="event-description">
+                            Get ready for HTA Youth Camp — a life-changing experience filled with fun, fellowship, and faith-building sessions. Features inspiring devotionals, interactive workshops on leadership and faith, and outdoor activities.
+                        </p>
+                        <a href="#youth-camp-details" class="btn-event-details">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Past Events Section -->
+        <section class="past-events-section">
+            <div class="past-events-container">
+                <h2>Past Events</h2>
+                <div class="gold-underline"></div>
+                <p>Take a look at some of our recent events and what God has been doing in our community.</p>
+                
+                <div class="past-events-grid">
+                    <div class="past-event-card">
+                        <img src="church.jpeg" alt="Past Event" loading="lazy">
+                        <div class="past-event-overlay">
+                            <h3>Revival Service 2024</h3>
+                            <p>November 2024</p>
+                        </div>
+                    </div>
+                    <div class="past-event-card">
+                        <img src="church.jpeg" alt="Past Event" loading="lazy">
+                        <div class="past-event-overlay">
+                            <h3>Family Day Celebration</h3>
+                            <p>October 2024</p>
+                        </div>
+                    </div>
+                    <div class="past-event-card">
+                        <img src="church.jpeg" alt="Past Event" loading="lazy">
+                        <div class="past-event-overlay">
+                            <h3>Youth Conference</h3>
+                            <p>September 2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="events-cta-section">
+            <div class="events-cta-overlay"></div>
+            <div class="events-cta-content">
+                <h2>Don't Miss Out!</h2>
+                <p>Stay connected and be the first to know about upcoming events, special services, and community gatherings.</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary">Get Connected</a>
+                    <a href="give.html" class="btn btn-outline">Support Our Events</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer aria-label="Footer">
-        <div class="footer-container">
-            <div class="footer-contact">
-                <h3>Contact Us</h3>
-                <p>Email: Htaportsmouth@gmail.com</p>
-                <p>Phone: (876) 123-4567</p>
-                <p>Address: 822A Southern Parade, Waterford P.O</p>
+    <!-- Footer -->
+    <footer class="main-footer" aria-label="Footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <i class="fas fa-envelope fa-2x"></i>
+                <h3>Email</h3>
+                <a href="mailto:htaportsmouth@gmail.com">htaportsmouth@gmail.com</a>
             </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="give.html">Give</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
+            <div class="footer-col">
+                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <h3>Find Us</h3>
+                <a href="https://maps.google.com" target="_blank">822A Southern Parade<br>Waterford P.O, Jamaica</a>
             </div>
-            <div class="footer-social">
-                <h3>Follow Us</h3>
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <div class="footer-col">
+                <i class="fas fa-credit-card fa-2x"></i>
+                <h3>Give</h3>
+                <a href="give.html">Give Online</a>
             </div>
         </div>
-        <p class="footer-copy">&copy; 2025 Harvest Temple Apostolic. All Rights Reserved.</p>
+
+        <div class="footer-social">
+            <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="events.html">Events</a>
+            <a href="give.html">Give</a>
+            <a href="plan-visit.html">New Here?</a>
+        </nav>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
     <script src="script.js"></script>
+</body>
 </html>

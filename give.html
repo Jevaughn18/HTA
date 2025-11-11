@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Support Harvest Temple Apostolic Church through your generous giving. Multiple ways to give online, bank transfer, or in-person.">
     <title>Harvest Temple Apostolic - Give</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="give.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="scroll-nav">
+    <!-- Navigation -->
+    <header class="main-header">
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="Harvest Temple Apostolic Logo" loading="lazy">
+                    <img src="logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -21,123 +25,241 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li class="departments-tab">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Departments</a>
-                    <ul class="dropdown" id="departmentsModal" aria-label="Departments submenu">
-                        <li><a href="national-youth-department.html">National Youth Department</a></li>
-                        <li><a href="sunday-school-department.html">Sunday School Department</a></li>
-                        <li><a href="mens-department.html">Men's Department</a></li>
-                        <li><a href="woman-department.html">Women's Department</a></li>
-                        <li><a href="national-ladies-department.html">National Ladies Department</a></li>
-                    </ul>
-                </li>
+                <li><a href="departments.html">Departments</a></li>
                 <li><a href="media.html">Media</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html" class="active" aria-current="page">Give</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="plan-visit.html" class="btn-nav-outline">New Here?</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section class="give-hero" aria-label="Give Hero Section">
-            <div class="hero-content">
-                <h1>Support Our Mission</h1>
-                <p>Your generosity empowers our community to grow, worship, and thrive.</p>
-                <a href="#donate" class="btn btn-primary" role="button">Donate Now</a>
+        <!-- Give Hero Section -->
+        <section class="give-hero">
+            <div class="give-hero-overlay"></div>
+            <div class="give-hero-content">
+                <h1>Thank you for Giving</h1>
+                <p>We couldn't do it without you.</p>
+                <a href="#ways-to-give" class="btn-give-hero">Give Online</a>
             </div>
         </section>
 
-        <!-- Message Section -->
-        <section class="message-section" aria-label="Why Your Support Matters">
-            <div class="message-card">
-                <h2>Why Give?</h2>
-                <p>We are expanding our church to create a vibrant space for worship, community, and growth. Your contribution makes this vision a reality.</p>
-                <blockquote>
-                    "Your support has transformed lives in our community." <cite>- Bishop Clifton Campbell</cite>
-                </blockquote>
-            </div>
-        </section>
-
-        <!-- Impact Section -->
-        <section class="impact-section" aria-label="Impact of Your Giving">
-            <h2>Your Impact</h2>
-            <div class="impact-grid">
-                <div class="impact-card">
-                    <img src="Choir.jpg" alt="Community Programs Icon" loading="lazy">
-                    <h3>Community Programs</h3>
-                    <p>Fund outreach initiatives that supports the community and individuals in need.</p>
-                </div>
-                <div class="impact-card">
-                    <img src="youth.jpeg" alt="Youth Initiatives Icon" loading="lazy">
-                    <h3>Youth Initiatives</h3>
-                    <p>Empower the next generation through education and spiritual development.</p>
-                </div>
-                <div class="impact-card">
-                    <img src="bankspraise.jpg" alt="Worship Spaces Icon" loading="lazy">
-                    <h3>Worship Spaces</h3>
-                    <p>Create welcoming environments for worship and fellowship.</p>
-                </div>
+        <!-- Thank You Message Section -->
+        <section class="thank-you-section">
+            <div class="thank-you-container">
+                <span class="section-label">THANK YOU!</span>
+                <h2>Transforming Lives Through Generosity</h2>
+                <div class="gold-underline"></div>
+                <p class="thank-you-text">
+                    Because of your generous giving, Harvest Temple Apostolic is reaching Jamaica and beyond with the truth of God's Word. Together, we're reaching people who don't know Jesus, helping families grow together, and raising up leaders who take their faith outside the church.
+                </p>
+                <a href="#ways-to-give" class="btn btn-primary-solid">Give Here</a>
             </div>
         </section>
 
         <!-- Ways to Give Section -->
-        <section class="ways-to-give" id="donate" aria-label="Ways to Give">
-            <h2>Ways to Give</h2>
-            <div class="give-options">
-                <div class="give-option">
-                    <h3>Online Giving</h3>
-                    <p>Donate securely through our trusted platform.</p>
-                     
-                    <a href="#" class="btn btn-primary" role="button">Donate Online</a>
+        <section class="ways-to-give-section" id="ways-to-give">
+            <div class="ways-to-give-container">
+                <h2>Ways to Give</h2>
+                <div class="wave-underline-white"></div>
+                <p class="ways-subtitle">Here are some easy ways to support our church.</p>
+
+                <div class="give-methods-grid">
+                    <!-- Give Online Card -->
+                    <div class="give-method-card">
+                        <div class="give-method-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h3>Give Online</h3>
+                        <p class="give-method-description">Donate securely through our trusted online platform.</p>
+                        <a href="#" class="btn-give-method">Give Online</a>
+                    </div>
+
+                    <!-- Bank Transfer Card -->
+                    <div class="give-method-card">
+                        <div class="give-method-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>Bank Transfer</h3>
+                        <div class="bank-details">
+                            <p><strong>Account Name:</strong> Harvest Temple Apostolic</p>
+                            <p><strong>Bank Name:</strong> National Commercial Bank</p>
+                            <p><strong>Account Number:</strong> 666789666456</p>
+                            <p><strong>Branch:</strong> Waterford, St. Catherine</p>
+                        </div>
+                    </div>
+
+                    <!-- In Person Card -->
+                    <div class="give-method-card">
+                        <div class="give-method-icon">
+                            <i class="fas fa-church"></i>
+                        </div>
+                        <h3>In Person</h3>
+                        <p class="give-method-description">During all Weekend Services</p>
+                        <p class="in-person-details">Join us every Sunday at 822A Southern Parade, Waterford P.O.</p>
+                        <p class="in-person-details">Drop your contribution in our offering box during service.</p>
+                    </div>
                 </div>
-                <div class="give-option">
-                    <h3>Bank Transfer</h3>
-                    <p><strong>Account Name:</strong> Harvest Temple Apostolic</p>
-                    <p><strong>Bank Name:</strong> National Commercial Bank</p>
-                    <p><strong>Account Number:</strong> 666789666456</p>
-                    <p><strong>Routing Number:</strong> [Insert Routing Number]</p>
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section class="impact-section">
+            <div class="impact-container">
+                <h2>Your Impact</h2>
+                <div class="gold-underline"></div>
+                <p class="impact-intro">Your generosity empowers our community to grow, worship, and thrive.</p>
+
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <div class="impact-image">
+                            <img src="Choir.jpg" alt="Community Programs" loading="lazy">
+                        </div>
+                        <div class="impact-content">
+                            <h3>Community Programs</h3>
+                            <p>Fund outreach initiatives that support the community and individuals in need.</p>
+                        </div>
+                    </div>
+
+                    <div class="impact-card">
+                        <div class="impact-image">
+                            <img src="youth.jpeg" alt="Youth Initiatives" loading="lazy">
+                        </div>
+                        <div class="impact-content">
+                            <h3>Youth Initiatives</h3>
+                            <p>Empower the next generation through education and spiritual development.</p>
+                        </div>
+                    </div>
+
+                    <div class="impact-card">
+                        <div class="impact-image">
+                            <img src="bankspraise.jpg" alt="Worship Spaces" loading="lazy">
+                        </div>
+                        <div class="impact-content">
+                            <h3>Worship Spaces</h3>
+                            <p>Create welcoming environments for worship and fellowship.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="give-option">
-                    <h3>In-Person Giving</h3>
-                    <p>Join us every Sunday at 822A Southern Parade, Waterford P.O.</p>
-                    <p>Drop your contribution in our offering box during service.</p>
+            </div>
+        </section>
+
+        <!-- Generosity Quote Section -->
+        <section class="generosity-quote-section">
+            <div class="quote-overlay"></div>
+            <div class="quote-content">
+                <i class="fas fa-quote-left quote-icon"></i>
+                <blockquote>
+                    <p>"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."</p>
+                    <cite>— 2 Corinthians 9:7</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="give-faq-section">
+            <div class="give-faq-container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="gold-underline"></div>
+
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Is my donation secure?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Yes! We use industry-standard encryption and security measures to protect your information. Your donation is processed through secure, trusted payment platforms.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Can I set up recurring donations?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Absolutely! When you give online, you have the option to set up weekly, bi-weekly, or monthly recurring donations. This is a great way to support the church consistently.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Will I receive a tax receipt?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Yes, all donations are tax-deductible. You will receive a receipt via email for online donations, and annual giving statements are provided for tax purposes.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>How is my donation used?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Your donations support our ministry operations, community outreach programs, youth initiatives, facility maintenance, and spreading the Gospel. We are committed to faithful stewardship of all gifts.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Can I designate my gift to a specific ministry?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Yes! When giving online or by bank transfer, you can specify which ministry or project you'd like to support. For in-person giving, please include a note with your designation.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-     <footer aria-label="Footer">
-        <div class="footer-container">
-            <div class="footer-contact">
-                <h3>Contact Us</h3>
-                <p>Email: <a href="mailto:info@harvesttemple.org">info@harvesttemple.org</a></p>
-                <p>Phone: +1 (876) 123-4567</p>
-                <p>Address: 822A Southern Parade, Waterford P.O</p>
+    <!-- Footer -->
+    <footer class="main-footer" aria-label="Footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <i class="fas fa-envelope fa-2x"></i>
+                <h3>Email</h3>
+                <a href="mailto:htaportsmouth@gmail.com">htaportsmouth@gmail.com</a>
             </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="media.html">Media</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="give.html">Give</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
+            <div class="footer-col">
+                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <h3>Find Us</h3>
+                <a href="https://maps.google.com" target="_blank">822A Southern Parade<br>Waterford P.O, Jamaica</a>
             </div>
-            <div class="footer-social">
-                <h3>Follow Us</h3>
-                <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://x.com/harvesttemple" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <div class="footer-col">
+                <i class="fas fa-credit-card fa-2x"></i>
+                <h3>Give</h3>
+                <a href="give.html">Give Online</a>
             </div>
         </div>
-        <div class="footer-copy">
+
+        <div class="footer-social">
+            <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="events.html">Events</a>
+            <a href="give.html">Give</a>
+            <a href="plan-visit.html">New Here?</a>
+        </nav>
+
+        <div class="footer-bottom">
             <p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
         </div>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
