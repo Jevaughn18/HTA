@@ -329,12 +329,12 @@ h1, h2, h3, h4, h5, h6 {
 .service-info-cards {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .info-card {
     background: var(--white);
-    padding: 2.5rem;
+    padding: 1.5rem 1.25rem;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -348,52 +348,54 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .info-card i {
-    font-size: 3rem;
+    font-size: 2.2rem;
     color: var(--primary-purple);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .info-card h3 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: var(--text-dark);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
 }
 
 .info-card p {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-light);
-    line-height: 1.6;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
 }
 
 /* Location Card Specific Styles */
 .location-card h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
 }
 
 .location-card .pastor-name {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: var(--primary-purple);
     font-weight: 700;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
 }
 
 .location-card .address {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-light);
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 .badge {
     display: inline-block;
     background: linear-gradient(90deg, var(--primary-gold), var(--primary-gold-light));
     color: var(--white);
-    padding: 0.4rem 1rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     letter-spacing: 1px;
 }
 
@@ -1048,6 +1050,69 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
+}
+
+.story-container-with-image {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 4rem;
+    align-items: start;
+}
+
+.story-content {
+    text-align: center;
+}
+
+.story-content h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.story-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.story-image {
+    position: relative;
+    text-align: center;
+    margin-top: 9.5rem;
+}
+
+.story-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story-image img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.image-caption {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.5;
+}
+
+.image-caption span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--primary-purple);
+    font-style: italic;
+    margin-top: 0.25rem;
 }
 
 .story-container h2 {
@@ -1966,6 +2031,17 @@ h1, h2, h3, h4, h5, h6 {
     .who-we-are-container {
         grid-template-columns: 1fr;
         gap: 3rem;
+    }
+
+    .story-container-with-image {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .story-image {
+        max-width: 400px;
+        margin: 0 auto;
+        margin-top: 0;
     }
 
     .vision-mission-grid {
