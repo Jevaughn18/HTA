@@ -122,8 +122,8 @@
                 <p>Harvest Temple Apostolic is a One God Apostolic, Bible-based church in Jamaica. Founded in 1985 by Bishop K.O Carter, we exist to see people passionately devoted to God.</p>
                 <p>We value the presence of God. Our worship, preaching and teaching, and Children's Ministry are centered around each person encountering the Holy Spirit. We want to help you discover truth, find hope, and become all who God has created you to be.</p>
             </div>
-            <div class="vision-gallery" id="visionCarousel">
-                <div class="gallery-container">
+            <div class="vision-gallery-wrapper">
+                <div class="vision-gallery" id="visionCarousel">
                     <div class="gallery-item"><img src="Choir.jpg" alt="Worship at HTA" loading="lazy"></div>
                     <div class="gallery-item"><img src="banks choir.jpg" alt="Bishop and Family" loading="lazy"></div>
                     <div class="gallery-item"><img src="Me.jpg" alt="Church Leadership" loading="lazy"></div>
@@ -156,8 +156,8 @@
                 <div class="next-step-card">
                     <img src="youth.jpeg" alt="Ministries" loading="lazy">
                     <div class="card-overlay">
-                        <h3>Ministries</h3>
-                        <p>Explore our diverse ministries, each dedicated to helping you grow spiritually and find your place in our community.</p>
+                        <h3>Departments</h3>
+                        <p>Explore our diverse departments, each dedicated to helping you grow spiritually and find your place in our community.</p>
                         <a href="departments.html" class="btn btn-primary-solid">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
@@ -257,5 +257,120 @@
     </main>
 
     <script src="script.js"></script>
+    <script>
+        // Vision Gallery Carousel Auto-scroll with Touch/Mouse/Swipe Interaction
+        (function() {
+            const wrapper = document.querySelector('.vision-gallery-wrapper');
+            const carousel = document.getElementById('visionCarousel');
+            if (!carousel || !wrapper) return;
+
+            let currentTranslate = 0;
+            let animationId;
+            let isPaused = false;
+            let isInteracting = false;
+            const totalItems = 4;
+            const speed = 1; // pixels per frame
+
+            // Function to get current item width based on screen size
+            function getItemWidth() {
+                const screenWidth = window.innerWidth;
+                if (screenWidth >= 1200) return 350;
+                if (screenWidth >= 769) return 320;
+                return 280;
+            }
+
+            // Function to calculate single set width
+            function getSingleSetWidth() {
+                const itemWidth = getItemWidth();
+                const gap = 24; // 1.5rem = 24px
+                return (itemWidth + gap) * totalItems;
+            }
+
+            let singleSetWidth = getSingleSetWidth();
+
+            // Recalculate on window resize
+            window.addEventListener('resize', () => {
+                singleSetWidth = getSingleSetWidth();
+            });
+
+            function animate() {
+                if (!isPaused && !isInteracting) {
+                    currentTranslate -= speed;
+
+                    // Reset when first set is completely scrolled
+                    if (Math.abs(currentTranslate) >= singleSetWidth) {
+                        currentTranslate = 0;
+                    }
+
+                    carousel.style.transform = `translateX(${currentTranslate}px)`;
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+
+            // Start animation
+            animate();
+
+            // Mouse/Touch drag functionality
+            let startX = 0;
+            let isDragging = false;
+            let startTranslate = 0;
+
+            function handleStart(e) {
+                isDragging = true;
+                isInteracting = true;
+                startX = e.type === 'mousedown' ? e.pageX : e.touches[0].clientX;
+                startTranslate = currentTranslate;
+                wrapper.style.cursor = 'grabbing';
+            }
+
+            function handleMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const currentX = e.type === 'mousemove' ? e.pageX : e.touches[0].clientX;
+                const diff = currentX - startX;
+                currentTranslate = startTranslate + diff;
+                carousel.style.transform = `translateX(${currentTranslate}px)`;
+            }
+
+            function handleEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                wrapper.style.cursor = 'grab';
+
+                // Normalize position after drag
+                if (currentTranslate > 0) {
+                    currentTranslate = -(singleSetWidth + currentTranslate);
+                } else if (Math.abs(currentTranslate) >= singleSetWidth) {
+                    currentTranslate = currentTranslate % singleSetWidth;
+                }
+
+                setTimeout(() => {
+                    isInteracting = false;
+                }, 1000);
+            }
+
+            // Mouse events
+            wrapper.addEventListener('mousedown', handleStart);
+            wrapper.addEventListener('mousemove', handleMove);
+            wrapper.addEventListener('mouseup', handleEnd);
+            wrapper.addEventListener('mouseleave', () => {
+                if (isDragging) handleEnd();
+            });
+
+            // Touch events
+            wrapper.addEventListener('touchstart', handleStart, { passive: false });
+            wrapper.addEventListener('touchmove', handleMove, { passive: false });
+            wrapper.addEventListener('touchend', handleEnd);
+
+            // Pause on hover
+            wrapper.addEventListener('mouseenter', () => {
+                if (!isInteracting) isPaused = true;
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                if (!isDragging) isPaused = false;
+            });
+        })();
+    </script>
 </body>
 </html>

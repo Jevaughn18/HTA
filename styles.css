@@ -436,45 +436,55 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1.5rem;
 }
 
-.vision-gallery {
+.vision-gallery-wrapper {
     position: relative;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     overflow: hidden;
-    border-radius: 8px;
     cursor: grab;
     user-select: none;
+    padding: 0 2rem;
 }
 
-.vision-gallery:active {
+.vision-gallery-wrapper:active {
     cursor: grabbing;
 }
 
-.gallery-container {
+.vision-gallery-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.vision-gallery {
     display: flex;
-    transition: transform 0.5s ease;
+    gap: 1.5rem;
+    width: max-content;
     will-change: transform;
 }
 
 .gallery-item {
-    min-width: 300px;
-    flex: 0 0 300px;
-    margin-right: 1.5rem;
+    flex-shrink: 0;
+    width: 300px;
     overflow: hidden;
     border-radius: 8px;
     aspect-ratio: 4/5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(212, 160, 23, 0.3);
 }
 
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
     pointer-events: none;
 }
 
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 /* ========================================
@@ -1214,6 +1224,526 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ========================================
+   MEDIA PAGE STYLES
+   ======================================== */
+
+/* Prayer Meeting Section */
+.prayer-meeting-section {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-light));
+    color: var(--white);
+    padding: 6rem 2rem;
+    text-align: center;
+}
+
+.prayer-meeting-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.prayer-meeting-header {
+    margin-bottom: 3rem;
+}
+
+.prayer-meeting-header i {
+    font-size: 4rem;
+    color: var(--primary-gold);
+    margin-bottom: 1rem;
+}
+
+.prayer-meeting-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.prayer-meeting-header p {
+    font-size: 1.2rem;
+    opacity: 0.95;
+}
+
+.prayer-meeting-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.prayer-detail-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.prayer-detail-card i {
+    font-size: 2.5rem;
+    color: var(--primary-gold);
+    margin-bottom: 1rem;
+}
+
+.prayer-detail-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.prayer-detail-card p {
+    font-size: 1.1rem;
+}
+
+.prayer-meeting-info {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--text-dark);
+    padding: 2.5rem;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.meeting-credentials {
+    margin-bottom: 2rem;
+}
+
+.meeting-credentials p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.meeting-credentials strong {
+    color: var(--primary-purple);
+}
+
+/* Media Filter Section */
+.media-filter-section {
+    background: var(--light-bg);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+}
+
+.media-filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.media-filter-container h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    font-weight: 900;
+}
+
+.media-filters {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: var(--white);
+    color: var(--text-dark);
+    border: 2px solid var(--primary-purple);
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary-purple);
+    color: var(--white);
+}
+
+/* Featured Sermon Section */
+.featured-sermon-section {
+    background: var(--white);
+    padding: 6rem 2rem;
+}
+
+.featured-sermon-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.featured-sermon-container h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--text-dark);
+    margin-bottom: 3rem;
+    font-weight: 900;
+}
+
+.featured-video-wrapper {
+    background: var(--light-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.sermon-meta {
+    padding: 3rem 2rem;
+    text-align: left;
+}
+
+.sermon-meta h3 {
+    font-size: clamp(1.8rem, 3vw, 2.2rem);
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+}
+
+.sermon-meta p {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+.sermon-meta i {
+    color: var(--primary-purple);
+    margin-right: 0.5rem;
+}
+
+.sermon-speaker,
+.sermon-date,
+.sermon-scripture {
+    font-weight: 600;
+}
+
+.sermon-description {
+    margin-top: 1.5rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+/* Sermon Series Section */
+.sermon-series-section {
+    background: var(--light-bg);
+    padding: 6rem 2rem;
+}
+
+.sermon-series-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sermon-series-container h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+}
+
+.series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.series-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.series-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.series-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.series-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.series-card:hover .series-image img {
+    transform: scale(1.1);
+}
+
+.series-overlay {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.series-count {
+    background: var(--primary-gold);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.series-content {
+    padding: 2rem;
+    text-align: left;
+}
+
+.series-content h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.series-content p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Recent Messages Section */
+.recent-messages-section {
+    background: var(--white);
+    padding: 6rem 2rem;
+}
+
+.recent-messages-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.recent-messages-container h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+}
+
+.messages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.message-card {
+    background: var(--light-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.message-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.message-thumbnail {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.message-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.play-button i {
+    font-size: 1.5rem;
+    color: var(--primary-purple);
+    margin-left: 3px;
+}
+
+.message-card:hover .play-button {
+    background: var(--primary-gold);
+}
+
+.message-card:hover .play-button i {
+    color: var(--white);
+}
+
+.message-info {
+    padding: 1.5rem;
+    text-align: left;
+}
+
+.message-info h4 {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+}
+
+.message-speaker {
+    color: var(--primary-purple);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.message-date,
+.message-scripture {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+/* Livestream Section */
+.livestream-section {
+    background: linear-gradient(135deg, var(--dark-bg), #1a1a1a);
+    color: var(--white);
+    padding: 6rem 2rem;
+    text-align: center;
+}
+
+.livestream-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.livestream-content i {
+    font-size: 4rem;
+    color: var(--primary-gold);
+    margin-bottom: 1.5rem;
+}
+
+.livestream-content h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.livestream-content p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+}
+
+.livestream-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Photo Gallery Section */
+.photo-gallery-section {
+    background: var(--light-bg);
+    padding: 6rem 2rem;
+}
+
+.photo-gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.photo-gallery-container h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.gallery-description {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.photo-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    aspect-ratio: 4/3;
+    cursor: pointer;
+}
+
+.photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.photo-item:hover img {
+    transform: scale(1.1);
+}
+
+.photo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 1.5rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.photo-item:hover .photo-overlay {
+    transform: translateY(0);
+}
+
+.photo-overlay span {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.load-more-container {
+    margin-top: 3rem;
+}
+
+/* ========================================
    MINISTRIES PAGE STYLES
    ======================================== */
 
@@ -1231,6 +1761,12 @@ h1, h2, h3, h4, h5, h6 {
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 900;
     text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+}
+
+.ministries-hero .hero-video-content p {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    margin-top: 1rem;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* Ministry Section */
@@ -1339,8 +1875,15 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .vision-gallery {
-        grid-template-columns: repeat(4, 1fr);
+    .gallery-item {
+        width: 320px;
+    }
+}
+
+/* Large Desktop Screens */
+@media (min-width: 1200px) {
+    .gallery-item {
+        width: 350px;
     }
 }
 
@@ -1403,6 +1946,14 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: 1fr;
     }
 
+    .vision-gallery-wrapper {
+        padding: 0 1rem;
+    }
+
+    .gallery-item {
+        width: 280px;
+    }
+
     .about-tabs {
         flex-direction: column;
         gap: 0.5rem;
@@ -1458,6 +2009,54 @@ h1, h2, h3, h4, h5, h6 {
 
     .ministry-section {
         padding: 3rem 1rem;
+    }
+
+    /* Media Page Mobile */
+    .prayer-meeting-section {
+        padding: 3rem 1rem;
+    }
+
+    .prayer-meeting-details {
+        grid-template-columns: 1fr;
+    }
+
+    .media-filter-section {
+        padding: 2rem 1rem;
+    }
+
+    .filter-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .featured-sermon-section,
+    .sermon-series-section,
+    .recent-messages-section,
+    .livestream-section,
+    .photo-gallery-section {
+        padding: 3rem 1rem;
+    }
+
+    .series-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .messages-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .livestream-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .livestream-buttons .btn {
+        width: 100%;
+        max-width: 350px;
     }
 }
 

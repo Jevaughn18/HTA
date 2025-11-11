@@ -3,414 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harvest Temple Apostolic - Prayer Request/Contact Us</title>
+    <meta name="description" content="Plan your visit to Harvest Temple Apostolic Church. Join us for Sunday service at 10am.">
+    <title>Plan A Visit - Harvest Temple Apostolic</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Contact Hero Section */
-        .contact-hero {
-            background: url('banks choir.jpg') no-repeat center center / cover;
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #FFFFFF;
-            position: relative;
-        }
-
-        .contact-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #4B0082, #6A0DAD);
-            opacity: 0.5;
-            z-index: 1;
-        }
-
-        .contact-hero .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 1.5rem;
-            max-width: 90%;
-            width: 800px;
-        }
-
-        .contact-hero h1 {
-            font-size: clamp(2rem, 6vw, 3.5rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .contact-hero p {
-            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
-            margin-bottom: 1.5rem;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 1rem;
-            background: #F9FAFB;
-            text-align: center;
-        }
-
-        .contact-section h2 {
-            color: #4B0082;
-            font-size: clamp(1.6rem, 4vw, 2rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-        }
-
-        .contact-section p {
-            color: #666666;
-            font-size: clamp(1rem, 3vw, 1.2rem);
-            max-width: 800px;
-            margin: 0 auto 1.5rem;
-            line-height: 1.8;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .contact-form-card, .contact-info-card {
-            background: #FFFFFF;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .contact-form-card:hover, .contact-info-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .contact-form-card h3, .contact-info-card h3 {
-            color: #4B0082;
-            font-size: clamp(1.3rem, 3vw, 1.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .contact-form-card form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .contact-form-card label {
-            text-align: left;
-            color: #333333;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-        }
-
-        .contact-form-card input,
-        .contact-form-card textarea {
-            padding: 0.8rem;
-            border: 2px solid #D4A017;
-            border-radius: 8px;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            font-family: 'Lato', sans-serif;
-            background: #FFFFFF;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            min-height: 2.5rem;
-        }
-
-        .contact-form-card textarea {
-            min-height: 8rem;
-            resize: vertical;
-        }
-
-        .contact-form-card input:focus,
-        .contact-form-card textarea:focus {
-            border-color: #4B0082;
-            box-shadow: 0 0 8px rgba(75, 0, 130, 0.2);
-            outline: none;
-        }
-
-        .contact-form-card input:invalid:focus:not(:placeholder-shown),
-        .contact-form-card textarea:invalid:focus:not(:placeholder-shown) {
-            border-color: #D32F2F;
-        }
-
-        .contact-form-card .error {
-            color: #D32F2F;
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            margin-top: 0.25rem;
-            text-align: left;
-            display: none;
-        }
-
-        .contact-form-card input:invalid:focus:not(:placeholder-shown) ~ .error,
-        .contact-form-card textarea:invalid:focus:not(:placeholder-shown) ~ .error {
-            display: block;
-        }
-
-        .contact-form-card button {
-            padding: 0.8rem 1.5rem;
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            min-height: 2.5rem;
-        }
-
-        .contact-info-card ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .contact-info-card li {
-            display: flex;
-            align-items: center;
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            color: #666666;
-            max-width: 250px;
-            justify-content: center;
-            padding: 0.5rem;
-            border-radius: 8px;
-            background: #F9FAFB;
-        }
-
-        .contact-info-card li i {
-            color: #D4A017;
-            margin-right: 0.8rem;
-            font-size: clamp(1.1rem, 3vw, 1.3rem);
-        }
-
-        .contact-info-card a {
-            color: #4B0082;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .contact-info-card a:hover {
-            color: #D4A017;
-        }
-
-        /* Map Section */
-        .map-section {
-            max-width: 1200px;
-            margin: 0 auto 3rem;
-            padding: 0 1rem;
-        }
-
-        #map {
-            height: 400px;
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Locations Section */
-        .locations-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 1rem;
-            background: #FFFFFF;
-            text-align: center;
-        }
-
-        .locations-section h2 {
-            color: #4B0082;
-            font-size: clamp(1.6rem, 4vw, 2rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-        }
-
-        .locations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .location-card {
-            background: #F9FAFB;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .location-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .location-card i {
-            color: #D4A017;
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            margin-bottom: 0.8rem;
-        }
-
-        .location-card h3 {
-            color: #4B0082;
-            font-size: clamp(1.1rem, 3vw, 1.3rem);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .location-card p {
-            color: #666666;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            line-height: 1.6;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            .contact-hero {
-                min-height: 40vh;
-            }
-
-            .contact-hero h1 {
-                font-size: clamp(1.8rem, 5vw, 2.2rem);
-            }
-
-            .contact-hero p {
-                font-size: clamp(1rem, 3vw, 1.2rem);
-            }
-
-            .contact-section, .locations-section {
-                padding: 2rem 0.8rem;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .contact-form-card, .contact-info-card {
-                padding: 1rem;
-            }
-
-            .contact-form-card input,
-            .contact-form-card textarea,
-            .contact-form-card button {
-                padding: 0.6rem;
-                font-size: clamp(0.8rem, 2.2vw, 0.9rem);
-                min-height: 2.2rem;
-            }
-
-            .contact-form-card textarea {
-                min-height: 6rem;
-            }
-
-            .contact-info-card ul {
-                gap: 1rem;
-            }
-
-            .contact-info-card li {
-                font-size: clamp(0.8rem, 2.2vw, 0.9rem);
-                padding: 0.4rem;
-                max-width: 200px;
-            }
-
-            .contact-info-card li i {
-                font-size: clamp(1rem, 2.5vw, 1.1rem);
-                margin-right: 0.6rem;
-            }
-
-            .map-section {
-                margin-bottom: 1.5rem;
-            }
-
-            #map {
-                height: 250px;
-            }
-
-            .locations-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .location-card {
-                padding: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .contact-hero {
-                min-height: 35vh;
-            }
-
-            .contact-hero .hero-content {
-                padding: 1rem;
-            }
-
-            .contact-hero h1 {
-                font-size: clamp(1.5rem, 4.5vw, 1.8rem);
-            }
-
-            .contact-hero p {
-                font-size: clamp(0.9rem, 2.8vw, 1rem);
-            }
-
-            .contact-section h2, .locations-section h2 {
-                font-size: clamp(1.4rem, 3.5vw, 1.6rem);
-            }
-
-            .contact-form-card h3, .contact-info-card h3 {
-                font-size: clamp(1.1rem, 2.8vw, 1.3rem);
-            }
-
-            .contact-info-card ul {
-                gap: 0.8rem;
-            }
-
-            .contact-info-card li {
-                padding: 0.3rem;
-                max-width: 180px;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .contact-hero {
-                min-height: 65vh;
-            }
-
-            .contact-hero h1 {
-                font-size: clamp(3rem, 5vw, 3.5rem);
-            }
-
-            .contact-hero p {
-                font-size: clamp(1.3rem, 3.5vw, 1.5rem);
-            }
-
-            .contact-section, .locations-section {
-                padding: 4rem 1.5rem;
-            }
-        }
-
-        @media (min-width: 1025px) {
-            .contact-hero {
-                min-height: 70vh;
-            }
-
-            .contact-section, .locations-section {
-                padding: 4rem 2rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="scroll-nav">
+    <!-- Navigation -->
+    <header class="main-header">
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="Harvest Temple Apostolic Logo" loading="lazy">
+                    <img src="logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -419,176 +25,473 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li class="departments-tab">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Departments</a>
-                    <ul class="dropdown" id="departmentsModal" aria-label="Departments submenu">
-                        <li><a href="national-youth-department.html">National Youth Department</a></li>
-                        <li><a href="sunday-school-department.html">Sunday School Department</a></li>
-                        <li><a href="mens-department.html">Men's Department</a></li>
-                        <li><a href="woman-department.html">Women's Department</a></li>
-                        <li><a href="national-ladies-department.html">National Ladies Department</a></li>
-                    </ul>
-                </li>
+                <li><a href="departments.html">Departments</a></li>
                 <li><a href="media.html">Media</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html">Give</a></li>
-                <li><a href="contact.html" class="active" aria-current="page">Contact Us</a></li>
+                <li><a href="plan-visit.html" class="btn-nav-outline active" aria-current="page">New Here?</a></li>
             </ul>
         </nav>
     </header>
 
-    <section class="contact-hero" aria-label="Contact Hero Section">
-        <div class="hero-content">
-            <h1>Get in Touch</h1>
-            <p>We'd love to hear from you! Connect with us for inquiries, prayer requests, or to learn more about our community.</p>
-            <a href="#contact-form" class="btn btn-primary" role="button">Contact Now</a>
-        </div>
-    </section>
+    <main>
+        <!-- Hero Section -->
+        <section class="ministries-hero" style="background-image: url('black2.jpg'); background-size: cover; background-position: center;">
+            <div class="hero-video-overlay"></div>
+            <div class="hero-video-content">
+                <h1>Plan A Visit</h1>
+            </div>
+        </section>
 
-    <section class="contact-section" id="contact-form">
-        <h2>Connect With Us</h2>
-        <p>Reach out via the form below, call us, or follow us on social media. We're here to assist you!</p>
-        <div class="contact-grid">
-            <div class="contact-form-card">
-                <h3>Send Us a Message</h3>
-                <form action="https://formspree.io/f/stewartjevaughn1@gmail.com" method="POST">
-                    <div>
-                        <label for="name">Full Name *</label>
-                        <input type="text" id="name" name="Full Name" placeholder="Enter your full name" required>
-                        <span class="error">Please enter your full name</span>
+        <!-- Service Details Section -->
+        <section class="service-details">
+            <div class="service-container">
+                <span class="section-label">SERVICE DETAILS</span>
+                <h2>Attend a Sunday Service</h2>
+                <div class="wave-underline"></div>
+                
+                <p class="service-intro">Whether you're single or married, older or younger, this is a place where you can grow in your faith and build a strong community with others. Every Sunday, we offer Spirit-filled worship and live teaching that is biblically-centered.</p>
+                
+                <p class="service-note"><em>Children's ministry is available from birth - 12 years old.</em></p>
+
+                <div class="service-info-grid">
+                    <div class="service-info-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>10am</h3>
+                        <p>Every Sunday</p>
                     </div>
-                    <div>
+                    <div class="service-info-card">
+                        <i class="fas fa-church"></i>
+                        <h3>HTA Portsmouth</h3>
+                        <p>822A Southern Parade<br>Waterford P.O, Jamaica</p>
+                    </div>
+                </div>
+
+                <div class="service-buttons">
+                    <a href="about.html" class="btn btn-primary">About Us</a>
+                    <a href="https://maps.google.com" target="_blank" class="btn btn-outline">Get Directions <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- What To Expect Section -->
+        <section class="what-to-expect">
+            <div class="expect-container">
+                <h2>What To Expect</h2>
+                <div class="wave-underline-white"></div>
+
+                <div class="expect-carousel-wrapper">
+                    <div class="expect-carousel" id="expectCarousel">
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="church.jpeg" alt="Warm Welcome" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Warm Welcome</h3>
+                                <p>You'll be greeted with a friendly smile and a warm welcome.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="banksworship.jpg" alt="Uplifting Worship" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Uplifting Worship</h3>
+                                <p>Experience a mix of contemporary and traditional worship.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="hand.jpg" alt="Relevant Message" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Relevant Message</h3>
+                                <p>Hear a message that's engaging and will deepen your walk with Jesus.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="youth.jpeg" alt="Kids Ministry" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Kids Ministry</h3>
+                                <p>Fun and safe programs for kids ages birth-12yo to learn about God.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="Choir.jpg" alt="Joyful Choir" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Joyful Choir</h3>
+                                <p>Experience inspiring music that lifts your spirit.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="praise.jpg" alt="Praise & Worship" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Praise & Worship</h3>
+                                <p>Join us in powerful moments of praise and worship.</p>
+                            </div>
+                        </div>
+
+                        <!-- Duplicate cards for infinite scroll effect -->
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="church.jpeg" alt="Warm Welcome" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Warm Welcome</h3>
+                                <p>You'll be greeted with a friendly smile and a warm welcome.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="banksworship.jpg" alt="Uplifting Worship" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Uplifting Worship</h3>
+                                <p>Experience a mix of contemporary and traditional worship.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="hand.jpg" alt="Relevant Message" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Relevant Message</h3>
+                                <p>Hear a message that's engaging and will deepen your walk with Jesus.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="youth.jpeg" alt="Kids Ministry" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Kids Ministry</h3>
+                                <p>Fun and safe programs for kids ages birth-12yo to learn about God.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="Choir.jpg" alt="Joyful Choir" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Joyful Choir</h3>
+                                <p>Experience inspiring music that lifts your spirit.</p>
+                            </div>
+                        </div>
+
+                        <div class="expect-card">
+                            <div class="expect-image">
+                                <img src="praise.jpg" alt="Praise & Worship" loading="lazy">
+                            </div>
+                            <div class="expect-content">
+                                <h3>Praise & Worship</h3>
+                                <p>Join us in powerful moments of praise and worship.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="faq-container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="wave-underline-white"></div>
+
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>What Should I Wear?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Come as you are! We have people who dress casually and others who prefer more formal attire. The most important thing is that you're comfortable and ready to worship.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>How Long Is the Service?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Our Sunday service typically lasts about 1.5 to 2 hours, including worship, announcements, and the message. We believe in being led by the Spirit, so times may vary.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Is There Something for My Kids?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Yes! We offer children's ministry for ages birth through 12 years old. Our dedicated team provides age-appropriate biblical teaching in a fun, safe environment during the service.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Do I Need to Bring Anything?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Just bring yourself and your Bible if you have one. We'll provide everything else you need. If you don't have a Bible, we're happy to help you get one.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Is Your Campus Accessible?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>Yes, our facilities are accessible for those with mobility needs. We have accessible parking, ramps, and restrooms. If you have specific accessibility needs, please contact us in advance so we can assist you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Branch Locations Section -->
+        <section class="branches-section">
+            <div class="branches-container">
+                <h2>Our Locations</h2>
+                <div class="wave-underline"></div>
+
+                <div class="branches-grid">
+                    <div class="branch-card">
+                        <i class="fas fa-church"></i>
+                        <h3>HTA Portsmouth</h3>
+                        <p>822A Southern Parade<br>Waterford P.O, Jamaica</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=822A+Southern+Parade+Waterford+P.O+Jamaica" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+
+                    <div class="branch-card">
+                        <i class="fas fa-church"></i>
+                        <h3>HTA Banks</h3>
+                        <p>Banks<br>Clarendon, Jamaica</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Banks+Clarendon+Jamaica" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+
+                    <div class="branch-card">
+                        <i class="fas fa-church"></i>
+                        <h3>HTA Slipe Pen Road</h3>
+                        <p>Slipe Pen Road<br>Kingston, Jamaica</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Slipe+Pen+Road+Kingston+Jamaica" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+
+                    <div class="branch-card">
+                        <i class="fas fa-church"></i>
+                        <h3>HTA Mullet Hall</h3>
+                        <p>Mullet Hall<br>Portland, Jamaica</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Mullet+Hall+Portland+Jamaica" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="contact-form-section">
+            <div class="form-container">
+                <h2>Have a Question?</h2>
+                <div class="wave-underline"></div>
+                <p class="form-intro">We are here to help you! Send our team an email and we will be sure to get back with you within 3-5 days!</p>
+
+                <form action="https://formspree.io/f/Htaportsmouth@gmail.com" method="POST" class="visit-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="Last Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="Email" placeholder="Enter your email" required>
-                        <span class="error">Please enter a valid email address</span>
+                        <input type="email" id="email" name="Email" required>
                     </div>
-                    <div>
-                        <label for="subject">Subject *</label>
-                        <input type="text" id="subject" name="Subject" placeholder="Enter the subject" required>
-                        <span class="error">Please enter a subject</span>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone">
                     </div>
-                    <div>
+
+                    <div class="form-group">
                         <label for="message">Message *</label>
-                        <textarea id="message" name="Message" placeholder="Your message" rows="6" required></textarea>
-                        <span class="error">Please enter a message</span>
+                        <textarea id="message" name="Message" rows="6" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                    <button type="submit" class="btn btn-primary btn-submit">Email Us</button>
                 </form>
             </div>
-            <div class="contact-info-card">
-                <h3>Contact Information</h3>
-                <ul>
-                    <li>
-                        <i class="fas fa-phone"></i>
-                        <span>+1 (876) 123-4567</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:info@harvesttemple.org">info@harvesttemple.org</a>
-                    </li>
-                    <li>
-                        <i class="fab fa-youtube"></i>
-                        <a href="https://www.youtube.com/@harvesttempleapostolicchurch" target="_blank">YouTube</a>
-                    </li>
-                    <li>
-                        <i class="fab fa-facebook-f"></i>
-                        <a href="https://www.facebook.com/profile.php?id=100069664802993" target="_blank">Facebook</a>
-                    </li>
-                    <li>
-                        <i class="fab fa-twitter"></i>
-                        <a href="https://x.com/harvesttemple" target="_blank">Twitter</a>
-                    </li>
-                </ul>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer" aria-label="Footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <i class="fas fa-envelope fa-2x"></i>
+                <h3>Email</h3>
+                <a href="mailto:htaportsmouth@gmail.com">htaportsmouth@gmail.com</a>
+            </div>
+            <div class="footer-col">
+                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <h3>Find Us</h3>
+                <a href="https://maps.google.com" target="_blank">822A Southern Parade<br>Waterford P.O, Jamaica</a>
+            </div>
+            <div class="footer-col">
+                <i class="fas fa-credit-card fa-2x"></i>
+                <h3>Give</h3>
+                <a href="give.html">Give Online</a>
             </div>
         </div>
-    </section>
 
-    <section class="map-section">
-        <div id="map"></div>
-    </section>
-
-    <section class="locations-section">
-        <h2>Our Locations</h2>
-        <div class="locations-grid">
-            <div class="location-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>HTA Portsmouth (Headquarters)</h3>
-                <p>822A Southern Parade, Portsmouth, Waterford P.O, Jamaica</p>
-            </div>
-            <div class="location-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>HTA Banks Clarendon</h3>
-                <p>Banks District Race Course P.O., Clarendon, Jamaica</p>
-            </div>
-            <div class="location-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>HTA Slipe Pen Road</h3>
-                <p>37 Slipe Road, Kingston 5, Jamaica</p>
-            </div>
-            <div class="location-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>HTA Mullet Hall</h3>
-                <p>101 Mullet Hall, Portland, Jamaica</p>
-            </div>
+        <div class="footer-social">
+            <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
-    </section>
 
-    <footer aria-label="Footer">
-        <div class="footer-container">
-            <div class="footer-contact">
-                <h3>Contact Us</h3>
-                <p>Email: <a href="mailto:info@harvesttemple.org">info@harvesttemple.org</a></p>
-                <p>Phone: +1 (876) 123-4567</p>
-                <p>Address: 822A Southern Parade, Waterford P.O</p>
-            </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="media.html">Media</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="give.html">Give</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-social">
-                <h3>Follow Us</h3>
-                <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://x.com/harvesttemple" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
-        <div class="footer-copy">
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="events.html">Events</a>
+            <a href="give.html">Give</a>
+            <a href="plan-visit.html">New Here?</a>
+        </nav>
+
+        <div class="footer-bottom">
             <p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="script.js"></script>
     <script>
-        function initMap() {
-            const branches = [
-                { name: "HTA Banks Clarendon", lat: 17.9548, lng: -77.2336 },
-                { name: "HTA Portsmouth, St. Catherine", lat: 17.9522, lng: -76.9481 },
-                { name: "HTA Slipe Pen Road, Kingston", lat: 17.9769, lng: -76.7946 },
-                { name: "HTA Mullet Hall, Portland", lat: 18.0667, lng: -76.3500 }
-            ];
+        // Carousel Auto-scroll with Touch/Mouse/Swipe Interaction
+        (function() {
+            const wrapper = document.querySelector('.expect-carousel-wrapper');
+            const carousel = document.getElementById('expectCarousel');
+            if (!carousel || !wrapper) return;
 
-            const map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 18.1096, lng: -77.2975 },
-                zoom: 8,
+            let currentTranslate = 0;
+            let animationId;
+            let isPaused = false;
+            let isInteracting = false;
+            const cardWidth = 320;
+            const gap = 32; // 2rem
+            const totalCards = 6;
+            const singleSetWidth = (cardWidth + gap) * totalCards;
+            const speed = 1; // pixels per frame
+
+            function animate() {
+                if (!isPaused && !isInteracting) {
+                    currentTranslate -= speed;
+
+                    // Reset when first set is completely scrolled
+                    if (Math.abs(currentTranslate) >= singleSetWidth) {
+                        currentTranslate = 0;
+                    }
+
+                    carousel.style.transform = `translateX(${currentTranslate}px)`;
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+
+            // Start animation
+            animate();
+
+            // Mouse/Touch drag functionality
+            let startX = 0;
+            let isDragging = false;
+            let startTranslate = 0;
+
+            function handleStart(e) {
+                isDragging = true;
+                isInteracting = true;
+                startX = e.type === 'mousedown' ? e.pageX : e.touches[0].clientX;
+                startTranslate = currentTranslate;
+                wrapper.style.cursor = 'grabbing';
+            }
+
+            function handleMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const currentX = e.type === 'mousemove' ? e.pageX : e.touches[0].clientX;
+                const diff = currentX - startX;
+                currentTranslate = startTranslate + diff;
+                carousel.style.transform = `translateX(${currentTranslate}px)`;
+            }
+
+            function handleEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                wrapper.style.cursor = 'grab';
+
+                // Normalize position after drag
+                if (currentTranslate > 0) {
+                    currentTranslate = -(singleSetWidth + currentTranslate);
+                } else if (Math.abs(currentTranslate) >= singleSetWidth) {
+                    currentTranslate = currentTranslate % singleSetWidth;
+                }
+
+                setTimeout(() => {
+                    isInteracting = false;
+                }, 1000);
+            }
+
+            // Mouse events
+            wrapper.addEventListener('mousedown', handleStart);
+            wrapper.addEventListener('mousemove', handleMove);
+            wrapper.addEventListener('mouseup', handleEnd);
+            wrapper.addEventListener('mouseleave', () => {
+                if (isDragging) handleEnd();
             });
 
-            branches.forEach(branch => {
-                new google.maps.Marker({
-                    position: { lat: branch.lat, lng: branch.lng },
-                    map: map,
-                    title: branch.name,
-                });
+            // Touch events
+            wrapper.addEventListener('touchstart', handleStart, { passive: false });
+            wrapper.addEventListener('touchmove', handleMove, { passive: false });
+            wrapper.addEventListener('touchend', handleEnd);
+
+            // Pause on hover
+            wrapper.addEventListener('mouseenter', () => {
+                if (!isInteracting) isPaused = true;
             });
-        }
+
+            wrapper.addEventListener('mouseleave', () => {
+                if (!isDragging) isPaused = false;
+            });
+        })();
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
-    <!-- Replace YOUR_API_KEY with a valid Google Maps API key from https://console.cloud.google.com -->
 </body>
 </html>
