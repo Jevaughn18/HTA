@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harvest Temple Apostolic - Media</title>
+    <meta name="description" content="Explore ministries at Harvest Temple Apostolic - Youth, Sunday School, Men's, Women's, and National Ladies Department">
+    <title>Harvest Temple Apostolic - Ministries</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="scroll-nav">
+    <!-- Navigation -->
+    <header class="main-header">
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="Harvest Temple Apostolic Logo" loading="lazy">
+                    <img src="logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -21,88 +24,137 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li class="departments-tab">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Departments</a>
-                    <ul class="dropdown" id="departmentsModal" aria-label="Departments submenu">
-                        <li><a href="national-youth-department.html">National Youth Department</a></li>
-                        <li><a href="sunday-school-department.html">Sunday School Department</a></li>
-                        <li><a href="mens-department.html">Men's Department</a></li>
-                        <li><a href="womens-department.html">Women's Department</a></li>
-                        <li><a href="national-ladies-department.html">National Ladies Department</a></li>
-                    </ul>
-                </li>
-                <li><a href="media.html" class="active" aria-current="page">Media</a></li>
+                <li><a href="media.html" class="active" aria-current="page">Ministries</a></li>
+                <li><a href="contact.html">Connect</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html">Give</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="contact.html" class="btn-nav-outline">New Here?</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="media" aria-label="Media Hub">
-            <h1 class="media-title">Media Hub</h1>
-            <p class="media-description">Explore inspiring sermons, worship sessions, and community updates from Harvest Temple Apostolic.</p>
+        <!-- Ministries Hero Section -->
+        <section class="ministries-hero" style="background-image: url('black2.jpg'); background-size: cover; background-position: center;">
+            <div class="hero-video-overlay"></div>
+            <div class="hero-video-content">
+                <h1>Ministries</h1>
+            </div>
+        </section>
 
-            <div class="media-grid">
-                <!-- Featured Sermon -->
-                <div class="media-card featured">
-                    <h2 class="card-title">This Week’s Message</h2>
-                    <iframe width="100%" height="250" src="https://www.youtube.com/embed/bskYCPhVVNU?si=JPGZ3UzBQQ4U7Gmr" title="Youth Week 2025 - Night 4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <p class="card-text">God still moves in the waiting — a timely word from Pastor Rohan on Isaiah 40:31.</p>
+        <!-- National Youth Department -->
+        <section class="ministry-section" aria-label="National Youth Department">
+            <div class="ministry-container">
+                <div class="ministry-image">
+                    <img src="National Youth Department.jpg" alt="National Youth Department" loading="lazy">
                 </div>
-
-                <!-- Recent Sermons -->
-                <div class="media-card">
-                    <h2 class="card-title">Recent Sermons</h2>
-                    <div class="card-content">
-                        <p class="card-text">Welcome to Youth Week 2025 - Walking in the Spirit</p>
-                        <a href="https://youtu.be/dm2SnnIqmrE?si=IJqywNGLQ6ivmGwF" class="btn btn-primary" target="_blank" aria-label="Watch Youth Week 2025 Walking in the Spirit">Watch Now</a>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-text">Youth Week 2025 - Aligning with God’s Will</p>
-                        <a href="https://youtu.be/szF_HqBfw1s?si=4WSt3PB5Ip8R9TpN" class="btn btn-primary" target="_blank" aria-label="Watch Youth Week 2025 Aligning with God’s Will">Watch Now</a>
-                    </div>
-                </div>
-
-                <!-- YouTube Channel -->
-                <div class="media-card">
-                    <h2 class="card-title">Our Channel</h2>
-                    <p class="card-text">Join 92 subscribers and explore 8 videos with 661 views from Jamaica!</p>
-                    <a href="https://www.youtube.com/@harvesttempleapostolicchurch" class="btn btn-secondary" target="_blank" aria-label="Visit Harvest Temple Apostolic YouTube Channel">Watch More</a>
+                <div class="ministry-content">
+                    <h2>National Youth Department</h2>
+                    <p>Our Youth Ministry is a vibrant community designed to help young people learn about God's love in a fun and engaging way. Through age-appropriate lessons, interactive activities, and exciting events, youth are introduced to biblical truths, encouraged to grow in their faith, and build a foundation for a lifelong relationship with Jesus. The ministry provides a safe and welcoming environment where young people can explore, discover, and experience the joy of following Christ.</p>
+                    <a href="contact.html" class="btn btn-ministry">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
+
+        <!-- Sunday School Department -->
+        <section class="ministry-section ministry-alt" aria-label="Sunday School Department">
+            <div class="ministry-container ministry-reverse">
+                <div class="ministry-content">
+                    <h2>Sunday School Department</h2>
+                    <p>Our Sunday School Ministry is focused on guiding all ages through their spiritual journey with biblical teaching and fellowship. With a mix of weekly classes, worship, and interactive learning, Sunday School creates a space where members can deepen their relationship with God, form strong connections with fellow believers, and discover biblical truths. Our desire is to equip and empower everyone to have a personal relationship with God through His Word.</p>
+                    <a href="contact.html" class="btn btn-ministry">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="ministry-image">
+                    <img src="church.jpeg" alt="Sunday School Department" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Men's Department -->
+        <section class="ministry-section" aria-label="Men's Department">
+            <div class="ministry-container">
+                <div class="ministry-image">
+                    <img src="men'schoir.jpg" alt="Men's Department" loading="lazy">
+                </div>
+                <div class="ministry-content">
+                    <h2>Men's Department</h2>
+                    <p>The Men's Ministry aims to create a welcoming environment for men to grow spiritually and support one another. This ministry focuses on providing spiritual growth, community, and a sense of brotherhood through small group studies, social events, and service projects. We help men to grow in their faith, become godly leaders in their families and communities, and find their place within the church family as they walk in purpose and integrity.</p>
+                    <a href="contact.html" class="btn btn-ministry">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Women's Department -->
+        <section class="ministry-section ministry-alt" aria-label="Women's Department">
+            <div class="ministry-container ministry-reverse">
+                <div class="ministry-content">
+                    <h2>Women's Department</h2>
+                    <p>The Women's Ministry creates a nurturing environment for women to grow in their faith, build meaningful relationships, and serve together. Through Bible studies, prayer meetings, fellowship events, and outreach opportunities, women are encouraged to deepen their walk with God, support one another, and use their gifts to make a difference. This ministry provides a space where women can find strength, encouragement, and purpose as they follow Christ together.</p>
+                    <a href="contact.html" class="btn btn-ministry">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="ministry-image">
+                    <img src="bankspraise.jpg" alt="Women's Department" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- National Ladies Department -->
+        <section class="ministry-section" aria-label="National Ladies Department">
+            <div class="ministry-container">
+                <div class="ministry-image">
+                    <img src="Choir.jpg" alt="National Ladies Department" loading="lazy">
+                </div>
+                <div class="ministry-content">
+                    <h2>National Ladies Department</h2>
+                    <p>The National Ladies Department is dedicated to empowering women across all our congregations to live out their faith with grace, strength, and purpose. Through conferences, retreats, mentorship programs, and service initiatives, ladies are equipped to be vessels of God's love in their homes, churches, and communities. This ministry celebrates womanhood in Christ and encourages ladies to walk in their God-given identity as they serve the Lord with excellence.</p>
+                    <a href="contact.html" class="btn btn-ministry">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer aria-label="Footer">
-        <div class="footer-container">
-            <div class="footer-contact">
-                <h3>Contact Us</h3>
-                <p>Email: Htaportsmouth@gmail.com</p>
-                <p>Phone: (876) 123-4567</p>
-                <p>Address: 822A Southern Parade, Waterford P.O</p>
+    <!-- Footer -->
+    <footer class="main-footer" aria-label="Footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <i class="fas fa-envelope fa-2x"></i>
+                <h3>Email</h3>
+                <a href="mailto:htaportsmouth@gmail.com">htaportsmouth@gmail.com</a>
             </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="give.html">Give</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
+            <div class="footer-col">
+                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <h3>Find Us</h3>
+                <a href="https://maps.google.com" target="_blank">822A Southern Parade<br>Waterford P.O, Jamaica</a>
             </div>
-            <div class="footer-social">
-                <h3>Follow Us</h3>
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <div class="footer-col">
+                <i class="fas fa-credit-card fa-2x"></i>
+                <h3>Give</h3>
+                <a href="give.html">Give Online</a>
             </div>
         </div>
-        <p class="footer-copy">&copy; 2025 Harvest Temple Apostolic. All Rights Reserved.</p>
+
+        <div class="footer-social">
+            <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="media.html">Ministries</a>
+            <a href="contact.html">Connect</a>
+            <a href="events.html">Events</a>
+            <a href="give.html">Give</a>
+            <a href="contact.html">New Here?</a>
+        </nav>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js"></script> <!-- Replace YOUR_KIT_ID -->
     <script src="script.js"></script>
+</body>
 </html>

@@ -7,13 +7,15 @@
     <title>Harvest Temple Apostolic - About Us</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="scroll-nav">
+    <!-- Navigation -->
+    <header class="main-header">
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="Harvest Temple Apostolic Logo" loading="lazy">
+                    <img src="logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -22,89 +24,298 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html" class="active" aria-current="page">About</a></li>
-                <li class="departments-tab">
-                    <a href="#" aria-haspopup="true" aria-expanded="false">Departments</a>
-                    <ul class="dropdown" id="departmentsModal" aria-label="Departments submenu">
-                        <li><a href="national-youth-department.html">National Youth Department</a></li>
-                        <li><a href="sunday-school-department.html">Sunday School Department</a></li>
-                        <li><a href="mens-department.html">Men's Department</a></li>
-                        <li><a href="womens-department.html">Women's Department</a></li>
-                        <li><a href="national-ladies-department.html">National Ladies Department</a></li>
-                    </ul>
-                </li>
-                <li><a href="media.html">Media</a></li>
+                <li><a href="media.html">Ministries</a></li>
+                <li><a href="contact.html">Connect</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html">Give</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="contact.html" class="btn-nav-outline">New Here?</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="about" aria-label="About Harvest Temple Apostolic">
-            <div class="about-container">
-                <h2>About Us</h2>
-                <div class="about-content">
-                    <div class="about-image">
-                        <img src="hand.jpg" alt="Bishop Clifton Campbell preaching" class="about-img" loading="lazy">
-                        <div class="about-title-card">
-                            <p>Bishop Clifton Campbell - Presiding Bishop</p>
+        <!-- About Hero Section -->
+        <section class="about-hero" style="background-image: url('black2.jpg'); background-size: cover; background-position: center;">
+            <div class="hero-video-overlay"></div>
+            <div class="about-hero-content">
+                <h1>About Us</h1>
+            </div>
+        </section>
+
+        <!-- Who We Are Section -->
+        <section id="who-we-are" aria-label="Who We Are">
+            <div class="who-we-are-container">
+                <div class="who-we-are-content">
+                    <span class="section-label">WHO WE ARE</span>
+                    <h2>Rooted in Faith,<br>Growing in Community</h2>
+                    <div class="gold-underline"></div>
+                    <p class="lead-text">We are a church family committed to nurturing faith, building meaningful relationships, and creating a welcoming space where everyone can experience the love and hope of Jesus Christ.</p>
+                </div>
+
+                <div class="vision-mission-grid">
+                    <div class="vm-card">
+                        <i class="fas fa-eye"></i>
+                        <h3>Vision</h3>
+                        <div class="vm-divider"></div>
+                        <p>To see people passionately devoted to God.</p>
+                    </div>
+                    <div class="vm-card">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>Mission</h3>
+                        <div class="vm-divider"></div>
+                        <p>To help people experience God's love, trust His Word and follow His lead.</p>
+                    </div>
+                </div>
+            </div>
+            <svg class="wave-divider" viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z" fill="#2d2d2d"></path>
+            </svg>
+        </section>
+
+        <!-- What We Believe Section -->
+        <section id="what-we-believe" class="what-we-believe-section" aria-label="What We Believe">
+            <div class="belief-container">
+                <h2>What We Believe</h2>
+                <div class="gold-underline-white"></div>
+
+                <p class="belief-intro">At Harvest Temple Apostolic Church, we are strong believers in faith, family, and the fruit of the Spirit. We believe in one God, baptism in the name of the Lord Jesus Christ, and the infilling of the Holy Ghost as referenced in Acts 2:38. We uphold holiness and believe that the Word of God is truth, encouraging all to live by this standard.</p>
+
+                <p class="belief-intro">Harvest Temple Apostolic welcomes all with open arms, offering a home and a place of true worship, as stated in St. John 4:24. We embrace being Agents of Change, boldly declaring: <em>"The Spirit of the Lord is upon us, because he hath anointed us to preach the gospel to the poor; he hath sent us to heal the brokenhearted, to preach deliverance to the captives, and recovering of sight to the blind, to set at liberty them that are bruised, to preach the acceptable year of the Lord."</em> (St. Luke 4:18-19)</p>
+
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Article 1 | The Oneness of God</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We believe in one God who has revealed Himself in many ways throughout scripture. There is one God, eternally existent in His nature, yet manifesting Himself in different roles and relationships to humanity.</p>
+                            
+                            <p><em>"Hear, O Israel: The LORD our God is one LORD." (Deuteronomy 6:4 KJV)</em></p>
+                            
+                            <p><em>"I am Alpha and Omega, the beginning and the ending, saith the Lord, which is, and which was, and which is to come, the Almighty." (Revelation 1:8 KJV)</em></p>
+                            
+                            <p><strong>God as Father:</strong> God is the creator and sustainer of all things. He created the heavens and the earth and formed man in His own image. <em>"In the beginning God created the heaven and the earth." (Genesis 1:1 KJV)</em></p>
+                            
+                            <p><strong>God Manifested in the Son:</strong> Jesus Christ is God manifested in flesh. He is the visible image of the invisible God, fully divine and fully human. <em>"And without controversy great is the mystery of godliness: God was manifest in the flesh, justified in the Spirit, seen of angels, preached unto the Gentiles, believed on in the world, received up into glory." (1 Timothy 3:16 KJV)</em></p>
+                            
+                            <p><strong>God as the Holy Spirit:</strong> The Holy Spirit is not a separate person but God Himself actively working in the world today. <em>"Now the Lord is that Spirit: and where the Spirit of the Lord is, there is liberty." (2 Corinthians 3:17 KJV)</em></p>
+                            
+                            <p>The Name of Jesus Christ is the name of the Father, Son, and Holy Spirit. <em>"Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost." (Matthew 28:19 KJV)</em> This singular "name" is revealed as Jesus. <em>"Neither is there salvation in any other: for there is none other name under heaven given among men, whereby we must be saved." (Acts 4:12 KJV)</em></p>
                         </div>
                     </div>
-                    <div class="about-text">
-                        <p>At Harvest Temple Apostolic Church, we are strong believers in faith, family, and the fruit of the Spirit. We believe in one God, baptism in the name of the Lord Jesus Christ, and the infilling of the Holy Ghost as referenced in Acts 2:38. We uphold holiness and believe that the Word of God is truth, encouraging all to live by this standard.</p>
-                        <p>Harvest Temple Apostolic welcomes all with open arms, offering a home and a place of true worship, as stated in St. John 4:24. We embrace being Agents of Change, boldly declaring: “The Spirit of the Lord is upon us, because he hath anointed us to preach the gospel to the poor; he hath sent us to heal the brokenhearted, to preach deliverance to the captives, and recovering of sight to the blind, to set at liberty them that are bruised, to preach the acceptable year of the Lord.” (St. Luke 4:18-19)</p>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Article 2 | The Authority of Scripture</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We believe the Bible is the inspired, infallible, and authoritative Word of God. It is verbally inspired in all parts and therefore wholly without error in the original writings. The Scripture is the supreme and final authority for all matters of faith, doctrine, and Christian living.</p>
+                            
+                            <p><em>"All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness: That the man of God may be perfect, throughly furnished unto all good works." (2 Timothy 3:16-17 KJV)</em></p>
+                            
+                            <p><em>"Sanctify them through thy truth: thy word is truth." (John 17:17 KJV)</em></p>
+                            
+                            <p><em>"Heaven and earth shall pass away, but my words shall not pass away." (Matthew 24:35 KJV)</em></p>
+                            
+                            <p>The Word of God is the foundation of our faith and the standard by which we live. We encourage all believers to study the Scriptures diligently and apply them to every aspect of life. <em>"Study to shew thyself approved unto God, a workman that needeth not to be ashamed, rightly dividing the word of truth." (2 Timothy 2:15 KJV)</em></p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Article 3 | Salvation Through Jesus Christ</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We believe that salvation is found only through Jesus Christ. He came to earth, born of the virgin Mary, lived a sinless life, died on the cross for our sins, was buried, and rose again on the third day for our justification.</p>
+                            
+                            <p><em>"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life." (John 3:16 KJV)</em></p>
+                            
+                            <p><em>"But he was wounded for our transgressions, he was bruised for our iniquities: the chastisement of our peace was upon him; and with his stripes we are healed." (Isaiah 53:5 KJV)</em></p>
+                            
+                            <p><strong>The Blood of Jesus:</strong> Through His shed blood on Calvary, we have redemption and forgiveness of sins. <em>"In whom we have redemption through his blood, the forgiveness of sins, according to the riches of his grace." (Ephesians 1:7 KJV)</em></p>
+                            
+                            <p><strong>The Resurrection:</strong> Christ's resurrection is the guarantee of our salvation and eternal life. <em>"But now is Christ risen from the dead, and become the firstfruits of them that slept." (1 Corinthians 15:20 KJV)</em></p>
+                            
+                            <p>Salvation is by grace through faith, not of works, but it produces good works in the life of the believer. <em>"For by grace are ye saved through faith; and that not of yourselves: it is the gift of God: Not of works, lest any man should boast." (Ephesians 2:8-9 KJV)</em></p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Article 4 | Water Baptism in Jesus' Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We believe in water baptism by immersion in the name of the Lord Jesus Christ for the remission of sins. This is the baptism demonstrated throughout the book of Acts and commanded by the apostles.</p>
+                            
+                            <p><em>"Then Peter said unto them, Repent, and be baptized every one of you in the name of Jesus Christ for the remission of sins, and ye shall receive the gift of the Holy Ghost." (Acts 2:38 KJV)</em></p>
+                            
+                            <p><strong>The Apostolic Pattern:</strong> Throughout the book of Acts, every recorded baptism was performed in the name of Jesus Christ:</p>
+                            
+                            <p><em>"For as yet he was fallen upon none of them: only they were baptized in the name of the Lord Jesus." (Acts 8:16 KJV)</em></p>
+                            
+                            <p><em>"And he commanded them to be baptized in the name of the Lord." (Acts 10:48 KJV)</em></p>
+                            
+                            <p><em>"When they heard this, they were baptized in the name of the Lord Jesus." (Acts 19:5 KJV)</em></p>
+                            
+                            <p><strong>The Power of the Name:</strong> There is power and authority in the name of Jesus Christ. <em>"And whatsoever ye do in word or deed, do all in the name of the Lord Jesus, giving thanks to God and the Father by him." (Colossians 3:17 KJV)</em></p>
+                            
+                            <p>Water baptism is an essential step of obedience in the salvation process, symbolizing the death, burial, and resurrection of Jesus Christ, and our identification with Him.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-header" type="button">
+                            <span>Article 5 | The Baptism of the Holy Ghost</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We believe in the baptism of the Holy Ghost with the initial evidence of speaking in other tongues as the Spirit gives utterance. This is a distinct experience that follows salvation and empowers believers for service and victorious living.</p>
+                            
+                            <p><em>"And they were all filled with the Holy Ghost, and began to speak with other tongues, as the Spirit gave them utterance." (Acts 2:4 KJV)</em></p>
+                            
+                            <p><strong>The Promise of the Father:</strong> The Holy Ghost was promised by Jesus before His ascension. <em>"And, behold, I send the promise of my Father upon you: but tarry ye in the city of Jerusalem, until ye be endued with power from on high." (Luke 24:49 KJV)</em></p>
+                            
+                            <p><strong>The Evidence:</strong> Speaking in tongues is the initial physical evidence of receiving the Holy Ghost, as demonstrated on the Day of Pentecost and throughout the book of Acts.</p>
+                            
+                            <p><em>"And when Paul had laid his hands upon them, the Holy Ghost came on them; and they spake with tongues, and prophesied." (Acts 19:6 KJV)</em></p>
+                            
+                            <p><em>"For they heard them speak with tongues, and magnify God." (Acts 10:46 KJV)</em></p>
+                            
+                            <p><strong>The Purpose:</strong> The baptism of the Holy Ghost empowers believers for witness and service. <em>"But ye shall receive power, after that the Holy Ghost is come upon you: and ye shall be witnesses unto me both in Jerusalem, and in all Judaea, and in Samaria, and unto the uttermost part of the earth." (Acts 1:8 KJV)</em></p>
+                            
+                            <p><strong>The Fruit and Gifts:</strong> The Spirit-filled life produces the fruit of the Spirit and operates in the gifts of the Spirit for the edification of the church. <em>"But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, Meekness, temperance: against such there is no law." (Galatians 5:22-23 KJV)</em></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="mission-statement" aria-label="Our mission statement">
-            <div class="mission-content">
-                <h2>Our Mission Statement</h2>
-                <p class="mission-highlight">At HTA, our greeting is “Praise Jesus.” We believe this declaration sets the tone for holy living, builds faith, and boldly proclaims the power of Jesus' name. Our mission is to spread the Apostolic message of repentance, baptism in Jesus’ name, and the infilling of the Holy Ghost to all nations, staying true to the doctrine taught by the apostles.</p>
-                <p class="mission-quote"><em>“Then Peter said unto them, Repent, and be baptized every one of you in the name of Jesus Christ for the remission of sins, and ye shall receive the gift of the Holy Ghost.” — Acts 2:38</em></p>
-                <a href="contact.html" class="btn btn-primary" role="button">Join Our Mission</a>
+        <!-- Our Story Section -->
+        <section id="our-story" class="our-story-section" aria-label="Our Story">
+            <div class="story-container">
+                <span class="section-label">OUR STORY</span>
+                <h2>A Short History of Harvest Temple Apostolic</h2>
+                <div class="gold-underline"></div>
+                <p>The Harvest Temple Apostolic Group of Churches was formed in 1980 by the late Bishop Kingsley O. Carter. After the death of our founder in March 2023, the mantle was passed on to his assistant at the time, Bishop Clifton Campbell, in July 2023.</p>
+                <p>Our headquarters office is located in Portsmouth, St. Catherine, and over the years, the organization has expanded to include branches in Banks Clarendon, Slipe Pen Road Kingston, and Mullet Hall Portland.</p>
+                <p class="mission-quote"><em>"Then Peter said unto them, Repent, and be baptized every one of you in the name of Jesus Christ for the remission of sins, and ye shall receive the gift of the Holy Ghost." — Acts 2:38</em></p>
             </div>
         </section>
 
-        <section class="core-beliefs" aria-label="Our history">
-            <div class="core-content">
-                <h2>A Short History of Harvest Temple Apostolic</h2>
-                <p>The Harvest Temple Apostolic Group of Churches was formed in 1980 by the late Bishop Kingsley O. Carter. After the death of our founder in March 2023, the mantle was passed on to his assistant at the time, Bishop Clifton Campbell, in July 2023. Our headquarters office is located in Portsmouth, St. Catherine, and over the years, the organization has expanded to include branches in Banks, Clarendon, Slipe Pen Road, Kingston, and Mullet Hall, Portland.</p>
+        <!-- Our Name Section -->
+        <section id="our-name" class="our-name-section" aria-label="Our Name">
+            <div class="name-container">
+                <span class="section-label">OUR NAME</span>
+                <h2>Why Harvest Temple Apostolic?</h2>
+                <div class="gold-underline"></div>
+                <p><strong>Harvest</strong> represents the gathering of souls for Christ's kingdom. Jesus said, "Then saith he unto his disciples, The harvest truly is plenteous, but the labourers are few" (Matthew 9:37 KJV). We are committed to being faithful laborers in God's harvest field.</p>
+                <p><strong>Temple</strong> signifies that we are God's dwelling place. "Know ye not that ye are the temple of God, and that the Spirit of God dwelleth in you?" (1 Corinthians 3:16 KJV). As a church, we are the living temple where God's presence dwells.</p>
+                <p><strong>Apostolic</strong> affirms our foundation in the teaching and doctrine of the apostles. "And they continued stedfastly in the apostles' doctrine and fellowship, and in breaking of bread, and in prayers" (Acts 2:42 KJV). We hold fast to the apostolic faith delivered to the saints.</p>
+                <p class="mission-quote"><em>Together, our name reflects our mission: to be a Spirit-filled community gathering souls, honoring God's presence, and living out the apostolic faith in truth and power.</em></p>
             </div>
         </section>
+
+        <!-- Our Team Section -->
+        <section id="our-team" class="our-team-section" aria-label="Our Team">
+            <div class="team-container">
+                <h2>Meet Our Leadership</h2>
+                <div class="gold-underline"></div>
+
+                <div class="staff-grid">
+                    <div class="staff-card">
+                        <div class="staff-card-image">
+                            <img src="BISHOP/FIRSTLADY.jpeg" alt="Presiding Bishop Clifton Campbell and Evangelist Sophia Campbell" loading="lazy">
+                        </div>
+                        <div class="staff-card-content">
+                            <h3>Bishop Clifton & Evangelist Sophia Campbell</h3>
+                            <p class="staff-title">Presiding Bishop</p>
+                            <p class="staff-location">HTA Banks, Clarendon</p>
+                        </div>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-card-image">
+                            <img src="Pastor Williams.jpg" alt="Pastor Calpurnia Williams" loading="lazy">
+                        </div>
+                        <div class="staff-card-content">
+                            <h3>Pastor Calpurnia Williams</h3>
+                            <p class="staff-title">Pastor</p>
+                            <p class="staff-location">HTA Portsmouth, St. Catherine</p>
+                        </div>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-card-image">
+                            <img src="Pastor Sharon.jpg" alt="Pastor Sheron Kavanagh" loading="lazy">
+                        </div>
+                        <div class="staff-card-content">
+                            <h3>Pastor Sheron Kavanagh</h3>
+                            <p class="staff-title">Pastor</p>
+                            <p class="staff-location">HTA Slipe Pen Road, Kingston</p>
+                        </div>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-card-image">
+                            <img src="Pastor Vasell.jpg" alt="Pastor Yulanda Vassel" loading="lazy">
+                        </div>
+                        <div class="staff-card-content">
+                            <h3>Pastor Yulanda Vassel</h3>
+                            <p class="staff-title">Pastor</p>
+                            <p class="staff-location">HTA Mullet Hall, Portland</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer aria-label="Footer">
-        <div class="footer-container">
-            <div class="footer-contact">
-                <h3>Contact Us</h3>
-                <p>Email: Htaportsmouth@gmail.com</p>
-                <p>Phone: (876) 123-4567</p>
-                <p>Address: 822A Southern Parade, Waterford P.O</p>
+    <!-- Footer -->
+    <footer class="main-footer" aria-label="Footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <i class="fas fa-envelope fa-2x"></i>
+                <h3>Email</h3>
+                <a href="mailto:htaportsmouth@gmail.com">htaportsmouth@gmail.com</a>
             </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="give.html">Give</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
+            <div class="footer-col">
+                <i class="fas fa-map-marker-alt fa-2x"></i>
+                <h3>Find Us</h3>
+                <a href="https://maps.google.com" target="_blank">822A Southern Parade<br>Waterford P.O, Jamaica</a>
             </div>
-            <div class="footer-social">
-                <h3>Follow Us</h3>
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <div class="footer-col">
+                <i class="fas fa-credit-card fa-2x"></i>
+                <h3>Give</h3>
+                <a href="give.html">Give Online</a>
             </div>
         </div>
-        <p class="footer-copy">&copy; 2025 Harvest Temple Apostolic. All Rights Reserved.</p>
+
+        <div class="footer-social">
+            <a href="https://www.facebook.com/profile.php?id=100069664802993" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@harvesttempleapostolicchurch" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="media.html">Ministries</a>
+            <a href="contact.html">Connect</a>
+            <a href="events.html">Events</a>
+            <a href="give.html">Give</a>
+            <a href="contact.html">New Here?</a>
+        </nav>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

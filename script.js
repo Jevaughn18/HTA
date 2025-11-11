@@ -1,5 +1,29 @@
+// Harvest Temple Apostolic - Main JavaScript
+// Legacy Hills Church Design Implementation
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile Menu Toggle
+    // ===================================
+    // NAVIGATION SCROLL EFFECT
+    // ===================================
+    const header = document.querySelector('.main-header');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+
+        // Add scrolled class when user scrolls down
+        if (currentScroll > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+
+        lastScroll = currentScroll;
+    });
+
+    // ===================================
+    // MOBILE MENU TOGGLE
+    // ===================================
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -9,225 +33,355 @@ document.addEventListener('DOMContentLoaded', () => {
             menuToggle.setAttribute('aria-expanded', !isExpanded);
             menuToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
-            console.log('Mobile menu toggled, aria-expanded:', !isExpanded);
-        });
-    } else {
-        console.warn('Mobile menu toggle or nav menu not found');
-    }
 
-    // Departments Dropdown
-    const departmentsTab = document.querySelector('.departments-tab');
-    const dropdown = document.querySelector('#departmentsModal');
-
-    if (departmentsTab && dropdown) {
-        const departmentsLink = departmentsTab.querySelector('a');
-
-        departmentsLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            const isExpanded = departmentsLink.getAttribute('aria-expanded') === 'true';
-            departmentsLink.setAttribute('aria-expanded', !isExpanded);
-            dropdown.classList.toggle('active');
-            console.log('Departments dropdown toggled, aria-expanded:', !isExpanded);
-        });
-
-        departmentsLink.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                const isExpanded = departmentsLink.getAttribute('aria-expanded') === 'true';
-                departmentsLink.setAttribute('aria-expanded', !isExpanded);
-                dropdown.classList.toggle('active');
-                console.log('Departments dropdown toggled via keyboard, aria-expanded:', !isExpanded);
-                if (!isExpanded) {
-                    dropdown.querySelector('a').focus();
-                }
+            // Prevent body scroll when menu is open
+            if (!isExpanded) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
             }
         });
 
+        // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!departmentsTab.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('active');
-                departmentsLink.setAttribute('aria-expanded', 'false');
-                console.log('Departments dropdown closed');
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                if (navMenu.classList.contains('active')) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
             }
         });
 
-        dropdown.querySelectorAll('a').forEach(link => {
+        // Close menu when clicking on a link
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                console.log('Navigating to:', link.getAttribute('href'));
-                dropdown.classList.remove('active');
-                departmentsLink.setAttribute('aria-expanded', 'false');
-            });
-
-            link.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    console.log('Navigating to via keyboard:', link.getAttribute('href'));
-                    window.location.href = link.getAttribute('href');
-                }
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
             });
         });
-    } else {
-        console.warn('Departments tab or dropdown not found');
     }
 
-    // Hero Slideshow (for index.html and events.html)
-    const heroSlideshows = document.querySelectorAll('.hero-slideshow');
-    heroSlideshows.forEach(slideshow => {
-        const slides = slideshow.querySelectorAll('.slide');
-        const dotsContainer = slideshow.parentElement.querySelector('.dots');
-        let currentSlide = 0;
-
-        if (slides.length > 0 && dotsContainer) {
-            slides.forEach((_, index) => {
-                const dot = document.createElement('span');
-                dot.classList.add('dot');
-                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-                if (index === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => goToSlide(index));
-                dotsContainer.appendChild(dot);
-            });
-
-            slides[currentSlide].classList.add('active');
-
-            const slideInterval = setInterval(() => {
-                goToSlide((currentSlide + 1) % slides.length);
-            }, 5000);
-
-            function goToSlide(index) {
-                slides.forEach(slide => {
-                    slide.classList.remove('active');
-                    slide.style.opacity = '0';
-                });
-                document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
-                currentSlide = index;
-                slides[currentSlide].classList.add('active');
-                slides[currentSlide].style.opacity = '1';
-                document.querySelectorAll('.dot')[currentSlide].classList.add('active');
-                console.log('Slideshow moved to slide:', index + 1);
+    // ===================================
+    // VIDEO BACKGROUND FALLBACK
+    // ===================================
+    const heroVideo = document.querySelector('.hero-video-bg');
+    if (heroVideo) {
+        // Fallback to image if video fails to load
+        heroVideo.addEventListener('error', () => {
+            const heroSection = document.querySelector('.hero-video');
+            if (heroSection) {
+                heroSection.style.backgroundImage = 'url("bankspraise.jpg")';
+                heroSection.style.backgroundSize = 'cover';
+                heroSection.style.backgroundPosition = 'center';
+                heroVideo.style.display = 'none';
             }
-        } else {
-            console.warn('Slides or dots container not found for hero slideshow');
-        }
+        });
+
+        // Ensure video plays on mobile devices
+        heroVideo.play().catch(err => {
+            console.log('Video autoplay failed:', err);
+        });
+    }
+
+    // ===================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ===================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href !== '#' && href !== '') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    const headerHeight = header.offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
     });
 
-    // Fade-in Animations
-    const aboutContainer = document.querySelector('.about-container');
-    const missionContent = document.querySelector('.mission-content');
-    const coreContent = document.querySelector('.core-content');
-    const youthContainer = document.querySelector('.national-youth-department');
-    const mediaSection = document.querySelector('.media');
+    // ===================================
+    // INTERSECTION OBSERVER FOR ANIMATIONS
+    // ===================================
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
 
-    function checkScroll() {
-        const windowHeight = window.innerHeight;
-
-        if (aboutContainer) {
-            const aboutTop = aboutContainer.getBoundingClientRect().top;
-            if (aboutTop < windowHeight * 0.8) {
-                aboutContainer.classList.add('loaded');
-                console.log('About section loaded');
-                const aboutImage = aboutContainer.querySelector('.about-image img');
-                const aboutTitle = aboutContainer.querySelector('.about-title-card');
-                if (aboutImage) aboutImage.style.opacity = '1';
-                if (aboutTitle) aboutTitle.style.opacity = '1';
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
             }
-        }
+        });
+    }, observerOptions);
 
-        if (missionContent) {
-            const missionTop = missionContent.getBoundingClientRect().top;
-            if (missionTop < windowHeight * 0.8) {
-                missionContent.parentElement.classList.add('loaded');
-                console.log('Mission statement loaded');
-            }
-        }
+    // Observe elements for fade-in animations
+    const animatedElements = document.querySelectorAll('.service-details, .our-vision, .next-steps, .upcoming-events, .generosity-section');
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+    });
 
-        if (coreContent) {
-            const coreTop = coreContent.getBoundingClientRect().top;
-            if (coreTop < windowHeight * 0.8) {
-                coreContent.classList.add('loaded');
-                console.log('Core beliefs section loaded');
+    // ===================================
+    // LAZY LOADING IMAGES
+    // ===================================
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    if ('loading' in HTMLImageElement.prototype) {
+        // Browser supports lazy loading
+        images.forEach(img => {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
             }
-        }
+        });
+    } else {
+        // Fallback for browsers that don't support lazy loading
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
 
-        if (youthContainer) {
-            const youthTop = youthContainer.getBoundingClientRect().top;
-            if (youthTop < windowHeight * 0.8) {
-                youthContainer.classList.add('loaded');
-                console.log('National Youth Department section loaded');
-            }
-        }
-
-        if (mediaSection) {
-            const mediaTop = mediaSection.getBoundingClientRect().top;
-            if (mediaTop < windowHeight * 0.8) {
-                mediaSection.classList.add('loaded');
-                console.log('Media section loaded');
-            }
-        }
+        images.forEach(img => imageObserver.observe(img));
     }
 
-    checkScroll();
+    // ===================================
+    // PERFORMANCE: Reduce motion for users who prefer it
+    // ===================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    if (missionContent) {
-        setTimeout(() => {
-            if (!missionContent.parentElement.classList.contains('loaded')) {
-                missionContent.parentElement.classList.add('loaded');
-                console.log('Fallback: Mission statement loaded after timeout');
-            }
-        }, 3000);
+    if (prefersReducedMotion.matches) {
+        // Disable smooth scroll and animations
+        document.querySelectorAll('*').forEach(el => {
+            el.style.transition = 'none';
+            el.style.animation = 'none';
+        });
     }
 
-    if (youthContainer) {
-        setTimeout(() => {
-            if (!youthContainer.classList.contains('loaded')) {
-                youthContainer.classList.add('loaded');
-                console.log('Fallback: National Youth Department loaded after timeout');
-            }
-        }, 3000);
-    }
+    // ===================================
+    // CARD HOVER EFFECTS
+    // ===================================
+    const cards = document.querySelectorAll('.next-step-card, .event-card, .info-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'all 0.3s ease';
+        });
+    });
 
-    if (mediaSection) {
-        setTimeout(() => {
-            if (!mediaSection.classList.contains('loaded')) {
-                mediaSection.classList.add('loaded');
-                console.log('Fallback: Media section loaded after timeout');
-            }
-        }, 3000);
-    }
+    // ===================================
+    // ACCORDION (What We Believe)
+    // ===================================
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
 
-    let lastScroll = 0;
-    const header = document.querySelector('header.scroll-nav');
-    if (header) {
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-            if (currentScroll > lastScroll && currentScroll > 50) {
-                header.classList.add('hidden');
-            } else {
-                header.classList.remove('hidden');
-                if (currentScroll > 50) {
-                    header.style.background = '#FFFFFF';
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const accordionItem = header.parentElement;
+            const isActive = accordionItem.classList.contains('active');
+
+            // Close all accordion items
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                accordionItem.classList.add('active');
+            }
+        });
+    });
+
+    // ===================================
+    // VISION GALLERY CAROUSEL
+    // ===================================
+    const carousel = document.getElementById('visionCarousel');
+    
+    if (carousel) {
+        const container = carousel.querySelector('.gallery-container');
+        const items = carousel.querySelectorAll('.gallery-item');
+        
+        if (container && items.length > 0) {
+            let currentIndex = 0;
+            let isAutoPlaying = true;
+            let autoPlayInterval;
+            let isDragging = false;
+            let startPos = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            
+            const itemWidth = 300 + 24; // item width + margin (1.5rem = 24px)
+            const totalItems = 4; // Original items count (excluding duplicates)
+            const autoPlaySpeed = 3000; // 3 seconds
+            
+            // Set carousel position
+            function setSliderPosition() {
+                container.style.transform = `translateX(${currentTranslate}px)`;
+            }
+            
+            // Update position by index
+            function setPositionByIndex() {
+                currentTranslate = currentIndex * -itemWidth;
+                prevTranslate = currentTranslate;
+                setSliderPosition();
+            }
+            
+            // Auto-play function
+            function autoPlay() {
+                if (!isAutoPlaying || isDragging) return;
+                
+                currentIndex++;
+                
+                // Smooth transition to next slide
+                container.style.transition = 'transform 0.3s ease';
+                
+                // Check if we've reached the end (duplicated items)
+                if (currentIndex >= totalItems) {
+                    setPositionByIndex();
+                    
+                    // After transition, jump back to start without animation
+                    setTimeout(() => {
+                        container.style.transition = 'none';
+                        currentIndex = 0;
+                        setPositionByIndex();
+                        
+                        // Re-enable transition
+                        setTimeout(() => {
+                            container.style.transition = 'transform 0.5s ease';
+                        }, 50);
+                    }, 550);
                 } else {
-                    header.style.background = 'transparent';
+                    setPositionByIndex();
                 }
             }
-            lastScroll = currentScroll <= 0 ? 0 : currentScroll;
-        });
-    }
-
-    window.addEventListener('scroll', checkScroll);
-
-    // Scroll-triggered background for give.html
-    const messageSection = document.querySelector('.message-section');
-    const giveHero = document.querySelector('.give-hero');
-
-    if (messageSection && giveHero) {
-        window.addEventListener('scroll', () => {
-            const messageTop = messageSection.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            if (messageTop < windowHeight) {
-                messageSection.style.background = 'url(construction-site.jpg) no-repeat center center / cover';
-            } else {
-                giveHero.style.background = 'url(church-building.jpg) no-repeat center center / cover';
+            
+            // Start auto-play
+            function startAutoPlay() {
+                stopAutoPlay();
+                autoPlayInterval = setInterval(autoPlay, autoPlaySpeed);
             }
-        });
+            
+            // Stop auto-play
+            function stopAutoPlay() {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                }
+            }
+            
+            // Get position from event
+            function getPositionX(event) {
+                return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+            }
+            
+            // Touch/Mouse Start
+            function handleStart(event) {
+                isDragging = true;
+                startPos = getPositionX(event);
+                prevTranslate = currentTranslate;
+                container.style.transition = 'none';
+                stopAutoPlay();
+            }
+            
+            // Touch/Mouse Move
+            function handleMove(event) {
+                if (!isDragging) return;
+                
+                const currentPosition = getPositionX(event);
+                const diff = currentPosition - startPos;
+                currentTranslate = prevTranslate + diff;
+                setSliderPosition();
+            }
+            
+            // Touch/Mouse End
+            function handleEnd() {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                const movedBy = currentTranslate - prevTranslate;
+                
+                // Determine if we should move to next/prev slide
+                if (movedBy < -50 && currentIndex < totalItems - 1) {
+                    currentIndex++;
+                } else if (movedBy > 50 && currentIndex > 0) {
+                    currentIndex--;
+                }
+                
+                // Handle wrapping
+                if (currentIndex >= totalItems) {
+                    currentIndex = 0;
+                } else if (currentIndex < 0) {
+                    currentIndex = totalItems - 1;
+                }
+                
+                container.style.transition = 'transform 0.5s ease';
+                setPositionByIndex();
+                
+                // Restart auto-play if it was active
+                if (isAutoPlaying) {
+                    setTimeout(() => {
+                        startAutoPlay();
+                    }, 500);
+                }
+            }
+            
+            // Mouse Events
+            carousel.addEventListener('mousedown', handleStart);
+            carousel.addEventListener('mousemove', handleMove);
+            carousel.addEventListener('mouseup', handleEnd);
+            carousel.addEventListener('mouseleave', () => {
+                if (isDragging) {
+                    handleEnd();
+                }
+            });
+            
+            // Touch Events
+            carousel.addEventListener('touchstart', handleStart, { passive: true });
+            carousel.addEventListener('touchmove', handleMove, { passive: true });
+            carousel.addEventListener('touchend', handleEnd);
+            
+            // Pause on hover (desktop only)
+            carousel.addEventListener('mouseenter', () => {
+                isAutoPlaying = false;
+                stopAutoPlay();
+            });
+            
+            carousel.addEventListener('mouseleave', () => {
+                if (!isDragging) {
+                    isAutoPlaying = true;
+                    startAutoPlay();
+                }
+            });
+            
+            // Prevent default dragging behavior
+            carousel.addEventListener('dragstart', (e) => e.preventDefault());
+            
+            // Initialize
+            container.style.transition = 'transform 0.5s ease';
+            setPositionByIndex();
+            startAutoPlay();
+        }
     }
+
+    // ===================================
+    // LOG INITIALIZATION
+    // ===================================
+    console.log('Harvest Temple Apostolic website initialized');
+    console.log('Design based on Legacy Hills Church');
 });
