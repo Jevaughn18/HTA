@@ -385,3 +385,305 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Harvest Temple Apostolic website initialized');
     console.log('Design based on Legacy Hills Church');
 });
+
+// ===================================
+// EVENT PHOTO GALLERY CAROUSEL
+// ===================================
+
+// Event photo galleries data
+// TODO: Replace these placeholder images with actual event photos
+const eventGalleries = {
+    'youth-camp': {
+        title: 'Youth Camp',
+        date: 'August 10–16 2025',
+        photos: [
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg'
+        ]
+    },
+    'family-day': {
+        title: 'Family Day Celebration',
+        date: 'October 2024',
+        photos: [
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg'
+        ]
+    },
+    'youth-conference': {
+        title: 'Youth Conference',
+        date: 'September 2024',
+        photos: [
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg',
+            'church.jpeg',
+            'convocation.jpg',
+            'camp.jpg'
+        ]
+    }
+};
+
+let currentGallery = null;
+let currentSlideIndex = 0;
+let autoPlayInterval = null;
+let isAutoPlaying = true;
+const AUTO_PLAY_SPEED = 3000; // 3 seconds
+
+// Open event gallery modal
+function openEventGallery(eventId) {
+    const gallery = eventGalleries[eventId];
+    if (!gallery) return;
+
+    currentGallery = gallery;
+    currentSlideIndex = 0;
+    isAutoPlaying = true;
+
+    const modal = document.getElementById('galleryModal');
+    const title = document.getElementById('galleryTitle');
+    const date = document.getElementById('galleryDate');
+    const totalSlides = document.getElementById('totalSlides');
+
+    title.textContent = gallery.title;
+    date.textContent = gallery.date;
+    totalSlides.textContent = gallery.photos.length;
+
+    // Generate thumbnails
+    generateThumbnails();
+
+    // Show first photo
+    showSlide(0);
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', handleKeyPress);
+
+    // Start auto-play
+    startAutoPlay();
+}
+
+// Close event gallery modal
+function closeEventGallery() {
+    const modal = document.getElementById('galleryModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    currentGallery = null;
+
+    // Stop auto-play
+    stopAutoPlay();
+
+    // Remove keyboard navigation
+    document.removeEventListener('keydown', handleKeyPress);
+}
+
+// Show specific slide
+function showSlide(index) {
+    if (!currentGallery) return;
+
+    const photos = currentGallery.photos;
+
+    // Wrap around
+    if (index >= photos.length) {
+        currentSlideIndex = 0;
+    } else if (index < 0) {
+        currentSlideIndex = photos.length - 1;
+    } else {
+        currentSlideIndex = index;
+    }
+
+    // Update main image
+    const carouselImage = document.getElementById('carouselImage');
+    carouselImage.src = photos[currentSlideIndex];
+    carouselImage.alt = `${currentGallery.title} - Photo ${currentSlideIndex + 1}`;
+
+    // Update counter
+    document.getElementById('currentSlide').textContent = currentSlideIndex + 1;
+
+    // Update active thumbnail
+    updateActiveThumbnail();
+}
+
+// Change slide (next/previous)
+function changeSlide(direction) {
+    // Stop auto-play when user manually navigates
+    stopAutoPlay();
+    isAutoPlaying = false;
+
+    showSlide(currentSlideIndex + direction);
+
+    // Restart auto-play after 5 seconds of inactivity
+    setTimeout(() => {
+        if (currentGallery) {
+            isAutoPlaying = true;
+            startAutoPlay();
+        }
+    }, 5000);
+}
+
+// Generate thumbnail gallery
+function generateThumbnails() {
+    if (!currentGallery) return;
+
+    const thumbnailsContainer = document.getElementById('carouselThumbnails');
+    thumbnailsContainer.innerHTML = '';
+
+    currentGallery.photos.forEach((photo, index) => {
+        const thumbnail = document.createElement('div');
+        thumbnail.className = 'carousel-thumbnail';
+        if (index === 0) thumbnail.classList.add('active');
+
+        const img = document.createElement('img');
+        img.src = photo;
+        img.alt = `Thumbnail ${index + 1}`;
+        img.loading = 'lazy';
+
+        thumbnail.appendChild(img);
+        thumbnail.addEventListener('click', () => {
+            // Stop auto-play when user clicks thumbnail
+            stopAutoPlay();
+            isAutoPlaying = false;
+
+            showSlide(index);
+
+            // Restart auto-play after 5 seconds of inactivity
+            setTimeout(() => {
+                if (currentGallery) {
+                    isAutoPlaying = true;
+                    startAutoPlay();
+                }
+            }, 5000);
+        });
+
+        thumbnailsContainer.appendChild(thumbnail);
+    });
+}
+
+// Update active thumbnail
+function updateActiveThumbnail() {
+    const thumbnails = document.querySelectorAll('.carousel-thumbnail');
+    thumbnails.forEach((thumb, index) => {
+        if (index === currentSlideIndex) {
+            thumb.classList.add('active');
+            // Scroll thumbnail into view
+            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+            thumb.classList.remove('active');
+        }
+    });
+}
+
+// Handle keyboard navigation
+function handleKeyPress(e) {
+    if (!currentGallery) return;
+
+    switch(e.key) {
+        case 'ArrowLeft':
+            changeSlide(-1);
+            break;
+        case 'ArrowRight':
+            changeSlide(1);
+            break;
+        case 'Escape':
+            closeEventGallery();
+            break;
+    }
+}
+
+// Start auto-play
+function startAutoPlay() {
+    if (!isAutoPlaying) return;
+
+    stopAutoPlay(); // Clear any existing interval
+
+    autoPlayInterval = setInterval(() => {
+        if (!currentGallery || !isAutoPlaying) {
+            stopAutoPlay();
+            return;
+        }
+
+        // Move to next slide (infinite loop)
+        currentSlideIndex = (currentSlideIndex + 1) % currentGallery.photos.length;
+        showSlide(currentSlideIndex);
+    }, AUTO_PLAY_SPEED);
+}
+
+// Stop auto-play
+function stopAutoPlay() {
+    if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+    }
+}
+
+// Pause auto-play on hover
+function pauseAutoPlay() {
+    stopAutoPlay();
+}
+
+// Resume auto-play when mouse leaves
+function resumeAutoPlay() {
+    if (currentGallery && isAutoPlaying) {
+        startAutoPlay();
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', (e) => {
+    const modal = document.getElementById('galleryModal');
+    if (e.target === modal) {
+        closeEventGallery();
+    }
+});
+
+// Add hover listeners to carousel container for auto-play pause/resume
+document.addEventListener('DOMContentLoaded', () => {
+    const carouselContainer = document.querySelector('.carousel-container');
+    const thumbnailsContainer = document.getElementById('carouselThumbnails');
+
+    if (carouselContainer) {
+        carouselContainer.addEventListener('mouseenter', pauseAutoPlay);
+        carouselContainer.addEventListener('mouseleave', resumeAutoPlay);
+    }
+
+    if (thumbnailsContainer) {
+        thumbnailsContainer.addEventListener('mouseenter', pauseAutoPlay);
+        thumbnailsContainer.addEventListener('mouseleave', resumeAutoPlay);
+    }
+});

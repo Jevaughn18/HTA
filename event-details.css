@@ -1,0 +1,370 @@
+/* ========================================
+   EVENT DETAIL PAGES STYLES
+   ======================================== */
+
+/* Event Detail Hero */
+.event-detail-hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('church.jpeg') no-repeat center center / cover;
+    overflow: hidden;
+}
+
+.event-detail-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(75, 0, 130, 0.6);
+    z-index: 0;
+}
+
+.event-detail-hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+}
+
+.event-detail-hero-content h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+    letter-spacing: -1px;
+}
+
+.event-meta-hero {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 1.2rem;
+    opacity: 0.95;
+}
+
+.event-meta-hero span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.event-meta-hero i {
+    color: var(--primary-gold);
+    font-size: 1.3rem;
+}
+
+/* Event Description Section */
+.event-description-section {
+    background: var(--white);
+    padding: 6rem 2rem;
+}
+
+.event-description-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.event-description-container h2 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+}
+
+.event-description-container > p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    max-width: 900px;
+    margin: 2rem auto 4rem;
+}
+
+/* Event Highlights */
+.event-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    margin-top: 4rem;
+}
+
+.highlight-card {
+    background: var(--light-bg);
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.highlight-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.highlight-card i {
+    font-size: 3rem;
+    color: var(--primary-purple);
+    margin-bottom: 1.5rem;
+}
+
+.highlight-card h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.highlight-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-light);
+}
+
+/* ========================================
+   HORIZONTAL CAROUSEL (Like Vision Gallery)
+   ======================================== */
+
+.event-gallery-section {
+    background: var(--light-bg);
+    padding: 6rem 0;
+    overflow: hidden;
+}
+
+.event-gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.event-gallery-container h2 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+}
+
+.event-gallery-container > p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 3rem;
+}
+
+.horizontal-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 2rem 0;
+    user-select: none;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.5s ease;
+    will-change: transform;
+    cursor: grab;
+}
+
+.carousel-track:active {
+    cursor: grabbing;
+}
+
+.carousel-item {
+    flex-shrink: 0;
+    width: 350px;
+    height: 450px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.carousel-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none; /* Prevent images from blocking drag events */
+    user-select: none; /* Prevent image selection */
+    -webkit-user-drag: none; /* Prevent image dragging on webkit browsers */
+}
+
+/* Carousel Controls */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    color: var(--text-dark);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-control:hover {
+    background: var(--primary-gold);
+    color: var(--white);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control.carousel-prev {
+    left: 1rem;
+}
+
+.carousel-control.carousel-next {
+    right: 1rem;
+}
+
+/* Event CTA Section */
+.event-cta-section {
+    background: linear-gradient(rgba(75, 0, 130, 0.9), rgba(106, 13, 173, 0.9)), url('church.jpeg') no-repeat center center / cover;
+    padding: 6rem 2rem;
+    text-align: center;
+    color: var(--white);
+}
+
+.event-cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.event-cta-content h2 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+}
+
+.event-cta-content p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .event-detail-hero {
+        min-height: 60vh;
+    }
+
+    .event-detail-hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .event-meta-hero {
+        flex-direction: column;
+        gap: 1rem;
+        font-size: 1rem;
+    }
+
+    .event-description-section {
+        padding: 4rem 1.5rem;
+    }
+
+    .event-highlights {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .highlight-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .carousel-item {
+        width: 280px;
+        height: 380px;
+    }
+
+    .carousel-control {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+
+    .event-cta-section {
+        padding: 4rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-detail-hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .back-link {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+
+    .event-description-container h2 {
+        font-size: 2rem;
+    }
+
+    .event-description-container > p {
+        font-size: 1rem;
+    }
+
+    .highlight-card i {
+        font-size: 2.5rem;
+    }
+
+    .highlight-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .carousel-item {
+        width: 250px;
+        height: 350px;
+    }
+
+    .event-gallery-container {
+        padding: 0 1rem;
+    }
+}
