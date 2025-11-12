@@ -658,7 +658,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('church.jpeg') no-repeat center center / cover;
+    background: url('assets/church.jpeg') no-repeat center center / cover;
     color: var(--white);
     padding: 6rem 2rem;
 }

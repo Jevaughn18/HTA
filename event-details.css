@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('church.jpeg') no-repeat center center / cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/church.jpeg') no-repeat center center / cover;
     overflow: hidden;
 }
 
@@ -261,7 +261,7 @@
 
 /* Event CTA Section */
 .event-cta-section {
-    background: linear-gradient(rgba(75, 0, 130, 0.9), rgba(106, 13, 173, 0.9)), url('church.jpeg') no-repeat center center / cover;
+    background: linear-gradient(rgba(75, 0, 130, 0.9), rgba(106, 13, 173, 0.9)), url('assets/church.jpeg') no-repeat center center / cover;
     padding: 6rem 2rem;
     text-align: center;
     color: var(--white);
