@@ -110,29 +110,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ===================================
-    // INTERSECTION OBSERVER FOR ANIMATIONS
+    // INTERSECTION OBSERVER FOR SCROLL ANIMATIONS
     // ===================================
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('animate-in');
             }
         });
     }, observerOptions);
 
-    // Observe elements for fade-in animations
-    const animatedElements = document.querySelectorAll('.service-details, .our-vision, .next-steps, .upcoming-events, .generosity-section');
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        observer.observe(el);
+    // Observe sections for smooth fade-in animations
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.add('section-animate');
+        observer.observe(section);
+    });
+
+    // Observe ministry sections with alternating animations
+    const ministryContainers = document.querySelectorAll('.ministry-container');
+    ministryContainers.forEach((container, index) => {
+        const image = container.querySelector('.ministry-image');
+        const content = container.querySelector('.ministry-content');
+
+        if (image && content) {
+            if (index % 2 === 0) {
+                image.classList.add('slide-from-left');
+                content.classList.add('slide-from-right');
+            } else {
+                image.classList.add('slide-from-right');
+                content.classList.add('slide-from-left');
+            }
+
+            const ministryObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            image.classList.add('visible');
+                        }, 100);
+                        setTimeout(() => {
+                            content.classList.add('visible');
+                        }, 300);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            ministryObserver.observe(container);
+        }
+    });
+
+    // Observe headings for fade-in effect
+    const headings = document.querySelectorAll('h2, h3');
+    headings.forEach((heading, index) => {
+        heading.style.opacity = '0';
+        heading.style.transform = 'translateY(20px)';
+        heading.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        heading.style.transitionDelay = `${index * 0.05}s`;
+
+        const headingObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.5 });
+
+        headingObserver.observe(heading);
+    });
+
+    // Add stagger animation to grid items
+    const gridContainers = document.querySelectorAll('.service-info-cards, .next-steps-grid, .events-grid, .staff-grid, .messages-grid');
+    gridContainers.forEach(container => {
+        const items = container.children;
+        Array.from(items).forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(30px)';
+            item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+
+            const itemObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            itemObserver.observe(item);
+        });
     });
 
     // ===================================
@@ -380,10 +451,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===================================
+    // PARALLAX EFFECT FOR HERO VIDEO
+    // ===================================
+    const heroVideos = document.querySelectorAll('.hero-video-bg');
+
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        heroVideos.forEach(video => {
+            if (scrolled < window.innerHeight) {
+                video.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    });
+
+    // ===================================
+    // SMOOTH ENTRANCE ANIMATIONS
+    // ===================================
+    // Add entrance animation to navigation
+    setTimeout(() => {
+        header.style.opacity = '1';
+        header.style.transform = 'translateY(0)';
+    }, 100);
+
+    // Initial header state
+    header.style.opacity = '0';
+    header.style.transform = 'translateY(-20px)';
+    header.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+    // ===================================
+    // GOLD UNDERLINE ANIMATION
+    // ===================================
+    const goldUnderlines = document.querySelectorAll('.gold-underline, .wave-underline, .gold-underline-white, .wave-underline-white');
+    goldUnderlines.forEach(underline => {
+        underline.style.opacity = '0';
+        underline.style.transform = 'scaleX(0)';
+        underline.style.transformOrigin = 'left';
+        underline.style.transition = 'opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s';
+
+        const underlineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'scaleX(1)';
+                }
+            });
+        }, { threshold: 0.5 });
+
+        underlineObserver.observe(underline);
+    });
+
+    // ===================================
+    // PAGE LOADER
+    // ===================================
+    window.addEventListener('load', () => {
+        const loader = document.querySelector('.page-loader');
+        if (loader) {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                setTimeout(() => {
+                    loader.remove();
+                }, 500);
+            }, 300);
+        }
+    });
+
+    // ===================================
     // LOG INITIALIZATION
     // ===================================
     console.log('Harvest Temple Apostolic website initialized');
     console.log('Design based on Legacy Hills Church');
+    console.log('Smooth animations active');
 });
 
 // ===================================
