@@ -261,24 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===================================
     // ACCORDION (What We Believe)
     // ===================================
-    const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-    accordionHeaders.forEach(header => {
-        header.addEventListener('click', () => {
-            const accordionItem = header.parentElement;
-            const isActive = accordionItem.classList.contains('active');
-
-            // Close all accordion items
-            document.querySelectorAll('.accordion-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Open clicked item if it wasn't active
-            if (!isActive) {
-                accordionItem.classList.add('active');
-            }
-        });
-    });
+    initializeAccordionListeners();
 
     // ===================================
     // VISION GALLERY CAROUSEL
@@ -532,6 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // CMS CONTENT MANAGEMENT SYSTEM
 // ===================================
 const CMS_API_URL = 'http://localhost:5001/api';
+let currentCMSPage = 'home';
 
 /**
  * Load all CMS content for the current page
@@ -540,6 +524,7 @@ async function loadCMSContent() {
     try {
         // Determine which page we're on
         const currentPage = getCurrentPageName();
+        currentCMSPage = currentPage;
         console.log(`Loading CMS content for page: ${currentPage}`);
 
         // Fetch content from API
@@ -594,13 +579,23 @@ function updateSection(sectionName, content) {
 
     switch(sectionName) {
         case 'hero':
-            updateHeroSection(content);
+            if (currentCMSPage === 'give') {
+                updateGiveHero(content);
+            } else if (currentCMSPage === 'contact') {
+                updateContactHero(content);
+            } else {
+                updateHeroSection(content);
+            }
             break;
         case 'service-times':
             updateServiceTimes(content);
             break;
         case 'service-details':
-            updateServiceDetails(content);
+            if (currentCMSPage === 'contact') {
+                updateContactServiceDetails(content);
+            } else {
+                updateServiceDetails(content);
+            }
             break;
         case 'vision':
             updateVision(content);
@@ -612,7 +607,48 @@ function updateSection(sectionName, content) {
             updateGenerosity(content);
             break;
         case 'locations':
-            updateLocations(content);
+            if (currentCMSPage === 'contact') {
+                updateContactLocations(content);
+            } else {
+                updateLocations(content);
+            }
+            break;
+        case 'what-to-expect':
+            if (currentCMSPage === 'contact') {
+                updateContactWhatToExpect(content);
+            }
+            break;
+        case 'contact-form':
+            if (currentCMSPage === 'contact') {
+                updateContactForm(content);
+            }
+            break;
+        case 'thank-you':
+            if (currentCMSPage === 'give') {
+                updateGiveThankYou(content);
+            }
+            break;
+        case 'ways-to-give':
+            if (currentCMSPage === 'give') {
+                updateWaysToGive(content);
+            }
+            break;
+        case 'impact':
+            if (currentCMSPage === 'give') {
+                updateGiveImpact(content);
+            }
+            break;
+        case 'scripture':
+            if (currentCMSPage === 'give') {
+                updateGiveScripture(content);
+            }
+            break;
+        case 'faq':
+            if (currentCMSPage === 'give') {
+                updateGiveFAQ(content);
+            } else if (currentCMSPage === 'contact') {
+                updateContactFAQ(content);
+            }
             break;
         default:
             console.log(`No handler for section: ${sectionName}`);
@@ -644,6 +680,107 @@ function updateHeroSection(content) {
     }
 
     console.log('✓ Hero section updated');
+}
+
+/**
+ * Initialize accordion listeners
+ */
+function initializeAccordionListeners(root = document) {
+    const accordionHeaders = root.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+        if (header.dataset.accordionBound === 'true') return;
+        header.dataset.accordionBound = 'true';
+
+        header.addEventListener('click', () => {
+            const accordionItem = header.parentElement;
+            if (!accordionItem) return;
+
+            const accordionContainer = accordionItem.parentElement || document;
+            const isActive = accordionItem.classList.contains('active');
+
+            accordionContainer.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (!isActive) {
+                accordionItem.classList.add('active');
+            }
+        });
+    });
+}
+
+/**
+ * Update Contact Page Hero Section
+ */
+function updateContactHero(content) {
+    const heroContent = document.querySelector('.ministries-hero .hero-video-content');
+    if (!heroContent) return;
+
+    if (content.title) {
+        const heading = heroContent.querySelector('h1');
+        if (heading) heading.textContent = content.title;
+    }
+
+    if (content.subtitle) {
+        const subtitle = heroContent.querySelector('p');
+        if (subtitle) subtitle.textContent = content.subtitle;
+    }
+
+    if (content.backgroundVideo) {
+        const videoSource = document.querySelector('.ministries-hero video source');
+        const videoElement = document.querySelector('.ministries-hero video');
+        if (videoSource && videoElement) {
+            videoSource.src = content.backgroundVideo;
+            videoElement.load();
+        }
+    }
+
+    if (content.backgroundImage) {
+        const heroSection = document.querySelector('.ministries-hero');
+        if (heroSection) {
+            heroSection.style.backgroundImage = `url('${content.backgroundImage}')`;
+        }
+    }
+
+    console.log('✓ Contact hero section updated');
+}
+
+/**
+ * Update Give Page Hero Section
+ */
+function updateGiveHero(content) {
+    const heroContent = document.querySelector('.give-hero-content');
+    if (!heroContent) return;
+
+    if (content.title) {
+        const heading = heroContent.querySelector('h1');
+        if (heading) heading.textContent = content.title;
+    }
+
+    if (content.subtitle) {
+        const subtitle = heroContent.querySelector('p');
+        if (subtitle) subtitle.textContent = content.subtitle;
+    }
+
+    if (content.buttonText || content.buttonLink) {
+        const button = heroContent.querySelector('.btn-give-hero');
+        if (button) {
+            if (content.buttonText) button.textContent = content.buttonText;
+            if (content.buttonLink) button.setAttribute('href', content.buttonLink);
+        }
+    }
+
+    if (content.backgroundVideo) {
+        const videoSource = document.querySelector('.give-hero video source');
+        const videoElement = document.querySelector('.give-hero video');
+        if (videoSource && videoElement) {
+            videoSource.src = content.backgroundVideo;
+            videoElement.load();
+        }
+    }
+
+    console.log('✓ Give hero section updated');
 }
 
 /**
@@ -821,6 +958,341 @@ function updateLocations(content) {
     });
 
     console.log(`✓ Locations updated (${content.locations.length} locations)`);
+}
+
+/**
+ * Update Contact Locations section
+ */
+function updateContactLocations(content) {
+    if (!content.locations || !Array.isArray(content.locations)) return;
+
+    const cards = document.querySelectorAll('.branches-grid .branch-card');
+    content.locations.forEach((location, index) => {
+        const card = cards[index];
+        if (!card) return;
+
+        const name = card.querySelector('h3');
+        if (name && location.name) name.textContent = location.name;
+
+        const address = card.querySelector('p');
+        if (address && location.address) address.innerHTML = location.address.replace(/\n/g, '<br>');
+
+        const button = card.querySelector('a.btn');
+        if (button) {
+            if (location.mapLink) button.setAttribute('href', location.mapLink);
+            if (location.buttonText) button.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${location.buttonText}`;
+        }
+    });
+
+    console.log(`✓ Contact locations updated (${content.locations.length} locations)`);
+}
+
+/**
+ * Update Give Thank You section
+ */
+function updateGiveThankYou(content) {
+    const container = document.querySelector('.thank-you-section .thank-you-container');
+    if (!container) return;
+
+    if (content.heading) {
+        const heading = container.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const description = container.querySelector('.thank-you-text');
+        if (description) description.textContent = content.description;
+    }
+
+    if (content.buttonText || content.buttonLink) {
+        const button = container.querySelector('a.btn');
+        if (button) {
+            if (content.buttonText) button.textContent = content.buttonText;
+            if (content.buttonLink) button.setAttribute('href', content.buttonLink);
+        }
+    }
+
+    console.log('✓ Give thank-you section updated');
+}
+
+/**
+ * Update Ways to Give section
+ */
+function updateWaysToGive(content) {
+    const section = document.querySelector('.ways-to-give-section');
+    if (!section) return;
+
+    if (content.heading) {
+        const heading = section.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.subtitle) {
+        const subtitle = section.querySelector('.ways-subtitle');
+        if (subtitle) subtitle.textContent = content.subtitle;
+    }
+
+    if (content.methods && Array.isArray(content.methods)) {
+        const cards = section.querySelectorAll('.give-method-card');
+        content.methods.forEach((method, index) => {
+            const card = cards[index];
+            if (!card) return;
+
+            const title = card.querySelector('h3');
+            if (title && method.title) title.textContent = method.title;
+
+            const description = card.querySelector('.give-method-description');
+            if (description && method.description !== undefined) {
+                description.textContent = method.description;
+            }
+
+            const iconElement = card.querySelector('.give-method-icon i');
+            if (iconElement && method.icon) {
+                iconElement.className = `fas fa-${method.icon}`;
+            }
+
+            const button = card.querySelector('.btn-give-method');
+            if (button) {
+                if (method.buttonText) button.textContent = method.buttonText;
+                if (method.buttonLink) button.setAttribute('href', method.buttonLink);
+            }
+
+            const bankDetails = card.querySelector('.bank-details');
+            if (bankDetails && method.accountName) {
+                bankDetails.innerHTML = `
+                    <p><strong>Account Name:</strong> ${method.accountName || ''}</p>
+                    <p><strong>Bank Name:</strong> ${method.bankName || ''}</p>
+                    <p><strong>Account Number:</strong> ${method.accountNumber || ''}</p>
+                    <p><strong>Branch:</strong> ${method.branch || ''}</p>
+                `;
+            }
+
+            if (method.details) {
+                const detailElements = card.querySelectorAll('.in-person-details');
+                if (detailElements.length > 0) {
+                    const lines = Array.isArray(method.details) ? method.details : method.details.split('\n');
+                    detailElements.forEach((detailEl, detailIndex) => {
+                        detailEl.textContent = lines[detailIndex] || '';
+                    });
+                }
+            }
+        });
+    }
+
+    console.log('✓ Ways to give section updated');
+}
+
+/**
+ * Update Give Impact section
+ */
+function updateGiveImpact(content) {
+    const section = document.querySelector('.impact-section');
+    if (!section) return;
+
+    if (content.heading) {
+        const heading = section.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const intro = section.querySelector('.impact-intro');
+        if (intro) intro.textContent = content.description;
+    }
+
+    if (Array.isArray(content.impacts)) {
+        const cards = section.querySelectorAll('.impact-card');
+        content.impacts.forEach((item, index) => {
+            const card = cards[index];
+            if (!card) return;
+
+            const image = card.querySelector('.impact-image img');
+            if (image && item.image) {
+                image.src = item.image;
+            }
+
+            const title = card.querySelector('.impact-content h3');
+            if (title && item.title) title.textContent = item.title;
+
+            const description = card.querySelector('.impact-content p');
+            if (description && item.description) description.textContent = item.description;
+        });
+    }
+
+    console.log('✓ Give impact section updated');
+}
+
+/**
+ * Update Give Scripture section
+ */
+function updateGiveScripture(content) {
+    const quoteSection = document.querySelector('.generosity-quote-section .quote-content');
+    if (!quoteSection) return;
+
+    if (content.quote) {
+        const quote = quoteSection.querySelector('blockquote p');
+        if (quote) quote.textContent = content.quote;
+    }
+
+    if (content.reference) {
+        const cite = quoteSection.querySelector('blockquote cite');
+        if (cite) cite.textContent = content.reference;
+    }
+
+    console.log('✓ Give scripture section updated');
+}
+
+/**
+ * Update Give FAQ section
+ */
+function updateGiveFAQ(content) {
+    if (!content.questions || !Array.isArray(content.questions)) return;
+
+    const faqSection = document.querySelector('.give-faq-section .accordion');
+    if (!faqSection) return;
+
+    faqSection.innerHTML = content.questions.map((faq, index) => `
+        <div class="accordion-item${index === 0 ? ' active' : ''}">
+            <button class="accordion-header" type="button">
+                <span>${faq.question || 'Question'}</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+                <p>${faq.answer || ''}</p>
+            </div>
+        </div>
+    `).join('');
+
+    initializeAccordionListeners(faqSection);
+
+    console.log(`✓ Give FAQ updated (${content.questions.length} items)`);
+}
+
+/**
+ * Update Contact Service Details
+ */
+function updateContactServiceDetails(content) {
+    const section = document.querySelector('.service-details .service-container');
+    if (!section) return;
+
+    if (content.heading) {
+        const heading = section.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const intro = section.querySelector('.service-intro');
+        if (intro) intro.textContent = content.description;
+    }
+
+    if (content.note) {
+        const note = section.querySelector('.service-note');
+        if (note) note.innerHTML = `<em>${content.note}</em>`;
+    }
+
+    const infoCards = section.querySelectorAll('.service-info-card');
+    if (infoCards[0]) {
+        const timeCard = infoCards[0];
+        const timeHeading = timeCard.querySelector('h3');
+        if (timeHeading && content.serviceTime) timeHeading.textContent = content.serviceTime;
+        const timeText = timeCard.querySelector('p');
+        if (timeText && content.serviceDay) timeText.textContent = content.serviceDay;
+    }
+
+    if (infoCards[1]) {
+        const locationCard = infoCards[1];
+        const locationHeading = locationCard.querySelector('h3');
+        if (locationHeading && content.locationName) locationHeading.textContent = content.locationName;
+        const locationAddress = locationCard.querySelector('p');
+        if (locationAddress && content.locationAddress) locationAddress.innerHTML = content.locationAddress.replace(/\n/g, '<br>');
+    }
+
+    const buttons = section.querySelectorAll('.service-buttons a');
+    if (buttons[0]) {
+        if (content.primaryButtonText) buttons[0].textContent = content.primaryButtonText;
+        if (content.primaryButtonLink) buttons[0].setAttribute('href', content.primaryButtonLink);
+    }
+    if (buttons[1]) {
+        if (content.secondaryButtonText) buttons[1].innerHTML = `${content.secondaryButtonText} <i class="fas fa-arrow-right"></i>`;
+        if (content.secondaryButtonLink) buttons[1].setAttribute('href', content.secondaryButtonLink);
+    }
+
+    console.log('✓ Contact service details updated');
+}
+
+/**
+ * Update Contact What To Expect section
+ */
+function updateContactWhatToExpect(content) {
+    if (!content.items || !Array.isArray(content.items)) return;
+
+    const cards = document.querySelectorAll('.expect-carousel .expect-card');
+    content.items.forEach((item, index) => {
+        const card = cards[index];
+        if (!card) return;
+
+        const image = card.querySelector('.expect-image img');
+        if (image && item.image) image.src = item.image;
+
+        const title = card.querySelector('.expect-content h3');
+        if (title && item.title) title.textContent = item.title;
+
+        const description = card.querySelector('.expect-content p');
+        if (description && item.description) description.textContent = item.description;
+    });
+
+    console.log(`✓ Contact what-to-expect updated (${content.items.length} items)`);
+}
+
+/**
+ * Update Contact FAQ section
+ */
+function updateContactFAQ(content) {
+    if (!content.questions || !Array.isArray(content.questions)) return;
+
+    const faqSection = document.querySelector('.faq-section .accordion');
+    if (!faqSection) return;
+
+    faqSection.innerHTML = content.questions.map((faq, index) => `
+        <div class="accordion-item${index === 0 ? ' active' : ''}">
+            <button class="accordion-header" type="button">
+                <span>${faq.question || 'Question'}</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+                <p>${faq.answer || ''}</p>
+            </div>
+        </div>
+    `).join('');
+
+    initializeAccordionListeners(faqSection);
+
+    console.log(`✓ Contact FAQ updated (${content.questions.length} items)`);
+}
+
+/**
+ * Update Contact Form section
+ */
+function updateContactForm(content) {
+    const section = document.querySelector('.contact-form-section .form-container');
+    if (!section) return;
+
+    if (content.heading) {
+        const heading = section.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const description = section.querySelector('.form-intro');
+        if (description) description.textContent = content.description;
+    }
+
+    const form = section.querySelector('form');
+    if (form) {
+        if (content.formAction) form.setAttribute('action', content.formAction);
+        if (content.formMethod) form.setAttribute('method', content.formMethod);
+    }
+
+    console.log('✓ Contact form updated');
 }
 
 // ===================================
