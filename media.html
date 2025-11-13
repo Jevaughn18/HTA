@@ -15,7 +15,7 @@
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="HTA Logo" loading="lazy">
+                    <img src="assets/logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -36,21 +36,225 @@
 
     <main>
         <!-- Media Hero Section -->
-        <section class="ministries-hero" style="background-image: url('black2.jpg'); background-size: cover; background-position: center;">
+        <section class="ministries-hero">
+            <video autoplay muted loop playsinline class="hero-video-bg">
+                <source src="assets/cam1.mp4" type="video/mp4">
+            </video>
             <div class="hero-video-overlay"></div>
             <div class="hero-video-content">
                 <h1>Media</h1>
             </div>
         </section>
 
-        <!-- Media Content Section -->
-        <section class="ministry-section" aria-label="Media Content">
-            <div class="ministry-container">
-                <div class="ministry-content" style="text-align: center; max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem;">
-                    <h2>Media Gallery</h2>
-                    <p>Welcome to our media gallery. Here you will find sermons, worship sessions, and other ministry content. This page is currently being updated with new content.</p>
-                    <p>Check back soon for videos, audio messages, and photo galleries from our services and events.</p>
-                    <a href="contact.html" class="btn btn-ministry">Contact Us <i class="fas fa-arrow-right"></i></a>
+        <!-- YouTube Channels Section -->
+        <section class="youtube-channels-section" aria-label="YouTube Channels">
+            <div class="youtube-container">
+                <h2>Watch Our Services Online</h2>
+                <div class="gold-underline"></div>
+                <p class="youtube-intro">Subscribe to our YouTube channels to stay connected with our services and events.</p>
+
+                <div class="youtube-channels-grid">
+                    <div class="youtube-channel-card">
+                        <div class="channel-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3>HTA Portsmouth</h3>
+                        <p>Watch live streams and past services from our headquarters in Portsmouth, St. Catherine</p>
+                        <a href="https://www.youtube.com/@harvesttempleapostolicchurch" target="_blank" class="btn btn-primary-solid">
+                            <i class="fab fa-youtube"></i> Visit Channel
+                        </a>
+                    </div>
+
+                    <div class="youtube-channel-card">
+                        <div class="channel-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3>HTA Banks Clarendon</h3>
+                        <p>Watch live streams and past services from our Banks Clarendon branch</p>
+                        <a href="https://www.youtube.com/@HarvestTempleApostolicBanks" target="_blank" class="btn btn-primary-solid">
+                            <i class="fab fa-youtube"></i> Visit Channel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Services Section -->
+        <section class="recent-services-section" aria-label="Recent Services">
+            <div class="recent-services-container">
+                <h2>Recent Services</h2>
+                <div class="gold-underline"></div>
+
+                <h3 class="branch-heading">Portsmouth Services</h3>
+                <div class="services-grid">
+                    <div class="service-video-card">
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/xYPvinGG_-k" title="November 9, 2025 Service" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="service-video-info">
+                            <h4>Sunday Service</h4>
+                            <p><i class="far fa-calendar"></i> November 9, 2025</p>
+                            <p class="service-location"><i class="fas fa-map-marker-alt"></i> HTA Portsmouth</p>
+                        </div>
+                    </div>
+
+                    <div class="service-video-card">
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/sKOs27yX8_c" title="Youth Sunday Service" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="service-video-info">
+                            <h4>Youth Sunday</h4>
+                            <p><i class="far fa-calendar"></i> Recent Service</p>
+                            <p class="service-location"><i class="fas fa-map-marker-alt"></i> HTA Portsmouth</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="branch-heading">Banks Clarendon Services</h3>
+                <div class="services-grid">
+                    <div class="service-video-card">
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/nzBCNO-0rtQ" title="October 5, 2025 Service" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="service-video-info">
+                            <h4>First Sunday Service</h4>
+                            <p><i class="far fa-calendar"></i> October 5, 2025</p>
+                            <p class="service-location"><i class="fas fa-map-marker-alt"></i> HTA Banks Clarendon</p>
+                        </div>
+                    </div>
+
+                    <div class="service-video-card">
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/x52Upy8XLcA" title="September 30, 2025 Service" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="service-video-info">
+                            <h4>Women's Evangelistic Service</h4>
+                            <p><i class="far fa-calendar"></i> September 30, 2025</p>
+                            <p class="service-location"><i class="fas fa-map-marker-alt"></i> HTA Banks Clarendon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Meeting Section -->
+        <section class="prayer-meeting-section" aria-label="Prayer Meeting">
+            <div class="prayer-meeting-container">
+                <div class="prayer-meeting-header">
+                    <i class="fas fa-praying-hands"></i>
+                    <h2>Join Our Weekly Online Prayer Meeting</h2>
+                    <p>Harvest Temple Apostolic Church invites you to our weekly online prayer meetings.</p>
+                </div>
+
+                <div class="prayer-meeting-details">
+                    <div class="prayer-detail-card">
+                        <i class="far fa-clock"></i>
+                        <h3>5:00 AM</h3>
+                        <p>Sunday, Wednesday & Friday</p>
+                    </div>
+
+                    <div class="prayer-detail-card">
+                        <i class="fas fa-video"></i>
+                        <h3>Via Zoom</h3>
+                        <p>Join from anywhere</p>
+                    </div>
+
+                    <div class="prayer-detail-card">
+                        <i class="fas fa-users"></i>
+                        <h3>All Welcome</h3>
+                        <p>Join us in prayer</p>
+                    </div>
+                </div>
+
+                <div class="prayer-meeting-info">
+                    <h3>Meeting Credentials</h3>
+                    <div class="meeting-credentials">
+                        <p><strong>Meeting ID:</strong> 865 4665 7301</p>
+                        <p><strong>Passcode:</strong> 820325</p>
+                    </div>
+                    <a href="https://us02web.zoom.us/j/86546657301?pwd=QWNqL1ZLbzB5eUxlVEJHY3pPVWhCdz09" target="_blank" class="btn btn-primary-solid">
+                        <i class="fas fa-video"></i> Join Prayer Meeting
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weekly Schedule Section -->
+        <section class="weekly-schedule-section" aria-label="Weekly Schedule">
+            <div class="schedule-container">
+                <h2>Weekly Schedule</h2>
+                <div class="gold-underline"></div>
+                <p class="schedule-intro">Join us throughout the week for worship, prayer, and fellowship.</p>
+
+                <div class="schedule-grid">
+                    <div class="schedule-card">
+                        <div class="schedule-day">
+                            <i class="fas fa-calendar-day"></i>
+                            <h3>Sunday</h3>
+                        </div>
+                        <div class="schedule-events">
+                            <div class="schedule-event">
+                                <span class="event-time">9:00 AM</span>
+                                <span class="event-name">Sunday School</span>
+                            </div>
+                            <div class="schedule-event">
+                                <span class="event-time">10:30 AM</span>
+                                <span class="event-name">Sunday Service</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="schedule-card">
+                        <div class="schedule-day">
+                            <i class="fas fa-calendar-day"></i>
+                            <h3>Monday</h3>
+                        </div>
+                        <div class="schedule-events">
+                            <div class="schedule-event">
+                                <span class="event-time">7:00 PM</span>
+                                <span class="event-name">Prayer Meeting</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="schedule-card">
+                        <div class="schedule-day">
+                            <i class="fas fa-calendar-day"></i>
+                            <h3>Tuesday</h3>
+                        </div>
+                        <div class="schedule-events">
+                            <div class="schedule-event">
+                                <span class="event-time">7:00 PM</span>
+                                <span class="event-name">Bible Study</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="schedule-card">
+                        <div class="schedule-day">
+                            <i class="fas fa-calendar-day"></i>
+                            <h3>Wednesday</h3>
+                        </div>
+                        <div class="schedule-events">
+                            <div class="schedule-event">
+                                <span class="event-time">9:00 AM</span>
+                                <span class="event-name">Fasting & Prayer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="schedule-card">
+                        <div class="schedule-day">
+                            <i class="fas fa-calendar-day"></i>
+                            <h3>Friday</h3>
+                        </div>
+                        <div class="schedule-events">
+                            <div class="schedule-event">
+                                <span class="event-time">6:30 PM</span>
+                                <span class="event-name">Youth Service</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

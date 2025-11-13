@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('church.jpeg') no-repeat center center / cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/church.jpeg') no-repeat center center / cover;
     overflow: hidden;
 }
 
@@ -337,7 +337,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('church.jpeg') no-repeat center center / cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('assets/church.jpeg') no-repeat center center / cover;
     background-attachment: fixed;
     padding: 6rem 2rem;
     color: var(--white);

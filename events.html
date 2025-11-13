@@ -16,7 +16,7 @@
         <nav class="nav-container" aria-label="Main navigation">
             <div class="logo">
                 <a href="index.html" aria-label="Harvest Temple Apostolic Home">
-                    <img src="logo.png" alt="HTA Logo" loading="lazy">
+                    <img src="assets/logo.png" alt="HTA Logo" loading="lazy">
                 </a>
             </div>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -38,6 +38,9 @@
     <main>
         <!-- Events Hero Section -->
         <section class="events-hero">
+            <video autoplay muted loop playsinline class="hero-video-bg">
+                <source src="assets/bible.mp4" type="video/mp4">
+            </video>
             <div class="events-hero-overlay"></div>
             <div class="events-hero-content">
                 <h1>Upcoming Events</h1>
@@ -59,7 +62,7 @@
             <div class="events-grid-container">
                 <div class="event-card-modern">
                     <div class="event-card-image">
-                        <img src="convocation.jpg" alt="22nd Annual Holy Convocation" loading="lazy">
+                        <img src="assets/convocation.jpg" alt="22nd Annual Holy Convocation" loading="lazy">
                         <div class="event-date-badge">
                             <span class="date-day">7-11</span>
                             <span class="date-month">Mar</span>
@@ -84,7 +87,7 @@
 
                 <div class="event-card-modern">
                     <div class="event-card-image">
-                        <img src="camp.jpg" alt="HTA Youth Camp 2025" loading="lazy">
+                        <img src="assets/camp.jpg" alt="HTA Youth Camp 2025" loading="lazy">
                         <div class="event-date-badge">
                             <span class="date-day">10-16</span>
                             <span class="date-month">Aug</span>
@@ -117,27 +120,66 @@
                 <p>Take a look at some of our recent events and what God has been doing in our community.</p>
                 
                 <div class="past-events-grid">
-                    <div class="past-event-card">
-                        <img src="church.jpeg" alt="Past Event" loading="lazy">
-                        <div class="past-event-overlay">
-                            <h3>Revival Service 2024</h3>
-                            <p>November 2024</p>
+                    <a href="youth-camp.html" class="past-event-card" data-event="youth-camp">
+                        <div class="stacked-photos">
+                            <div class="photo-layer photo-layer-3">
+                                <img src="assets/black.png" alt="Youth Camp Preview" loading="lazy">
+                            </div>
+                            <div class="photo-layer photo-layer-2">
+                                <img src="assets/ron-mic.jpeg" alt="Youth Camp Preview" loading="lazy">
+                            </div>
+                            <div class="photo-layer photo-layer-1">
+                                <img src="assets/sheeka-kam.jpeg" alt="Youth Camp" loading="lazy">
+                            </div>
                         </div>
-                    </div>
-                    <div class="past-event-card">
-                        <img src="church.jpeg" alt="Past Event" loading="lazy">
+                        <div class="past-event-overlay">
+                            <h3>Youth Camp</h3>
+                            <p>August 10–16 2025</p>
+                            <div class="photo-count-badge">
+                                <i class="fas fa-images"></i> 12 Photos
+                            </div>
+                        </div>
+                    </a>
+                    <a href="family-day.html" class="past-event-card" data-event="family-day">
+                        <div class="stacked-photos">
+                            <div class="photo-layer photo-layer-3">
+                                <img src="assets/convocation.jpg" alt="Family Day Preview" loading="lazy">
+                            </div>
+                            <div class="photo-layer photo-layer-2">
+                                <img src="assets/camp.jpg" alt="Family Day Preview" loading="lazy">
+                            </div>
+                            <div class="photo-layer photo-layer-1">
+                                <img src="assets/church.jpeg" alt="Family Day Celebration" loading="lazy">
+                            </div>
+                        </div>
                         <div class="past-event-overlay">
                             <h3>Family Day Celebration</h3>
                             <p>October 2024</p>
+                            <div class="photo-count-badge">
+                                <i class="fas fa-images"></i> 18 Photos
+                            </div>
                         </div>
-                    </div>
-                    <div class="past-event-card">
-                        <img src="church.jpeg" alt="Past Event" loading="lazy">
+                    </a>
+                    <a href="youth-conference.html" class="past-event-card" data-event="youth-conference">
+                        <div class="stacked-photos">
+                            <div class="photo-layer photo-layer-3">
+                                <img src="assets/church.jpeg" alt="Youth Conference Preview" loading="lazy">
+                            </div>
+                            <div class="photo-layer photo-layer-2">
+                                <img src="assets/camp.jpg" alt="Youth Conference Preview" loading="lazy">
+                            </div>
+                            <div class="photo-layer photo-layer-1">
+                                <img src="assets/convocation.jpg" alt="Youth Conference" loading="lazy">
+                            </div>
+                        </div>
                         <div class="past-event-overlay">
                             <h3>Youth Conference</h3>
                             <p>September 2024</p>
+                            <div class="photo-count-badge">
+                                <i class="fas fa-images"></i> 15 Photos
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>

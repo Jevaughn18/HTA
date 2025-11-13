@@ -16,7 +16,7 @@
     justify-content: center;
     text-align: center;
     color: #FFFFFF;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('black2.jpg') no-repeat center center / cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/black2.jpg') no-repeat center center / cover;
     overflow: hidden;
 }
 
