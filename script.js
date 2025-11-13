@@ -521,7 +521,307 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Harvest Temple Apostolic website initialized');
     console.log('Design based on Legacy Hills Church');
     console.log('Smooth animations active');
+
+    // ===================================
+    // CMS CONTENT INTEGRATION
+    // ===================================
+    loadCMSContent();
 });
+
+// ===================================
+// CMS CONTENT MANAGEMENT SYSTEM
+// ===================================
+const CMS_API_URL = 'http://localhost:5001/api';
+
+/**
+ * Load all CMS content for the current page
+ */
+async function loadCMSContent() {
+    try {
+        // Determine which page we're on
+        const currentPage = getCurrentPageName();
+        console.log(`Loading CMS content for page: ${currentPage}`);
+
+        // Fetch content from API
+        const response = await fetch(`${CMS_API_URL}/content/${currentPage}`);
+
+        if (!response.ok) {
+            console.warn('CMS content not available, using static content');
+            return;
+        }
+
+        const sections = await response.json();
+        console.log(`Loaded ${sections.length} sections from CMS`);
+
+        // Update each section on the page
+        sections.forEach(section => {
+            updateSection(section.section, section.content);
+        });
+
+    } catch (error) {
+        console.warn('Failed to load CMS content, using static content:', error.message);
+    }
+}
+
+/**
+ * Get the current page name from the URL
+ */
+function getCurrentPageName() {
+    const path = window.location.pathname;
+    const page = path.substring(path.lastIndexOf('/') + 1);
+
+    // Map HTML files to CMS page names
+    const pageMap = {
+        'index.html': 'home',
+        '': 'home',
+        '/': 'home',
+        'about.html': 'about',
+        'departments.html': 'departments',
+        'media.html': 'media',
+        'contact.html': 'contact',
+        'events.html': 'events',
+        'give.html': 'give'
+    };
+
+    return pageMap[page] || 'home';
+}
+
+/**
+ * Update a specific section with CMS content
+ */
+function updateSection(sectionName, content) {
+    console.log(`Updating section: ${sectionName}`, content);
+
+    switch(sectionName) {
+        case 'hero':
+            updateHeroSection(content);
+            break;
+        case 'service-times':
+            updateServiceTimes(content);
+            break;
+        case 'service-details':
+            updateServiceDetails(content);
+            break;
+        case 'vision':
+            updateVision(content);
+            break;
+        case 'events':
+            updateEvents(content);
+            break;
+        case 'generosity':
+            updateGenerosity(content);
+            break;
+        case 'locations':
+            updateLocations(content);
+            break;
+        default:
+            console.log(`No handler for section: ${sectionName}`);
+    }
+}
+
+/**
+ * Update Hero Section
+ */
+function updateHeroSection(content) {
+    const heroSection = document.querySelector('.hero-video-content');
+    if (!heroSection) return;
+
+    if (content.title) {
+        const titleElement = heroSection.querySelector('h1');
+        if (titleElement) titleElement.textContent = content.title;
+    }
+
+    if (content.subtitle) {
+        const subtitleElement = heroSection.querySelector('p');
+        if (subtitleElement) subtitleElement.textContent = content.subtitle;
+    }
+
+    if (content.backgroundImage) {
+        const videoSection = document.querySelector('.hero-video');
+        if (videoSection) {
+            videoSection.style.backgroundImage = `url('${content.backgroundImage}')`;
+        }
+    }
+
+    console.log('✓ Hero section updated');
+}
+
+/**
+ * Update Service Times
+ */
+function updateServiceTimes(content) {
+    const infoCards = document.querySelectorAll('.info-card');
+    if (infoCards.length === 0) return;
+
+    const timeCard = infoCards[0]; // First card is usually the time card
+
+    if (content.serviceTime) {
+        const timeElements = timeCard.querySelectorAll('h3');
+        if (timeElements[0]) timeElements[0].textContent = content.serviceTime;
+    }
+
+    if (content.serviceLabel) {
+        const labelElements = timeCard.querySelectorAll('p');
+        if (labelElements[0]) labelElements[0].textContent = content.serviceLabel;
+    }
+
+    if (content.sundaySchoolTime) {
+        const timeElements = timeCard.querySelectorAll('h3');
+        if (timeElements[1]) timeElements[1].textContent = content.sundaySchoolTime;
+    }
+
+    if (content.sundaySchoolLabel) {
+        const labelElements = timeCard.querySelectorAll('p');
+        if (labelElements[1]) labelElements[1].textContent = content.sundaySchoolLabel;
+    }
+
+    console.log('✓ Service times updated');
+}
+
+/**
+ * Update Service Details Section
+ */
+function updateServiceDetails(content) {
+    const serviceSection = document.querySelector('.service-details .service-text');
+    if (!serviceSection) return;
+
+    if (content.heading) {
+        const heading = serviceSection.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const paragraphs = serviceSection.querySelectorAll('p');
+        if (paragraphs[0] && !paragraphs[0].querySelector('em')) {
+            paragraphs[0].innerHTML = content.description;
+        }
+    }
+
+    if (content.secondaryText) {
+        const paragraphs = serviceSection.querySelectorAll('p');
+        if (paragraphs[1]) {
+            paragraphs[1].innerHTML = `<em>${content.secondaryText}</em>`;
+        }
+    }
+
+    console.log('✓ Service details updated');
+}
+
+/**
+ * Update Vision Section
+ */
+function updateVision(content) {
+    const visionSection = document.querySelector('.our-vision .vision-container');
+    if (!visionSection) return;
+
+    if (content.heading) {
+        const heading = visionSection.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const paragraphs = visionSection.querySelectorAll('p');
+        if (paragraphs[0]) paragraphs[0].textContent = content.description;
+    }
+
+    if (content.extendedDescription) {
+        const paragraphs = visionSection.querySelectorAll('p');
+        if (paragraphs[1]) paragraphs[1].textContent = content.extendedDescription;
+    }
+
+    console.log('✓ Vision section updated');
+}
+
+/**
+ * Update Events Section
+ */
+function updateEvents(content) {
+    if (!content.events || !Array.isArray(content.events)) return;
+
+    const eventsGrid = document.querySelector('.events-grid');
+    if (!eventsGrid) return;
+
+    // Clear existing events
+    eventsGrid.innerHTML = '';
+
+    // Add new events from CMS
+    content.events.forEach(event => {
+        const eventCard = document.createElement('div');
+        eventCard.className = 'event-card';
+        eventCard.innerHTML = `
+            <img src="${event.image || 'assets/church.jpeg'}" alt="${event.title}" loading="lazy">
+            <div class="event-content">
+                <h3>${event.title}</h3>
+                <p><i class="far fa-calendar"></i> ${event.date}</p>
+            </div>
+        `;
+        eventsGrid.appendChild(eventCard);
+    });
+
+    console.log(`✓ Events updated (${content.events.length} events)`);
+}
+
+/**
+ * Update Generosity Section
+ */
+function updateGenerosity(content) {
+    const generositySection = document.querySelector('.generosity-section .generosity-content');
+    if (!generositySection) return;
+
+    if (content.heading) {
+        const heading = generositySection.querySelector('h2');
+        if (heading) heading.textContent = content.heading;
+    }
+
+    if (content.description) {
+        const paragraph = generositySection.querySelector('p');
+        if (paragraph) paragraph.textContent = content.description;
+    }
+
+    console.log('✓ Generosity section updated');
+}
+
+/**
+ * Update Church Locations
+ */
+function updateLocations(content) {
+    if (!content.locations || !Array.isArray(content.locations)) return;
+
+    const locationCards = document.querySelectorAll('.location-card');
+
+    content.locations.forEach((location, index) => {
+        if (locationCards[index]) {
+            const card = locationCards[index];
+
+            if (location.name) {
+                const nameElement = card.querySelector('h3');
+                if (nameElement) nameElement.textContent = location.name;
+            }
+
+            if (location.pastor) {
+                const pastorElement = card.querySelector('.pastor-name');
+                if (pastorElement) pastorElement.textContent = location.pastor;
+            }
+
+            if (location.address) {
+                const addressElement = card.querySelector('.address');
+                if (addressElement) addressElement.innerHTML = location.address.replace('\n', '<br>');
+            }
+
+            if (location.isHeadquarters) {
+                const badge = card.querySelector('.badge');
+                if (!badge) {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'badge';
+                    newBadge.textContent = 'Headquarters';
+                    card.appendChild(newBadge);
+                }
+            }
+        }
+    });
+
+    console.log(`✓ Locations updated (${content.locations.length} locations)`);
+}
 
 // ===================================
 // EVENT PHOTO GALLERY CAROUSEL
