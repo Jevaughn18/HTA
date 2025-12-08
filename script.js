@@ -499,6 +499,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ===================================
+    // IMAGE LIGHTBOX FOR HISTORY IMAGES
+    // ===================================
+    initializeImageLightbox();
+
+    // ===================================
     // LOG INITIALIZATION
     // ===================================
     console.log('Harvest Temple Apostolic website initialized');
@@ -1596,3 +1601,67 @@ document.addEventListener('DOMContentLoaded', () => {
         thumbnailsContainer.addEventListener('mouseleave', resumeAutoPlay);
     }
 });
+
+// ===================================
+// IMAGE LIGHTBOX FUNCTIONALITY
+// ===================================
+function initializeImageLightbox() {
+    // Create lightbox modal
+    const lightboxHTML = `
+        <div id="imageLightbox" class="image-lightbox">
+            <span class="lightbox-close">&times;</span>
+            <img class="lightbox-content" id="lightboxImg">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    `;
+
+    // Add lightbox to body if not exists
+    if (!document.getElementById('imageLightbox')) {
+        document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+    }
+
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    // Add click handlers to all history images and story images
+    const historyImages = document.querySelectorAll('.history-image-item img, .story-image img');
+    historyImages.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function() {
+            lightbox.style.display = 'block';
+            lightboxImg.src = this.src;
+
+            // Get caption from the image's sibling caption element
+            const captionElement = this.parentElement.querySelector('.image-caption');
+            if (captionElement) {
+                lightboxCaption.innerHTML = captionElement.innerHTML;
+            }
+
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // Close lightbox when clicking X
+    closeBtn.addEventListener('click', closeLightbox);
+
+    // Close lightbox when clicking outside image
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.style.display === 'block') {
+            closeLightbox();
+        }
+    });
+
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
