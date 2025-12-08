@@ -36,7 +36,33 @@
 
     <main>
         <!-- SECTION 1: Hero Video Section -->
-        <section class="hero-video" aria-label="Welcome" style="background-image: url('assets/youth.jpeg'); background-size: cover; background-position: center;">
+        <section class="hero-video" aria-label="Welcome">
+            <!-- Hero Image Carousel - Replace with video later -->
+            <div class="hero-carousel" id="heroCarousel">
+                <div class="hero-slide active" style="background-image: url('assets/Choir.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('assets/band.jpeg');"></div>
+                <div class="hero-slide hero-slide-video">
+                    <video muted loop playsinline>
+                        <source src="assets/IMG_2538 2.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="hero-slide" style="background-image: url('assets/baptisam.jpeg');"></div>
+                <div class="hero-slide" style="background-image: url('assets/march.jpeg');"></div>
+                <div class="hero-slide" style="background-image: url('assets/roneil\ .jpeg');"></div>
+                <div class="hero-slide hero-slide-video">
+                    <video muted loop playsinline>
+                        <source src="assets/handgreet.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="hero-slide" style="background-image: url('assets/pebs.jpeg');"></div>
+                <div class="hero-slide" style="background-image: url('assets/devon.jpeg');"></div>
+                <div class="hero-slide hero-slide-video">
+                    <video muted loop playsinline>
+                        <source src="assets/give.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="hero-slide" style="background-image: url('assets/ushers.jpeg');"></div>
+            </div>
             <!-- Video can be added later: <video class="hero-video-bg" autoplay muted loop playsinline>
                 <source src="your-video.mp4" type="video/mp4">
             </video> -->
@@ -124,10 +150,12 @@
             </div>
             <div class="vision-gallery-wrapper">
                 <div class="vision-gallery" id="visionCarousel">
-                    <div class="gallery-item"><img src="assets/Choir.jpg" alt="Worship at HTA" loading="lazy"></div>
+                    <div class="gallery-item"><img src="assets/gold n white choir.jpeg" alt="Worship at HTA" loading="lazy"></div>
                     <div class="gallery-item"><img src="assets/banks choir.jpg" alt="Bishop and Family" loading="lazy"></div>
                     <div class="gallery-item"><img src="assets/Me.jpg" alt="Church Leadership" loading="lazy"></div>
                     <div class="gallery-item"><img src="assets/youth.jpeg" alt="Youth Ministry" loading="lazy"></div>
+                    <div class="gallery-item"><img src="assets/congregration.jpeg" alt="Church Leadership" loading="lazy"></div>
+                    <div class="gallery-item"><img src="assets/march.jpeg" alt="Youth Ministry" loading="lazy"></div>
                     <!-- Duplicate items for seamless loop -->
                     <div class="gallery-item"><img src="assets/Choir.jpg" alt="Worship at HTA" loading="lazy"></div>
                     <div class="gallery-item"><img src="assets/banks choir.jpg" alt="Bishop and Family" loading="lazy"></div>
@@ -258,6 +286,55 @@
 
     <script src="script.js"></script>
     <script>
+        // Hero Image/Video Carousel - Infinite Loop
+        (function() {
+            const carousel = document.getElementById('heroCarousel');
+            if (!carousel) return;
+
+            const slides = carousel.querySelectorAll('.hero-slide');
+            if (slides.length === 0) return;
+
+            let currentIndex = 0;
+            const imageInterval = 5000; // 5 seconds for images
+            const videoInterval = 8000; // 8 seconds for videos
+            let timeoutId;
+
+            function pauseAllVideos() {
+                slides.forEach(slide => {
+                    const video = slide.querySelector('video');
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                });
+            }
+
+            function showNextSlide() {
+                // Pause video in current slide if any
+                const currentVideo = slides[currentIndex].querySelector('video');
+                if (currentVideo) {
+                    currentVideo.pause();
+                }
+
+                slides[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % slides.length;
+                slides[currentIndex].classList.add('active');
+
+                // Check if new slide has video
+                const newVideo = slides[currentIndex].querySelector('video');
+                if (newVideo) {
+                    newVideo.currentTime = 0;
+                    newVideo.play();
+                    timeoutId = setTimeout(showNextSlide, videoInterval);
+                } else {
+                    timeoutId = setTimeout(showNextSlide, imageInterval);
+                }
+            }
+
+            // Start the infinite loop
+            timeoutId = setTimeout(showNextSlide, imageInterval);
+        })();
+
         // Vision Gallery Carousel Auto-scroll with Touch/Mouse/Swipe Interaction
         (function() {
             const wrapper = document.querySelector('.vision-gallery-wrapper');
