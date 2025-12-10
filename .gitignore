@@ -1,1 +1,24 @@
+# CMS directory (broad exclusion)
 hta-cms/
+
+# Environment variables (explicit protection)
+.env
+.env.local
+.env.development
+.env.production
+*.env
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -18,6 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
             header.classList.remove('scrolled');
         }
 
+        // Hero text scroll effect - fade out and move up as user scrolls
+        const heroContent = document.querySelector('.hero-video-content');
+        if (heroContent) {
+            const scrollPercent = Math.min(currentScroll / (window.innerHeight * 0.5), 1);
+            const opacity = 1 - scrollPercent;
+            const translateY = -currentScroll * 0.8;
+
+            heroContent.style.opacity = opacity;
+            heroContent.style.transform = `translate(-50%, calc(-50% + ${translateY}px))`;
+
+            // Hide completely after scrolling past hero
+            if (currentScroll > window.innerHeight * 0.5) {
+                heroContent.style.display = 'none';
+            } else {
+                heroContent.style.display = 'block';
+            }
+        }
+
         lastScroll = currentScroll;
     });
 

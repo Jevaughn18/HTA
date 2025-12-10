@@ -6,6 +6,7 @@
     <meta name="description" content="Learn about Harvest Temple Apostolic, our mission, history, and core beliefs. Join our faith community today.">
     <title>Harvest Temple Apostolic - About Us</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -22,14 +23,41 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html" class="active" aria-current="page">About</a></li>
-                <li><a href="departments.html">Departments</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html">Home</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#service-details">Service Details</a></li>
+                        <li><a href="index.html#upcoming-events">Upcoming Events</a></li>
+                        <li><a href="index.html#our-vision">Our Vision</a></li>
+                        <li><a href="index.html#next-steps">What Are My Next Steps</a></li>
+                        <li><a href="index.html#generosity">Thank You For Your Generosity</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="about.html" class="active" aria-current="page">About</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="about.html#who-we-are">Who We Are</a></li>
+                        <li><a href="about.html#what-we-believe">What We Believe</a></li>
+                        <li><a href="about.html#our-story">Our History</a></li>
+                        <li><a href="about.html#our-team">Meet Our Leadership</a></li>
+                        <li><a href="about.html#our-name">Why Harvest Temple Apostolic?</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="departments.html">Departments</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="departments.html#youth">Youth Department</a></li>
+                        <li><a href="departments.html#sunday-school">Sunday School</a></li>
+                        <li><a href="departments.html#mens">Men's Department</a></li>
+                        <li><a href="departments.html#womens">Women's Department</a></li>
+                        <li><a href="departments.html#ladies">Ladies Department</a></li>
+                    </ul>
+                </li>
                 <li><a href="media.html">Media</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html">Give</a></li>
-                <li><a href="contact.html" class="btn-nav-outline">New Here?</a></li>
+                <li><a href="http://localhost:3000" class="btn-nav-outline">Admin Login</a></li>
             </ul>
         </nav>
     </header>
@@ -198,11 +226,11 @@
             </div>
         </section>
 
-        <!-- Our Story Section -->
-        <section id="our-story" class="our-story-section" aria-label="Our Story">
+        <!-- Our History Section -->
+        <section id="our-story" class="our-story-section" aria-label="Our History">
             <div class="story-container-with-image">
                 <div class="story-content">
-                    <span class="section-label">OUR STORY</span>
+                    <span class="section-label">OUR HISTORY</span>
                     <h2>A Short History of Harvest Temple Apostolic</h2>
                     <div class="gold-underline"></div>
                     <p>The Harvest Temple Apostolic was established in 1984 by the late Bishop Kingsley O. Carter and nine missionaries from the church of our lord jesus christ (Cool JC). Harvest Temple Apostolic Banks was established in the year 1999. After the death of our founder in March 2023, the mantle was passed on to his assistant, Bishop Clifton Campbell as general overseer of the Harvest Temple Group Of Churches, in July 2023.</p>
@@ -228,20 +256,6 @@
             </div>
         </section>
 
-        <!-- Our Name Section -->
-        <section id="our-name" class="our-name-section" aria-label="Our Name">
-            <div class="name-container">
-                <span class="section-label">OUR NAME</span>
-                <h2>Why Harvest Temple Apostolic?</h2>
-                <div class="gold-underline"></div>
-                <p><strong>Harvest</strong> represents the gathering of souls for Christ's kingdom. Jesus said, "Then saith he unto his disciples, The harvest truly is plenteous, but the labourers are few" (Matthew 9:37 KJV). We are committed to being faithful laborers in God's harvest field.</p>
-                <p><strong>Temple</strong> signifies that we are God's dwelling place. "Know ye not that ye are the temple of God, and that the Spirit of God dwelleth in you?" (1 Corinthians 3:16 KJV). As a church, we are the living temple where God's presence dwells.</p>
-                <p><strong>Apostolic</strong> affirms our foundation in the teaching and doctrine of the apostles. "And they continued stedfastly in the apostles' doctrine and fellowship, and in breaking of bread, and in prayers" (Acts 2:42 KJV). We hold fast to the apostolic faith delivered to the saints.</p>
-                <p class="mission-quote"><em>Together, our name reflects our mission: to be a Spirit-filled community gathering souls, honoring God's presence, and living out the apostolic faith in truth and power.</em></p>
-            </div>
-        </section>
-
-        <!-- Our Team Section -->
         <section id="our-team" class="our-team-section" aria-label="Our Team">
             <div class="team-container">
                 <h2>Meet Our Leadership</h2>
@@ -250,7 +264,7 @@
                 <div class="staff-grid">
                     <div class="staff-card">
                         <div class="staff-card-image">
-                            <img src="assets/BISHOP/FIRSTLADY.jpeg" alt="Presiding Bishop Clifton Campbell and Evangelist Sophia Campbell" loading="lazy">
+                            <img src="assets/bishop n wife.jpeg" alt="Presiding Bishop Clifton Campbell and Evangelist Sophia Campbell" loading="lazy">
                         </div>
                         <div class="staff-card-content">
                             <h3>Bishop Clifton & Evangelist Sophia Campbell</h3>
@@ -292,6 +306,19 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Our Name Section -->
+        <section id="our-name" class="our-name-section" aria-label="Our Name">
+            <div class="name-container">
+                <span class="section-label">OUR NAME</span>
+                <h2>Why Harvest Temple Apostolic?</h2>
+                <div class="gold-underline"></div>
+                <p><strong>Harvest</strong> represents the gathering of souls for Christ's kingdom. Jesus said, "Then saith he unto his disciples, The harvest truly is plenteous, but the labourers are few" (Matthew 9:37 KJV). We are committed to being faithful laborers in God's harvest field.</p>
+                <p><strong>Temple</strong> signifies that we are God's dwelling place. "Know ye not that ye are the temple of God, and that the Spirit of God dwelleth in you?" (1 Corinthians 3:16 KJV). As a church, we are the living temple where God's presence dwells.</p>
+                <p><strong>Apostolic</strong> affirms our foundation in the teaching and doctrine of the apostles. "And they continued stedfastly in the apostles' doctrine and fellowship, and in breaking of bread, and in prayers" (Acts 2:42 KJV). We hold fast to the apostolic faith delivered to the saints.</p>
+                <p class="mission-quote"><em>Together, our name reflects our mission: to be a Spirit-filled community gathering souls, honoring God's presence, and living out the apostolic faith in truth and power.</em></p>
             </div>
         </section>
 
@@ -339,5 +366,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="cms-loader.js"></script>
 </body>
 </html>

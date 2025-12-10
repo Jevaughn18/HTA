@@ -6,6 +6,7 @@
     <meta name="description" content="Support Harvest Temple Apostolic Church through your generous giving. Multiple ways to give online, bank transfer, or in-person.">
     <title>Harvest Temple Apostolic - Give</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
     <link rel="stylesheet" href="give.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -30,7 +31,7 @@
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html" class="active" aria-current="page">Give</a></li>
-                <li><a href="plan-visit.html" class="btn-nav-outline">New Here?</a></li>
+                <li><a href="http://localhost:3000" class="btn-nav-outline">Admin Login</a></li>
             </ul>
         </nav>
     </header>
@@ -70,16 +71,6 @@
                 <p class="ways-subtitle">Here are some easy ways to support our church.</p>
 
                 <div class="give-methods-grid">
-                    <!-- Give Online Card -->
-                    <div class="give-method-card">
-                        <div class="give-method-icon">
-                            <i class="fas fa-desktop"></i>
-                        </div>
-                        <h3>Give Online</h3>
-                        <p class="give-method-description">Donate securely through our trusted online platform.</p>
-                        <a href="#" class="btn-give-method">Give Online</a>
-                    </div>
-
                     <!-- Bank Transfer Card -->
                     <div class="give-method-card">
                         <div class="give-method-icon">
@@ -89,7 +80,8 @@
                         <div class="bank-details">
                             <p><strong>Account Name:</strong> Harvest Temple Apostolic</p>
                             <p><strong>Bank Name:</strong> National Commercial Bank</p>
-                            <p><strong>Account Number:</strong> 666789666456</p>
+                            <p><strong>Current Account:</strong> 361006518</p>
+                            <p><strong>Savings Account:</strong> 364556977</p>
                             <p><strong>Branch:</strong> Waterford, St. Catherine</p>
                         </div>
                     </div>
@@ -170,31 +162,31 @@
                 <div class="accordion">
                     <div class="accordion-item">
                         <button class="accordion-header" type="button">
-                            <span>Is my donation secure?</span>
+                            <span>Do I Have to Be a Member to Give?</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="accordion-content">
-                            <p>Yes! We use industry-standard encryption and security measures to protect your information. Your donation is processed through secure, trusted payment platforms.</p>
+                            <p>No. You do not have to be a member to give. Anyone who feels led to support the ministry is welcome to do so. Every contribution—whether large or small—helps us continue the work God has called us to do in our community and beyond.</p>
                         </div>
                     </div>
 
                     <div class="accordion-item">
                         <button class="accordion-header" type="button">
-                            <span>Can I set up recurring donations?</span>
+                            <span>Can I Donate Items Instead of Money?</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="accordion-content">
-                            <p>Absolutely! When you give online, you have the option to set up weekly, bi-weekly, or monthly recurring donations. This is a great way to support the church consistently.</p>
+                            <p>Yes, absolutely. We gladly accept items that support our ministries and outreach programs. This may include food supplies, school materials, clothing in good condition, or resources for community projects. If you’d like to donate items, please contact our church office so we can guide you on current needs.</p>
                         </div>
                     </div>
 
                     <div class="accordion-item">
                         <button class="accordion-header" type="button">
-                            <span>Will I receive a tax receipt?</span>
+                            <span>Can I Give If I’m Not Able to Attend in Person?</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="accordion-content">
-                            <p>Yes, all donations are tax-deductible. You will receive a receipt via email for online donations, and annual giving statements are provided for tax purposes.</p>
+                            <p>Yes, you can still give even if you cannot attend in person. Our online giving platform is available anytime, anywhere. You may also send gifts through bank transfer or give during the week by stopping by the church office. No matter where you are, your generosity continues to make an impact.</p>
                         </div>
                     </div>
 
@@ -264,5 +256,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="cms-loader.js"></script>
 </body>
 </html>

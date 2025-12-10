@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Welcome to Harvest Temple Apostolic, a place of love and spiritual growth. Join us for worship, community, and inspiration.">
     <title>Harvest Temple Apostolic - Home</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -22,14 +25,41 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-menu">
-                <li><a href="index.html" class="active" aria-current="page">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="departments.html">Departments</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html" class="active" aria-current="page">Home</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html#service-details">Service Details</a></li>
+                        <li><a href="index.html#upcoming-events">Upcoming Events</a></li>
+                        <li><a href="index.html#our-vision">Our Vision</a></li>
+                        <li><a href="index.html#next-steps">What Are My Next Steps</a></li>
+                        <li><a href="index.html#generosity">Thank You For Your Generosity</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="about.html">About</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="about.html#who-we-are">Who We Are</a></li>
+                        <li><a href="about.html#what-we-believe">What We Believe</a></li>
+                        <li><a href="about.html#our-story">Our History</a></li>
+                        <li><a href="about.html#our-team">Meet Our Leadership</a></li>
+                        <li><a href="about.html#our-name">Why Harvest Temple Apostolic?</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="departments.html">Departments</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="departments.html#youth">Youth Department</a></li>
+                        <li><a href="departments.html#sunday-school">Sunday School</a></li>
+                        <li><a href="departments.html#mens">Men's Department</a></li>
+                        <li><a href="departments.html#womens">Women's Department</a></li>
+                        <li><a href="departments.html#ladies">Ladies Department</a></li>
+                    </ul>
+                </li>
                 <li><a href="media.html">Media</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="events.html">Events</a></li>
                 <li><a href="give.html">Give</a></li>
-                <li><a href="contact.html" class="btn-nav-outline">New Here?</a></li>
+                <li><a href="http://localhost:3000" class="btn-nav-outline">Admin Login</a></li>
             </ul>
         </nav>
     </header>
@@ -46,7 +76,7 @@
                 <div class="gallery-cell tall" style="background-image: url('assets/roneil\ .jpeg');"></div>
                 <div class="gallery-cell" style="background-image: url('assets/pebs.jpeg');"></div>
                 <div class="gallery-cell wide" style="background-image: url('assets/banks\ choir.jpg');"></div>
-                <div class="gallery-cell" style="background-image: url('assets/ushers.jpeg');"></div>
+                <div class="gallery-cell" style="background-image: url('assets/lat-deb.jpeg');"></div>
                 <div class="gallery-cell tall" style="background-image: url('assets/mother-lewis.jpeg');"></div>
                 <div class="gallery-cell" style="background-image: url('assets/kids.jpeg');"></div>
                 <div class="gallery-cell" style="background-image: url('assets/elder\ vassel.jpeg');"></div>
@@ -60,17 +90,13 @@
             </div>
             <div class="hero-video-overlay"></div>
             <div class="hero-video-content">
-                <h1>Agents of Change.</h1>
+                <h1>Agents of Change</h1>
                 <p>Welcome to Harvest Temple Apostolic</p>
-                <div class="hero-buttons">
-                    <a href="contact.html" class="btn btn-primary-solid" role="button">Plan A Visit</a>
-                    <a href="contact.html" class="btn btn-primary-outline" role="button">Get Connected <i class="fas fa-arrow-right"></i></a>
-                </div>
             </div>
         </section>
 
         <!-- SECTION 2: Service Details -->
-        <section class="service-details" aria-label="Service Information">
+        <section id="service-details" class="service-details" aria-label="Service Information">
             <div class="service-content">
                 <div class="service-text">
                     <span class="section-label">SERVICE DETAILS</span>
@@ -80,7 +106,7 @@
                     <p><em>Come on out to our Sunday school at 9am.</em></p>
                     <div class="service-buttons">
                         <a href="about.html" class="btn btn-primary-solid">About Us</a>
-                        <a href="contact.html" class="btn btn-primary-outline">Get Directions <i class="fas fa-arrow-right"></i></a>
+                        <a href="contact.html" class="btn btn-outline-dark">Get Directions <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="service-info-cards">
@@ -132,8 +158,33 @@
             </svg>
         </section>
 
-        <!-- SECTION 3: Our Vision -->
-        <section class="our-vision" aria-label="Our Vision">
+        <!-- SECTION 3: Upcoming Events -->
+        <section id="upcoming-events" class="upcoming-events" aria-label="Upcoming Events">
+            <div class="events-header">
+                <h2>Upcoming Events</h2>
+                <div class="gold-underline"></div>
+                <a href="events.html" class="btn btn-primary-outline">View More Events</a>
+            </div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img src="assets/bankspraise.jpg" alt="Sunday Service" loading="lazy">
+                    <div class="event-content">
+                        <h3>Sunday Worship Service</h3>
+                        <p><i class="far fa-calendar"></i> Every Sunday, 10:00 AM</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <img src="assets/youth.jpeg" alt="Youth Week" loading="lazy">
+                    <div class="event-content">
+                        <h3>Youth Week 2025</h3>
+                        <p><i class="far fa-calendar"></i> March 10-15, 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Our Vision -->
+        <section id="our-vision" class="our-vision" aria-label="Our Vision">
             <div class="vision-container">
                 <span class="section-label">OUR VISION</span>
                 <h2>To see people passionately devoted to God.</h2>
@@ -143,9 +194,9 @@
             <div class="vision-gallery-wrapper">
                 <div class="vision-gallery" id="visionCarousel">
                     <div class="gallery-item"><img src="assets/gold n white choir.jpeg" alt="Worship at HTA" loading="lazy"></div>
-                    <div class="gallery-item"><img src="assets/banks choir.jpg" alt="Bishop and Family" loading="lazy"></div>
-                    <div class="gallery-item"><img src="assets/Me.jpg" alt="Church Leadership" loading="lazy"></div>
-                    <div class="gallery-item"><img src="assets/youth.jpeg" alt="Youth Ministry" loading="lazy"></div>
+                    <div class="gallery-item"><img src="assets/trio.jpeg" alt="Bishop and Family" loading="lazy"></div>
+                    <div class="gallery-item"><img src="assets/ushers.jpeg" alt="Church Leadership" loading="lazy"></div>
+                    <div class="gallery-item"><img src="assets/kimmy.jpeg" alt="Youth Ministry" loading="lazy"></div>
                     <div class="gallery-item"><img src="assets/congregration.jpeg" alt="Church Leadership" loading="lazy"></div>
                     <div class="gallery-item"><img src="assets/march.jpeg" alt="Youth Ministry" loading="lazy"></div>
                     <!-- Duplicate items for seamless loop -->
@@ -157,8 +208,8 @@
             </div>
         </section>
 
-        <!-- SECTION 4: Next Steps -->
-        <section class="next-steps" aria-label="What Are My Next Steps">
+        <!-- SECTION 5: Next Steps -->
+        <section id="next-steps" class="next-steps" aria-label="What Are My Next Steps">
             <div class="next-steps-header">
                 <h2>What Are My Next Steps</h2>
                 <div class="gold-underline"></div>
@@ -195,33 +246,8 @@
             </svg>
         </section>
 
-        <!-- SECTION 5: Upcoming Events -->
-        <section class="upcoming-events" aria-label="Upcoming Events">
-            <div class="events-header">
-                <h2>Upcoming Events</h2>
-                <div class="gold-underline"></div>
-                <a href="events.html" class="btn btn-outline-dark">View More Events</a>
-            </div>
-            <div class="events-grid">
-                <div class="event-card">
-                    <img src="assets/bankspraise.jpg" alt="Sunday Service" loading="lazy">
-                    <div class="event-content">
-                        <h3>Sunday Worship Service</h3>
-                        <p><i class="far fa-calendar"></i> Every Sunday, 10:00 AM</p>
-                    </div>
-                </div>
-                <div class="event-card">
-                    <img src="assets/youth.jpeg" alt="Youth Week" loading="lazy">
-                    <div class="event-content">
-                        <h3>Youth Week 2025</h3>
-                        <p><i class="far fa-calendar"></i> March 10-15, 2025</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- SECTION 6: Give/Generosity -->
-        <section class="generosity-section" aria-label="Support Our Mission">
+        <section id="generosity" class="generosity-section" aria-label="Support Our Mission">
             <div class="generosity-overlay"></div>
             <div class="generosity-content">
                 <h2>Thank You For Your Generosity</h2>
@@ -271,7 +297,7 @@
             </nav>
 
             <div class="footer-bottom">
-                p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
+                <p>&copy; 2025 Harvest Temple Apostolic. All rights reserved.</p>
             </div>
         </footer>
     </main>
@@ -441,5 +467,8 @@
             });
         })();
     </script>
+
+    <!-- CMS Content Loader -->
+    <script src="cms-loader.js"></script>
 </body>
 </html>
