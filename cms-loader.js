@@ -456,6 +456,7 @@ function updateUpcomingEvents(content) {
                 const card = document.createElement('div');
                 card.className = 'event-card';
 
+                // Create image
                 const img = document.createElement('img');
                 if (event.image) {
                     const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
@@ -474,7 +475,27 @@ function updateUpcomingEvents(content) {
                 }
                 img.loading = 'lazy';
 
+                // Create overlay with event details
+                const overlay = document.createElement('div');
+                overlay.className = 'event-card-overlay';
+
+                // Add title if available
+                if (event.title) {
+                    const title = document.createElement('h3');
+                    title.textContent = event.title;
+                    overlay.appendChild(title);
+                }
+
+                // Add date if available
+                if (event.date) {
+                    const date = document.createElement('p');
+                    date.innerHTML = `<i class="far fa-calendar"></i> ${event.date}`;
+                    overlay.appendChild(date);
+                }
+
+                // Append elements to card
                 card.appendChild(img);
+                card.appendChild(overlay);
                 eventsGrid.appendChild(card);
 
                 console.log('[CMS] Created event card', idx + 1, ':', event.title || 'Untitled');
