@@ -3,6 +3,13 @@
  * Dynamically loads images from the CMS API and updates the page
  */
 
+// Determine API base URL based on environment
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5001'
+    : 'https://hta-kwfr.onrender.com';
+
+console.log('[CMS] Using API base URL:', API_BASE_URL);
+
 (async function loadCMSImages() {
     try {
         // Detect current page from the URL
@@ -13,7 +20,7 @@
         console.log('[CMS] Loading images for page:', page);
 
         // Fetch content from CMS
-        const response = await fetch(`http://localhost:5001/api/content/${page}`);
+        const response = await fetch(`${API_BASE_URL}/api/content/${page}`);
         if (!response.ok) {
             console.warn('[CMS] No content found for page:', page);
             return;
@@ -94,7 +101,7 @@ function updateHeroGallery(content) {
 
         heroGallery.innerHTML = content.galleryImages.map(img => {
             const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-            const imgSrc = img.src.startsWith('http') ? img.src : `http://localhost:5001/${imagePath}`;
+            const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
             const className = img.class ? `gallery-cell ${img.class}` : 'gallery-cell';
             return `<div class="${className}" style="background-image: url('${imgSrc}');"></div>`;
         }).join('');
@@ -108,7 +115,7 @@ function updateHeroGallery(content) {
         const visionImages = content.galleryImages.slice(0, 10);
         visionCarousel.innerHTML = visionImages.map((img, idx) => {
             const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-            const imgSrc = img.src.startsWith('http') ? img.src : `http://localhost:5001/${imagePath}`;
+            const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
             const alt = img.alt || `Gallery image ${idx + 1}`;
             return `<div class="gallery-item"><img src="${imgSrc}" alt="${alt}" loading="lazy"></div>`;
         }).join('');
@@ -126,7 +133,7 @@ function updateHistoryImages(content) {
         const founderImg = document.querySelector('.story-image img');
         if (founderImg) {
             const imagePath = content.founderImage.src.startsWith('/') ? content.founderImage.src.substring(1) : content.founderImage.src;
-            const imgSrc = content.founderImage.src.startsWith('http') ? content.founderImage.src : `http://localhost:5001/${imagePath}`;
+            const imgSrc = content.founderImage.src.startsWith('http') ? content.founderImage.src : `${API_BASE_URL}/${imagePath}`;
             founderImg.src = imgSrc;
             console.log('[CMS] Updated founder image:', imgSrc);
         }
@@ -138,7 +145,7 @@ function updateHistoryImages(content) {
         content.historyImages.forEach((img, idx) => {
             if (historyImageItems[idx]) {
                 const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-                const imgSrc = img.src.startsWith('http') ? img.src : `http://localhost:5001/${imagePath}`;
+                const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
                 historyImageItems[idx].src = imgSrc;
                 console.log('[CMS] Updated history image', idx + 1, ':', imgSrc);
             }
@@ -158,7 +165,7 @@ function updateTeamImages(content) {
         const staffImg = document.querySelector(`.staff-card:nth-child(${idx + 1}) img, .staff-member:nth-child(${idx + 1}) img, .team-member:nth-child(${idx + 1}) img`);
         if (staffImg && member.image) {
             const imagePath = member.image.startsWith('/') ? member.image.substring(1) : member.image;
-            const imgSrc = member.image.startsWith('http') ? member.image : `http://localhost:5001/${imagePath}`;
+            const imgSrc = member.image.startsWith('http') ? member.image : `${API_BASE_URL}/${imagePath}`;
             staffImg.src = imgSrc;
             console.log('[CMS] Updated team member image', idx + 1, ':', imgSrc);
         } else {
@@ -202,7 +209,7 @@ function updateDepartmentImages(content, sectionName) {
         const img = section.querySelector('.ministry-image img');
         if (img) {
             const imagePath = content.image.startsWith('/') ? content.image.substring(1) : content.image;
-            const imgSrc = content.image.startsWith('http') ? content.image : `http://localhost:5001/${imagePath}`;
+            const imgSrc = content.image.startsWith('http') ? content.image : `${API_BASE_URL}/${imagePath}`;
             img.src = imgSrc;
             console.log('[CMS] Updated department image for', ariaLabel, ':', imgSrc);
         } else {
@@ -460,7 +467,7 @@ function updateWhatToExpect(content) {
                     const img = expectCard.querySelector('.expect-image img');
                     if (img) {
                         const imagePath = card.image.startsWith('/') ? card.image.substring(1) : card.image;
-                        const imgSrc = card.image.startsWith('http') ? card.image : `http://localhost:5001/${imagePath}`;
+                        const imgSrc = card.image.startsWith('http') ? card.image : `${API_BASE_URL}/${imagePath}`;
                         img.src = imgSrc;
                         img.alt = card.title || 'Expect image';
                     }
@@ -495,7 +502,7 @@ function updateGenericImages(content, sectionName) {
     function getImageUrl(src) {
         if (!src) return src;
         const imagePath = src.startsWith('/') ? src.substring(1) : src;
-        return src.startsWith('http') ? src : `http://localhost:5001/${imagePath}`;
+        return src.startsWith('http') ? src : `${API_BASE_URL}/${imagePath}`;
     }
 
     // Helper function to find and update image elements recursively
