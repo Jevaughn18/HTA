@@ -537,7 +537,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===================================
 // CMS CONTENT MANAGEMENT SYSTEM
 // ===================================
-const CMS_API_URL = 'http://localhost:5001/api';
+const CMS_API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5001/api'
+    : 'https://hta-kwfr.onrender.com/api';
 let currentCMSPage = 'home';
 
 /**

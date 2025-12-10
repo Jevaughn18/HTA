@@ -52,21 +52,55 @@ function updateImagesInSection(section, page) {
     switch (page) {
         case 'home':
             if (sectionName === 'hero') {
-                updateHeroGallery(sectionContent);
+                updateHeroSection(sectionContent);
+            } else if (sectionName === 'service-details') {
+                updateServiceDetails(sectionContent);
+            } else if (sectionName === 'next-steps') {
+                updateNextSteps(sectionContent);
+            } else if (sectionName === 'generosity') {
+                updateGenerositySection(sectionContent);
+            } else if (sectionName === 'our-vision') {
+                updateOurVision(sectionContent);
+            } else if (sectionName === 'upcoming-events') {
+                updateUpcomingEvents(sectionContent);
             }
             break;
         case 'about':
-            if (sectionName === 'our-history') {
-                updateHistoryImages(sectionContent);
+            if (sectionName === 'hero') {
+                updateAboutHero(sectionContent);
+            } else if (sectionName === 'who-we-are') {
+                updateWhoWeAre(sectionContent);
+            } else if (sectionName === 'what-we-believe') {
+                updateWhatWeBelieve(sectionContent);
+            } else if (sectionName === 'our-name') {
+                updateOurName(sectionContent);
+            } else if (sectionName === 'our-history') {
+                updateOurHistory(sectionContent);
             } else if (sectionName === 'our-team') {
-                updateTeamImages(sectionContent);
+                updateOurTeam(sectionContent);
             }
             break;
         case 'events':
-            updateGenericImages(sectionContent, sectionName);
+            if (sectionName === 'hero') {
+                updateEventsHero(sectionContent);
+            } else if (sectionName === 'upcoming-events') {
+                updateEventsListing(sectionContent);
+            } else if (sectionName === 'past-events') {
+                updatePastEvents(sectionContent);
+            } else {
+                updateGenericImages(sectionContent, sectionName);
+            }
             break;
         case 'give':
-            updateGenericImages(sectionContent, sectionName);
+            if (sectionName === 'hero') {
+                updateGiveHero(sectionContent);
+            } else if (sectionName === 'ways-to-give') {
+                updateWaysToGive(sectionContent);
+            } else if (sectionName === 'why-we-give') {
+                updateWhyWeGive(sectionContent);
+            } else {
+                updateGenericImages(sectionContent, sectionName);
+            }
             break;
         case 'media':
             updateMediaPage(sectionContent, sectionName);
@@ -90,9 +124,27 @@ function updateImagesInSection(section, page) {
 }
 
 /**
- * Update hero gallery on home page
+ * Update hero section on home page (title, subtitle, and gallery)
  */
-function updateHeroGallery(content) {
+function updateHeroSection(content) {
+    // Update hero title if provided
+    if (content.title) {
+        const heroTitle = document.querySelector('.hero-video-content h1');
+        if (heroTitle) {
+            heroTitle.textContent = content.title;
+            console.log('[CMS] Updated hero title:', content.title);
+        }
+    }
+
+    // Update hero subtitle if provided
+    if (content.subtitle) {
+        const heroSubtitle = document.querySelector('.hero-video-content p');
+        if (heroSubtitle) {
+            heroSubtitle.textContent = content.subtitle;
+            console.log('[CMS] Updated hero subtitle:', content.subtitle);
+        }
+    }
+
     if (!content.galleryImages) return;
 
     const heroGallery = document.getElementById('heroGallery');
@@ -123,19 +175,445 @@ function updateHeroGallery(content) {
 }
 
 /**
- * Update history images on about page
+ * Update Service Details section on home page
  */
-function updateHistoryImages(content) {
+function updateServiceDetails(content) {
+    console.log('[CMS] Updating service details section');
+
+    // Update section label
+    if (content.label) {
+        const label = document.querySelector('.service-details-section .section-label, .service-info .section-label');
+        if (label) label.textContent = content.label;
+    }
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.service-details-section h2, .service-info h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update description
+    if (content.description) {
+        const desc = document.querySelector('.service-details-section .service-description, .service-info .service-description');
+        if (desc) desc.textContent = content.description;
+    }
+
+    // Update service times
+    if (content.mainService) {
+        const time = document.querySelector('.service-time:first-of-type .time, .service-card:first-of-type .time');
+        if (time) time.textContent = content.mainService;
+    }
+
+    // Update locations if provided
+    if (content.locations && Array.isArray(content.locations)) {
+        const locationCards = document.querySelectorAll('.branch-preview');
+        content.locations.forEach((location, idx) => {
+            if (locationCards[idx]) {
+                const card = locationCards[idx];
+                if (location.name) {
+                    const nameEl = card.querySelector('h3');
+                    if (nameEl) nameEl.textContent = location.name;
+                }
+                if (location.address) {
+                    const addressEl = card.querySelector('p');
+                    if (addressEl) addressEl.textContent = `${location.address}, ${location.city || ''}`;
+                }
+            }
+        });
+    }
+}
+
+/**
+ * Update Next Steps section on home page
+ */
+function updateNextSteps(content) {
+    console.log('[CMS] Updating next steps section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.next-steps h2, .ministries-grid-section h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update description
+    if (content.description) {
+        const desc = document.querySelector('.next-steps .section-intro, .ministries-grid-section .section-intro');
+        if (desc) desc.textContent = content.description;
+    }
+
+    // Update step cards
+    if (content.steps && Array.isArray(content.steps)) {
+        const stepCards = document.querySelectorAll('.next-step-card, .ministry-card');
+        content.steps.forEach((step, idx) => {
+            if (stepCards[idx]) {
+                const card = stepCards[idx];
+
+                // Update image
+                if (step.image) {
+                    const img = card.querySelector('img');
+                    if (img) {
+                        const imagePath = step.image.startsWith('/') ? step.image.substring(1) : step.image;
+                        img.src = step.image.startsWith('http') ? step.image : `${API_BASE_URL}/${imagePath}`;
+                    }
+                }
+
+                // Update title
+                if (step.title) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.textContent = step.title;
+                }
+
+                // Update description
+                if (step.description) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.textContent = step.description;
+                }
+            }
+        });
+    }
+}
+
+/**
+ * Update Generosity section on home page
+ */
+function updateGenerositySection(content) {
+    console.log('[CMS] Updating generosity section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.give-section h2, .generosity-section h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update description
+    if (content.description) {
+        const desc = document.querySelector('.give-section .section-intro, .generosity-section .section-intro, .give-section p');
+        if (desc) desc.textContent = content.description;
+    }
+
+    // Update buttons
+    if (content.buttons && Array.isArray(content.buttons)) {
+        const buttons = document.querySelectorAll('.give-section .btn, .generosity-section .btn');
+        content.buttons.forEach((button, idx) => {
+            if (buttons[idx] && button.text) {
+                buttons[idx].textContent = button.text;
+                if (button.link) buttons[idx].href = button.link;
+            }
+        });
+    }
+}
+
+/**
+ * Update Our Vision section on home page
+ */
+function updateOurVision(content) {
+    console.log('[CMS] Updating our vision section');
+
+    // Update label
+    if (content.label) {
+        const label = document.querySelector('.vision-section .section-label, .about-preview .section-label');
+        if (label) label.textContent = content.label;
+    }
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.vision-section h2, .about-preview h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update paragraphs
+    if (content.paragraphs && Array.isArray(content.paragraphs)) {
+        const paragraphs = document.querySelectorAll('.vision-section .vision-text p, .about-preview .about-text p');
+        content.paragraphs.forEach((text, idx) => {
+            if (paragraphs[idx]) {
+                paragraphs[idx].textContent = text;
+            }
+        });
+    }
+
+    // Update gallery images
+    if (content.galleryImages && Array.isArray(content.galleryImages)) {
+        const gallery = document.querySelector('.vision-gallery, .about-gallery');
+        if (gallery) {
+            gallery.innerHTML = content.galleryImages.map((img, idx) => {
+                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
+                const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
+                const alt = img.alt || `Vision gallery image ${idx + 1}`;
+                return `<div class="gallery-item"><img src="${imgSrc}" alt="${alt}" loading="lazy"></div>`;
+            }).join('');
+        }
+    }
+}
+
+/**
+ * Update Upcoming Events section on home page
+ */
+function updateUpcomingEvents(content) {
+    console.log('[CMS] Updating upcoming events section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.events-preview h2, .upcoming-events h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update event cards
+    if (content.events && Array.isArray(content.events)) {
+        const eventCards = document.querySelectorAll('.event-card');
+        content.events.forEach((event, idx) => {
+            if (eventCards[idx]) {
+                const card = eventCards[idx];
+
+                // Update image
+                if (event.image) {
+                    const img = card.querySelector('img');
+                    if (img) {
+                        const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
+                        img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
+                    }
+                }
+
+                // Update title
+                if (event.title) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.textContent = event.title;
+                }
+
+                // Update date
+                if (event.date) {
+                    const dateEl = card.querySelector('.event-date, .date');
+                    if (dateEl) dateEl.textContent = event.date;
+                }
+
+                // Update description
+                if (event.description) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.textContent = event.description;
+                }
+            }
+        });
+    }
+
+    // Update button
+    if (content.button && content.button.text) {
+        const btn = document.querySelector('.events-preview .btn, .upcoming-events .btn');
+        if (btn) {
+            btn.textContent = content.button.text;
+            if (content.button.link) btn.href = content.button.link;
+        }
+    }
+}
+
+/**
+ * Update About page hero section
+ */
+function updateAboutHero(content) {
+    console.log('[CMS] Updating about hero section');
+
+    // Update title
+    if (content.title) {
+        const heroTitle = document.querySelector('.about-hero h1, .page-hero h1');
+        if (heroTitle) {
+            heroTitle.textContent = content.title;
+            console.log('[CMS] Updated about hero title:', content.title);
+        }
+    }
+
+    // Update video if provided
+    if (content.videoSrc) {
+        const video = document.querySelector('.about-hero video, .page-hero video');
+        if (video) {
+            const videoPath = content.videoSrc.startsWith('/') ? content.videoSrc.substring(1) : content.videoSrc;
+            const videoSrc = content.videoSrc.startsWith('http') ? content.videoSrc : `${API_BASE_URL}/${videoPath}`;
+            video.src = videoSrc;
+            console.log('[CMS] Updated about hero video:', videoSrc);
+        }
+    }
+}
+
+/**
+ * Update Who We Are section on about page
+ */
+function updateWhoWeAre(content) {
+    console.log('[CMS] Updating who we are section');
+
+    // Update label
+    if (content.label) {
+        const label = document.querySelector('.who-we-are .section-label, .about-intro .section-label');
+        if (label) label.textContent = content.label;
+    }
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.who-we-are h2, .about-intro h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update lead text
+    if (content.leadText) {
+        const leadText = document.querySelector('.who-we-are .lead-text, .about-intro .lead-text, .who-we-are > p:first-of-type');
+        if (leadText) leadText.textContent = content.leadText;
+    }
+
+    // Update vision/mission cards
+    if (content.visionMission && Array.isArray(content.visionMission)) {
+        const cards = document.querySelectorAll('.value-card, .mission-card, .vision-card');
+        content.visionMission.forEach((item, idx) => {
+            if (cards[idx]) {
+                const card = cards[idx];
+
+                // Update icon if provided
+                if (item.icon) {
+                    const icon = card.querySelector('i, .icon');
+                    if (icon) {
+                        icon.className = item.icon;
+                    }
+                }
+
+                // Update title
+                if (item.title) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.textContent = item.title;
+                }
+
+                // Update description
+                if (item.description) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.textContent = item.description;
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.visionMission.length, 'vision/mission cards');
+    }
+}
+
+/**
+ * Update What We Believe section on about page
+ */
+function updateWhatWeBelieve(content) {
+    console.log('[CMS] Updating what we believe section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.what-we-believe h2, .beliefs-section h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update intro paragraph
+    if (content.intro) {
+        const intro = document.querySelector('.what-we-believe .intro, .beliefs-section .intro, .what-we-believe > p:first-of-type');
+        if (intro) intro.textContent = content.intro;
+    }
+
+    // Update articles of faith
+    if (content.articles && Array.isArray(content.articles)) {
+        const articles = document.querySelectorAll('.belief-article, .article-item');
+        content.articles.forEach((article, idx) => {
+            if (articles[idx]) {
+                const articleEl = articles[idx];
+
+                // Update article title
+                if (article.title) {
+                    const titleEl = articleEl.querySelector('h3, h4');
+                    if (titleEl) titleEl.textContent = article.title;
+                }
+
+                // Update article content
+                if (article.content) {
+                    const contentEl = articleEl.querySelector('p');
+                    if (contentEl) contentEl.textContent = article.content;
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.articles.length, 'articles of faith');
+    }
+}
+
+/**
+ * Update Our Name section on about page
+ */
+function updateOurName(content) {
+    console.log('[CMS] Updating our name section');
+
+    // Update label
+    if (content.label) {
+        const label = document.querySelector('.our-name .section-label, .name-section .section-label');
+        if (label) label.textContent = content.label;
+    }
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.our-name h2, .name-section h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update paragraphs
+    if (content.paragraphs && Array.isArray(content.paragraphs)) {
+        const paragraphs = document.querySelectorAll('.our-name p, .name-section p');
+        content.paragraphs.forEach((text, idx) => {
+            if (paragraphs[idx]) {
+                paragraphs[idx].textContent = text;
+            }
+        });
+        console.log('[CMS] Updated', content.paragraphs.length, 'paragraphs in our name section');
+    }
+
+    // Update conclusion if provided
+    if (content.conclusion) {
+        const conclusion = document.querySelector('.our-name .conclusion, .name-section .conclusion');
+        if (conclusion) conclusion.textContent = content.conclusion;
+    }
+}
+
+/**
+ * Update Our History section on about page (text and images)
+ */
+function updateOurHistory(content) {
     console.log('[CMS] Updating history section');
+
+    // Update label
+    if (content.label) {
+        const label = document.querySelector('.our-history .section-label, .history-section .section-label');
+        if (label) label.textContent = content.label;
+    }
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.our-history h2, .history-section h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update paragraphs
+    if (content.paragraphs && Array.isArray(content.paragraphs)) {
+        const paragraphs = document.querySelectorAll('.our-history p, .history-section p');
+        content.paragraphs.forEach((text, idx) => {
+            if (paragraphs[idx]) {
+                paragraphs[idx].textContent = text;
+            }
+        });
+        console.log('[CMS] Updated', content.paragraphs.length, 'history paragraphs');
+    }
 
     // Update founder image (Bishop Carter)
     if (content.founderImage) {
-        const founderImg = document.querySelector('.story-image img');
+        const founderImg = document.querySelector('.story-image img, .founder-image img');
         if (founderImg) {
             const imagePath = content.founderImage.src.startsWith('/') ? content.founderImage.src.substring(1) : content.founderImage.src;
             const imgSrc = content.founderImage.src.startsWith('http') ? content.founderImage.src : `${API_BASE_URL}/${imagePath}`;
             founderImg.src = imgSrc;
             console.log('[CMS] Updated founder image:', imgSrc);
+        }
+
+        // Update founder image caption
+        if (content.founderImage.caption) {
+            const caption = document.querySelector('.story-image .image-caption, .founder-image .caption');
+            if (caption) caption.textContent = content.founderImage.caption;
+        }
+
+        // Update founder image subtitle
+        if (content.founderImage.subtitle) {
+            const subtitle = document.querySelector('.story-image .image-subtitle, .founder-image .subtitle');
+            if (subtitle) subtitle.textContent = content.founderImage.subtitle;
         }
     }
 
@@ -151,27 +629,312 @@ function updateHistoryImages(content) {
             }
         });
     }
+
+    // Update quote if provided
+    if (content.quote) {
+        const quoteEl = document.querySelector('.our-history blockquote, .history-section blockquote, .history-quote');
+        if (quoteEl) quoteEl.textContent = content.quote;
+    }
 }
 
 /**
- * Update team images on about page
+ * Update Our Team section on about page (text and images)
  */
-function updateTeamImages(content) {
-    if (!content.staff) return;
+function updateOurTeam(content) {
+    console.log('[CMS] Updating our team section');
 
-    console.log('[CMS] Updating team images');
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.our-team h2, .team-section h2, .staff-section h2');
+        if (title) title.textContent = content.title;
+    }
 
-    content.staff.forEach((member, idx) => {
-        const staffImg = document.querySelector(`.staff-card:nth-child(${idx + 1}) img, .staff-member:nth-child(${idx + 1}) img, .team-member:nth-child(${idx + 1}) img`);
-        if (staffImg && member.image) {
-            const imagePath = member.image.startsWith('/') ? member.image.substring(1) : member.image;
-            const imgSrc = member.image.startsWith('http') ? member.image : `${API_BASE_URL}/${imagePath}`;
-            staffImg.src = imgSrc;
-            console.log('[CMS] Updated team member image', idx + 1, ':', imgSrc);
-        } else {
-            console.warn('[CMS] Could not find staff image element for member', idx + 1, 'or image property missing');
-        }
-    });
+    // Update staff members
+    if (content.staff && Array.isArray(content.staff)) {
+        content.staff.forEach((member, idx) => {
+            const staffCard = document.querySelector(`.staff-card:nth-child(${idx + 1}), .staff-member:nth-child(${idx + 1}), .team-member:nth-child(${idx + 1})`);
+
+            if (staffCard) {
+                // Update image
+                if (member.image) {
+                    const staffImg = staffCard.querySelector('img');
+                    if (staffImg) {
+                        const imagePath = member.image.startsWith('/') ? member.image.substring(1) : member.image;
+                        const imgSrc = member.image.startsWith('http') ? member.image : `${API_BASE_URL}/${imagePath}`;
+                        staffImg.src = imgSrc;
+                        console.log('[CMS] Updated team member image', idx + 1, ':', imgSrc);
+                    }
+                }
+
+                // Update name
+                if (member.name) {
+                    const nameEl = staffCard.querySelector('h3, .staff-name, .member-name');
+                    if (nameEl) nameEl.textContent = member.name;
+                }
+
+                // Update title/position
+                if (member.title) {
+                    const titleEl = staffCard.querySelector('.staff-title, .member-title, .position');
+                    if (titleEl) titleEl.textContent = member.title;
+                }
+
+                // Update bio
+                if (member.bio) {
+                    const bioEl = staffCard.querySelector('p, .staff-bio, .member-bio');
+                    if (bioEl) bioEl.textContent = member.bio;
+                }
+            } else {
+                console.warn('[CMS] Could not find staff card element for member', idx + 1);
+            }
+        });
+        console.log('[CMS] Updated', content.staff.length, 'team members');
+    }
+}
+
+/**
+ * Update Events page hero section
+ */
+function updateEventsHero(content) {
+    console.log('[CMS] Updating events hero section');
+
+    // Update title
+    if (content.title) {
+        const heroTitle = document.querySelector('.events-hero h1, .page-hero h1');
+        if (heroTitle) heroTitle.textContent = content.title;
+    }
+
+    // Update subtitle
+    if (content.subtitle) {
+        const heroSubtitle = document.querySelector('.events-hero p, .page-hero p');
+        if (heroSubtitle) heroSubtitle.textContent = content.subtitle;
+    }
+}
+
+/**
+ * Update Events listing section
+ */
+function updateEventsListing(content) {
+    console.log('[CMS] Updating events listing section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.events-listing h2, .upcoming-events h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update event cards
+    if (content.events && Array.isArray(content.events)) {
+        const eventCards = document.querySelectorAll('.event-card');
+        content.events.forEach((event, idx) => {
+            if (eventCards[idx]) {
+                const card = eventCards[idx];
+
+                // Update image
+                if (event.image) {
+                    const img = card.querySelector('img');
+                    if (img) {
+                        const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
+                        img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
+                    }
+                }
+
+                // Update title
+                if (event.title) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.textContent = event.title;
+                }
+
+                // Update date
+                if (event.date) {
+                    const dateEl = card.querySelector('.event-date, .date');
+                    if (dateEl) dateEl.textContent = event.date;
+                }
+
+                // Update time
+                if (event.time) {
+                    const timeEl = card.querySelector('.event-time, .time');
+                    if (timeEl) timeEl.textContent = event.time;
+                }
+
+                // Update location
+                if (event.location) {
+                    const locationEl = card.querySelector('.event-location, .location');
+                    if (locationEl) locationEl.textContent = event.location;
+                }
+
+                // Update description
+                if (event.description) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.textContent = event.description;
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.events.length, 'event cards');
+    }
+}
+
+/**
+ * Update Past Events section
+ */
+function updatePastEvents(content) {
+    console.log('[CMS] Updating past events section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.past-events h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update events similar to upcoming events
+    if (content.events && Array.isArray(content.events)) {
+        const eventCards = document.querySelectorAll('.past-events .event-card');
+        content.events.forEach((event, idx) => {
+            if (eventCards[idx]) {
+                const card = eventCards[idx];
+
+                if (event.image) {
+                    const img = card.querySelector('img');
+                    if (img) {
+                        const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
+                        img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
+                    }
+                }
+
+                if (event.title) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.textContent = event.title;
+                }
+
+                if (event.date) {
+                    const dateEl = card.querySelector('.event-date, .date');
+                    if (dateEl) dateEl.textContent = event.date;
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.events.length, 'past event cards');
+    }
+}
+
+/**
+ * Update Give page hero section
+ */
+function updateGiveHero(content) {
+    console.log('[CMS] Updating give hero section');
+
+    // Update title
+    if (content.title) {
+        const heroTitle = document.querySelector('.give-hero h1, .page-hero h1');
+        if (heroTitle) heroTitle.textContent = content.title;
+    }
+
+    // Update subtitle
+    if (content.subtitle) {
+        const heroSubtitle = document.querySelector('.give-hero p, .page-hero p');
+        if (heroSubtitle) heroSubtitle.textContent = content.subtitle;
+    }
+
+    // Update verse if provided
+    if (content.verse) {
+        const verse = document.querySelector('.give-hero .verse, .scripture-verse');
+        if (verse) verse.textContent = content.verse;
+    }
+}
+
+/**
+ * Update Ways to Give section
+ */
+function updateWaysToGive(content) {
+    console.log('[CMS] Updating ways to give section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.ways-to-give h2, .giving-methods h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update description
+    if (content.description) {
+        const desc = document.querySelector('.ways-to-give .section-intro, .giving-methods .section-intro');
+        if (desc) desc.textContent = content.description;
+    }
+
+    // Update giving method cards
+    if (content.methods && Array.isArray(content.methods)) {
+        const methodCards = document.querySelectorAll('.giving-method-card, .method-card');
+        content.methods.forEach((method, idx) => {
+            if (methodCards[idx]) {
+                const card = methodCards[idx];
+
+                // Update icon if provided
+                if (method.icon) {
+                    const icon = card.querySelector('i, .icon');
+                    if (icon) icon.className = method.icon;
+                }
+
+                // Update title
+                if (method.title) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.textContent = method.title;
+                }
+
+                // Update description
+                if (method.description) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.textContent = method.description;
+                }
+
+                // Update button
+                if (method.buttonText) {
+                    const btn = card.querySelector('.btn, button, a');
+                    if (btn) {
+                        btn.textContent = method.buttonText;
+                        if (method.buttonLink) btn.href = method.buttonLink;
+                    }
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.methods.length, 'giving method cards');
+    }
+}
+
+/**
+ * Update Why We Give section
+ */
+function updateWhyWeGive(content) {
+    console.log('[CMS] Updating why we give section');
+
+    // Update title
+    if (content.title) {
+        const title = document.querySelector('.why-we-give h2, .giving-impact h2');
+        if (title) title.textContent = content.title;
+    }
+
+    // Update description/intro
+    if (content.description) {
+        const desc = document.querySelector('.why-we-give .section-intro, .giving-impact .section-intro');
+        if (desc) desc.textContent = content.description;
+    }
+
+    // Update reason cards/paragraphs
+    if (content.reasons && Array.isArray(content.reasons)) {
+        const reasonCards = document.querySelectorAll('.reason-card, .impact-card');
+        content.reasons.forEach((reason, idx) => {
+            if (reasonCards[idx]) {
+                const card = reasonCards[idx];
+
+                if (reason.title) {
+                    const titleEl = card.querySelector('h3, h4');
+                    if (titleEl) titleEl.textContent = reason.title;
+                }
+
+                if (reason.description) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.textContent = reason.description;
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.reasons.length, 'giving reasons');
+    }
 }
 
 /**
@@ -489,6 +1252,60 @@ function updateWhatToExpect(content) {
     });
 
     console.log('[CMS] Updated', content.cards.length, 'What To Expect cards');
+}
+
+/**
+ * Update Contact page generic sections (hero, locations, etc.)
+ */
+function updateContactPage(content, sectionName) {
+    console.log('[CMS] Updating contact page section:', sectionName);
+
+    // Update hero section if it's the hero
+    if (sectionName === 'hero') {
+        if (content.title) {
+            const heroTitle = document.querySelector('.contact-hero h1, .page-hero h1');
+            if (heroTitle) heroTitle.textContent = content.title;
+        }
+
+        if (content.subtitle) {
+            const heroSubtitle = document.querySelector('.contact-hero p, .page-hero p');
+            if (heroSubtitle) heroSubtitle.textContent = content.subtitle;
+        }
+    }
+
+    // Update locations section
+    if (sectionName === 'locations' && content.locations) {
+        const locationCards = document.querySelectorAll('.location-card');
+        content.locations.forEach((location, idx) => {
+            if (locationCards[idx]) {
+                const card = locationCards[idx];
+
+                if (location.name) {
+                    const nameEl = card.querySelector('h3');
+                    if (nameEl) nameEl.textContent = location.name;
+                }
+
+                if (location.address) {
+                    const addressEl = card.querySelector('.address');
+                    if (addressEl) addressEl.textContent = location.address;
+                }
+
+                if (location.phone) {
+                    const phoneEl = card.querySelector('.phone');
+                    if (phoneEl) phoneEl.textContent = location.phone;
+                }
+
+                if (location.email) {
+                    const emailEl = card.querySelector('.email');
+                    if (emailEl) emailEl.textContent = location.email;
+                }
+            }
+        });
+        console.log('[CMS] Updated', content.locations.length, 'location cards');
+    }
+
+    // Fallback to generic image updates for other sections
+    updateGenericImages(content, sectionName);
 }
 
 /**
