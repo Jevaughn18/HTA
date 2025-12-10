@@ -182,44 +182,115 @@ function updateServiceDetails(content) {
 
     // Update section label
     if (content.label) {
-        const label = document.querySelector('.service-details-section .section-label, .service-info .section-label');
-        if (label) label.textContent = content.label;
+        const label = document.querySelector('#service-details .section-label, .service-details .section-label');
+        if (label) {
+            label.textContent = content.label;
+            console.log('[CMS] Updated service details label:', content.label);
+        }
     }
 
     // Update title
     if (content.title) {
-        const title = document.querySelector('.service-details-section h2, .service-info h2');
-        if (title) title.textContent = content.title;
+        const title = document.querySelector('#service-details h2, .service-details h2, .service-text h2');
+        if (title) {
+            title.textContent = content.title;
+            console.log('[CMS] Updated service details title:', content.title);
+        }
     }
 
-    // Update description
+    // Update main description (first paragraph)
     if (content.description) {
-        const desc = document.querySelector('.service-details-section .service-description, .service-info .service-description');
-        if (desc) desc.textContent = content.description;
+        const desc = document.querySelector('#service-details .service-text p:first-of-type, .service-details .service-text p:first-of-type');
+        if (desc) {
+            desc.textContent = content.description;
+            console.log('[CMS] Updated service details description');
+        }
     }
 
-    // Update service times
-    if (content.mainService) {
-        const time = document.querySelector('.service-time:first-of-type .time, .service-card:first-of-type .time');
-        if (time) time.textContent = content.mainService;
+    // Update secondary description (second paragraph with em)
+    if (content.secondaryDescription) {
+        const secondaryDesc = document.querySelector('#service-details .service-text p:nth-of-type(2) em, .service-details .service-text p:nth-of-type(2) em');
+        if (secondaryDesc) {
+            secondaryDesc.textContent = content.secondaryDescription;
+        }
     }
 
-    // Update locations if provided
+    // Update service times in the info card
+    if (content.mainServiceTime) {
+        const mainTimeEl = document.querySelector('#service-details .info-card h3:first-of-type, .service-info-cards .info-card h3:first-of-type');
+        if (mainTimeEl) {
+            mainTimeEl.textContent = content.mainServiceTime;
+            console.log('[CMS] Updated main service time:', content.mainServiceTime);
+        }
+    }
+
+    if (content.mainServiceLabel) {
+        const mainLabelEl = document.querySelector('#service-details .info-card p:first-of-type, .service-info-cards .info-card p:first-of-type');
+        if (mainLabelEl) {
+            mainLabelEl.textContent = content.mainServiceLabel;
+        }
+    }
+
+    if (content.sundaySchoolTime) {
+        const schoolTimeEl = document.querySelector('#service-details .info-card h3:nth-of-type(2), .service-info-cards .info-card h3:nth-of-type(2)');
+        if (schoolTimeEl) {
+            schoolTimeEl.textContent = content.sundaySchoolTime;
+        }
+    }
+
+    if (content.sundaySchoolLabel) {
+        const schoolLabelEl = document.querySelector('#service-details .info-card p:nth-of-type(2), .service-info-cards .info-card p:nth-of-type(2)');
+        if (schoolLabelEl) {
+            schoolLabelEl.textContent = content.sundaySchoolLabel;
+        }
+    }
+
+    // Update location cards
     if (content.locations && Array.isArray(content.locations)) {
-        const locationCards = document.querySelectorAll('.branch-preview');
+        const locationCards = document.querySelectorAll('.location-card');
+        console.log('[CMS] Found', locationCards.length, 'location cards');
+
         content.locations.forEach((location, idx) => {
             if (locationCards[idx]) {
                 const card = locationCards[idx];
+
+                // Update location name
                 if (location.name) {
                     const nameEl = card.querySelector('h3');
-                    if (nameEl) nameEl.textContent = location.name;
+                    if (nameEl) {
+                        nameEl.textContent = location.name;
+                        console.log('[CMS] Updated location name:', location.name);
+                    }
                 }
+
+                // Update pastor name
+                if (location.pastor) {
+                    const pastorEl = card.querySelector('.pastor-name');
+                    if (pastorEl) {
+                        pastorEl.textContent = location.pastor;
+                        console.log('[CMS] Updated pastor name:', location.pastor);
+                    }
+                }
+
+                // Update address
                 if (location.address) {
-                    const addressEl = card.querySelector('p');
-                    if (addressEl) addressEl.textContent = `${location.address}, ${location.city || ''}`;
+                    const addressEl = card.querySelector('.address');
+                    if (addressEl) {
+                        addressEl.innerHTML = location.address.replace('\n', '<br>');
+                        console.log('[CMS] Updated address');
+                    }
+                }
+
+                // Update badge if provided
+                if (location.badge) {
+                    const badgeEl = card.querySelector('.badge');
+                    if (badgeEl) {
+                        badgeEl.textContent = location.badge;
+                    }
                 }
             }
         });
+        console.log('[CMS] Updated', content.locations.length, 'location cards');
     }
 }
 
@@ -231,14 +302,20 @@ function updateNextSteps(content) {
 
     // Update title
     if (content.title) {
-        const title = document.querySelector('.next-steps h2, .ministries-grid-section h2');
-        if (title) title.textContent = content.title;
+        const title = document.querySelector('.next-steps h2, .next-steps-header h2, .ministries-grid-section h2');
+        if (title) {
+            title.textContent = content.title;
+            console.log('[CMS] Updated next steps title:', content.title);
+        }
     }
 
     // Update description
     if (content.description) {
-        const desc = document.querySelector('.next-steps .section-intro, .ministries-grid-section .section-intro');
-        if (desc) desc.textContent = content.description;
+        const desc = document.querySelector('.next-steps-header > p, .next-steps .section-intro, .ministries-grid-section .section-intro');
+        if (desc) {
+            desc.textContent = content.description;
+            console.log('[CMS] Updated next steps description:', content.description);
+        }
     }
 
     // Update step cards
@@ -265,11 +342,21 @@ function updateNextSteps(content) {
 
                 // Update description
                 if (step.description) {
-                    const descEl = card.querySelector('p');
+                    const descEl = card.querySelector('.card-overlay p, p');
                     if (descEl) descEl.textContent = step.description;
+                }
+
+                // Update button text/link if provided
+                if (step.buttonText) {
+                    const btn = card.querySelector('.btn, a.btn');
+                    if (btn) {
+                        btn.innerHTML = `${step.buttonText} <i class="fas fa-arrow-right"></i>`;
+                        if (step.buttonLink) btn.href = step.buttonLink;
+                    }
                 }
             }
         });
+        console.log('[CMS] Updated', content.steps.length, 'next step cards');
     }
 }
 
@@ -439,47 +526,59 @@ function updateWhoWeAre(content) {
 
     // Update label
     if (content.label) {
-        const label = document.querySelector('.who-we-are .section-label, .about-intro .section-label');
-        if (label) label.textContent = content.label;
+        const label = document.querySelector('#who-we-are .section-label, .who-we-are-content .section-label, .about-intro .section-label');
+        if (label) {
+            label.textContent = content.label;
+            console.log('[CMS] Updated who we are label:', content.label);
+        }
     }
 
     // Update title
     if (content.title) {
-        const title = document.querySelector('.who-we-are h2, .about-intro h2');
-        if (title) title.textContent = content.title;
+        const title = document.querySelector('#who-we-are h2, .who-we-are-content h2, .about-intro h2');
+        if (title) {
+            title.innerHTML = content.title.replace('\n', '<br>');
+            console.log('[CMS] Updated who we are title:', content.title);
+        }
     }
 
     // Update lead text
     if (content.leadText) {
-        const leadText = document.querySelector('.who-we-are .lead-text, .about-intro .lead-text, .who-we-are > p:first-of-type');
-        if (leadText) leadText.textContent = content.leadText;
+        const leadText = document.querySelector('#who-we-are .lead-text, .who-we-are-content .lead-text, .about-intro .lead-text');
+        if (leadText) {
+            leadText.textContent = content.leadText;
+            console.log('[CMS] Updated who we are lead text');
+        }
     }
 
     // Update vision/mission cards
     if (content.visionMission && Array.isArray(content.visionMission)) {
-        const cards = document.querySelectorAll('.value-card, .mission-card, .vision-card');
+        const cards = document.querySelectorAll('.vm-card, .value-card, .mission-card, .vision-card');
+        console.log('[CMS] Found', cards.length, 'vision/mission cards');
+
         content.visionMission.forEach((item, idx) => {
             if (cards[idx]) {
                 const card = cards[idx];
 
-                // Update icon if provided
-                if (item.icon) {
-                    const icon = card.querySelector('i, .icon');
-                    if (icon) {
-                        icon.className = item.icon;
-                    }
-                }
+                // Note: Icons are NOT updated from CMS (user requested removal)
+                // They are hardcoded in HTML
 
                 // Update title
                 if (item.title) {
                     const titleEl = card.querySelector('h3');
-                    if (titleEl) titleEl.textContent = item.title;
+                    if (titleEl) {
+                        titleEl.textContent = item.title;
+                        console.log('[CMS] Updated vision/mission card title:', item.title);
+                    }
                 }
 
                 // Update description
                 if (item.description) {
                     const descEl = card.querySelector('p');
-                    if (descEl) descEl.textContent = item.description;
+                    if (descEl) {
+                        descEl.textContent = item.description;
+                        console.log('[CMS] Updated vision/mission card description');
+                    }
                 }
             }
         });
@@ -495,33 +594,61 @@ function updateWhatWeBelieve(content) {
 
     // Update title
     if (content.title) {
-        const title = document.querySelector('.what-we-believe h2, .beliefs-section h2');
-        if (title) title.textContent = content.title;
+        const title = document.querySelector('#what-we-believe h2, .what-we-believe-section h2, .belief-container h2');
+        if (title) {
+            title.textContent = content.title;
+            console.log('[CMS] Updated what we believe title:', content.title);
+        }
     }
 
-    // Update intro paragraph
+    // Update intro paragraphs (there are multiple)
     if (content.intro) {
-        const intro = document.querySelector('.what-we-believe .intro, .beliefs-section .intro, .what-we-believe > p:first-of-type');
-        if (intro) intro.textContent = content.intro;
+        // If intro is a string, update the first paragraph
+        if (typeof content.intro === 'string') {
+            const intro = document.querySelector('#what-we-believe .belief-intro:first-of-type, .belief-container .belief-intro:first-of-type');
+            if (intro) {
+                intro.innerHTML = content.intro;
+                console.log('[CMS] Updated first belief intro paragraph');
+            }
+        }
+        // If intro is an array, update all paragraphs
+        else if (Array.isArray(content.intro)) {
+            const introParagraphs = document.querySelectorAll('#what-we-believe .belief-intro, .belief-container .belief-intro');
+            content.intro.forEach((text, idx) => {
+                if (introParagraphs[idx]) {
+                    introParagraphs[idx].innerHTML = text;
+                    console.log('[CMS] Updated belief intro paragraph', idx + 1);
+                }
+            });
+        }
     }
 
-    // Update articles of faith
+    // Update articles of faith (accordion items)
     if (content.articles && Array.isArray(content.articles)) {
-        const articles = document.querySelectorAll('.belief-article, .article-item');
-        content.articles.forEach((article, idx) => {
-            if (articles[idx]) {
-                const articleEl = articles[idx];
+        const accordionItems = document.querySelectorAll('#what-we-believe .accordion-item, .belief-container .accordion-item');
+        console.log('[CMS] Found', accordionItems.length, 'accordion items');
 
-                // Update article title
+        content.articles.forEach((article, idx) => {
+            if (accordionItems[idx]) {
+                const accordionItem = accordionItems[idx];
+
+                // Update article title (in the button span)
                 if (article.title) {
-                    const titleEl = articleEl.querySelector('h3, h4');
-                    if (titleEl) titleEl.textContent = article.title;
+                    const titleEl = accordionItem.querySelector('.accordion-header span, button span');
+                    if (titleEl) {
+                        titleEl.textContent = article.title;
+                        console.log('[CMS] Updated article title:', article.title);
+                    }
                 }
 
-                // Update article content
+                // Update article content (in the accordion-content div)
                 if (article.content) {
-                    const contentEl = articleEl.querySelector('p');
-                    if (contentEl) contentEl.textContent = article.content;
+                    const contentEl = accordionItem.querySelector('.accordion-content');
+                    if (contentEl) {
+                        // Replace the entire content with new HTML
+                        contentEl.innerHTML = article.content;
+                        console.log('[CMS] Updated article content for:', article.title);
+                    }
                 }
             }
         });
@@ -537,31 +664,44 @@ function updateOurName(content) {
 
     // Update label
     if (content.label) {
-        const label = document.querySelector('.our-name .section-label, .name-section .section-label');
-        if (label) label.textContent = content.label;
+        const label = document.querySelector('#our-name .section-label, .our-name-section .section-label, .name-container .section-label');
+        if (label) {
+            label.textContent = content.label;
+            console.log('[CMS] Updated our name label:', content.label);
+        }
     }
 
     // Update title
     if (content.title) {
-        const title = document.querySelector('.our-name h2, .name-section h2');
-        if (title) title.textContent = content.title;
+        const title = document.querySelector('#our-name h2, .our-name-section h2, .name-container h2');
+        if (title) {
+            title.textContent = content.title;
+            console.log('[CMS] Updated our name title:', content.title);
+        }
     }
 
-    // Update paragraphs
+    // Update paragraphs (NOT including the mission-quote paragraph)
     if (content.paragraphs && Array.isArray(content.paragraphs)) {
-        const paragraphs = document.querySelectorAll('.our-name p, .name-section p');
+        // Select only regular paragraphs, not the conclusion/quote
+        const paragraphs = document.querySelectorAll('#our-name p:not(.mission-quote), .name-container p:not(.mission-quote)');
+        console.log('[CMS] Found', paragraphs.length, 'paragraphs in our name section');
+
         content.paragraphs.forEach((text, idx) => {
             if (paragraphs[idx]) {
-                paragraphs[idx].textContent = text;
+                paragraphs[idx].innerHTML = text;
+                console.log('[CMS] Updated paragraph', idx + 1);
             }
         });
         console.log('[CMS] Updated', content.paragraphs.length, 'paragraphs in our name section');
     }
 
-    // Update conclusion if provided
+    // Update conclusion if provided (the mission-quote paragraph)
     if (content.conclusion) {
-        const conclusion = document.querySelector('.our-name .conclusion, .name-section .conclusion');
-        if (conclusion) conclusion.textContent = content.conclusion;
+        const conclusion = document.querySelector('#our-name .mission-quote, .name-container .mission-quote');
+        if (conclusion) {
+            conclusion.innerHTML = content.conclusion;
+            console.log('[CMS] Updated our name conclusion');
+        }
     }
 }
 
@@ -573,22 +713,32 @@ function updateOurHistory(content) {
 
     // Update label
     if (content.label) {
-        const label = document.querySelector('.our-history .section-label, .history-section .section-label');
-        if (label) label.textContent = content.label;
+        const label = document.querySelector('#our-story .section-label, .our-story-section .section-label, .story-content .section-label');
+        if (label) {
+            label.textContent = content.label;
+            console.log('[CMS] Updated our history label:', content.label);
+        }
     }
 
     // Update title
     if (content.title) {
-        const title = document.querySelector('.our-history h2, .history-section h2');
-        if (title) title.textContent = content.title;
+        const title = document.querySelector('#our-story h2, .our-story-section h2, .story-content h2');
+        if (title) {
+            title.textContent = content.title;
+            console.log('[CMS] Updated our history title:', content.title);
+        }
     }
 
-    // Update paragraphs
+    // Update paragraphs (NOT including image captions)
     if (content.paragraphs && Array.isArray(content.paragraphs)) {
-        const paragraphs = document.querySelectorAll('.our-history p, .history-section p');
+        // Select only the main content paragraphs, not image captions
+        const paragraphs = document.querySelectorAll('#our-story .story-content > p, .story-content > p:not(.image-caption)');
+        console.log('[CMS] Found', paragraphs.length, 'history paragraphs');
+
         content.paragraphs.forEach((text, idx) => {
             if (paragraphs[idx]) {
-                paragraphs[idx].textContent = text;
+                paragraphs[idx].innerHTML = text;
+                console.log('[CMS] Updated history paragraph', idx + 1);
             }
         });
         console.log('[CMS] Updated', content.paragraphs.length, 'history paragraphs');
