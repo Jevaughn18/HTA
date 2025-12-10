@@ -262,6 +262,13 @@
     background: white;
 }
 
+/* Make all textareas resizable */
+textarea.text-input,
+.text-editor {
+    resize: vertical;
+    min-height: 80px;
+}
+
 .text-input:focus,
 .text-editor:focus {
     outline: none;
@@ -271,7 +278,6 @@
 
 .text-editor {
     font-family: 'Courier New', monospace;
-    resize: vertical;
     min-height: 120px;
 }
 

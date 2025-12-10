@@ -68,7 +68,7 @@ function ContentEditor({ page }) {
     // Sort sections according to website layout order
     const sortSectionsByPageOrder = (sections, page) => {
         const orderMap = {
-            home: ['hero', 'service-times', 'service-details', 'vision', 'vision-gallery', 'next-steps', 'events', 'generosity', 'locations'],
+            home: ['hero', 'service-times', 'service-details', 'upcoming-events', 'vision', 'vision-gallery', 'next-steps', 'generosity', 'locations'],
             about: ['hero', 'who-we-are', 'what-we-believe', 'our-story', 'our-name', 'leadership'],
             departments: ['hero', 'national-youth', 'sunday-school', 'mens-department', 'womens-department', 'national-ladies'],
             media: ['hero', 'youtube-channels', 'recent-services', 'prayer-meeting', 'weekly-schedule'],
