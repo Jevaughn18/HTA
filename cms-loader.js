@@ -451,34 +451,21 @@ function updateUpcomingEvents(content) {
             if (eventCards[idx]) {
                 const card = eventCards[idx];
 
-                // Update image
+                // Update image (and alt text with title/date info)
                 if (event.image) {
                     const img = card.querySelector('img');
                     if (img) {
                         const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
                         img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
+
+                        // Update alt text to include event info since we removed the text overlay
+                        if (event.title && event.date) {
+                            img.alt = `${event.title} - ${event.date}`;
+                        } else if (event.title) {
+                            img.alt = event.title;
+                        }
+                        console.log('[CMS] Updated event image:', event.image);
                     }
-                }
-
-                // Update title
-                if (event.title) {
-                    const titleEl = card.querySelector('h3');
-                    if (titleEl) titleEl.textContent = event.title;
-                }
-
-                // Update date (preserving the calendar icon)
-                if (event.date) {
-                    const dateEl = card.querySelector('.event-content p, .event-date, .date, p');
-                    if (dateEl) {
-                        dateEl.innerHTML = `<i class="far fa-calendar"></i> ${event.date}`;
-                        console.log('[CMS] Updated event date:', event.date);
-                    }
-                }
-
-                // Update description
-                if (event.description) {
-                    const descEl = card.querySelector('.event-description');
-                    if (descEl) descEl.textContent = event.description;
                 }
             }
         });
