@@ -717,25 +717,27 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                 {arrayValue.map((item, idx) => (
                     <div key={idx} className="array-item-editor">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                            <h4 style={{ margin: 0 }}>Item {idx + 1}</h4>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const newArray = arrayValue.filter((_, i) => i !== idx);
-                                    setLocalContent({ ...localContent, [key]: newArray });
-                                }}
-                                style={{
-                                    padding: '6px 12px',
-                                    backgroundColor: '#dc3545',
-                                    color: 'white',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                    fontSize: '0.85em'
-                                }}
-                            >
-                                Remove
-                            </button>
+                            <h4 style={{ margin: 0 }}>{key === 'events' ? `Event ${idx + 1}` : `Item ${idx + 1}`}</h4>
+                            {key === 'events' && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newArray = arrayValue.filter((_, i) => i !== idx);
+                                        setLocalContent({ ...localContent, [key]: newArray });
+                                    }}
+                                    style={{
+                                        padding: '6px 12px',
+                                        backgroundColor: '#dc3545',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer',
+                                        fontSize: '0.85em'
+                                    }}
+                                >
+                                    Remove
+                                </button>
+                            )}
                         </div>
                         {typeof item === 'object' ? (
                             <div className="item-fields">
@@ -965,8 +967,8 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                         )}
                     </div>
                 ))}
-                {/* Add Item button - limit to 4 items for events */}
-                {(key !== 'events' || arrayValue.length < 4) && (
+                {/* Add Event button - only for events array */}
+                {key === 'events' && arrayValue.length < 4 && (
                     <button
                         type="button"
                         onClick={() => {
@@ -980,9 +982,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                 }, {});
                             } else {
                                 // For events, provide a default structure
-                                newItem = key === 'events'
-                                    ? { title: '', date: '', image: '' }
-                                    : (typeof arrayValue[0] === 'object' ? {} : '');
+                                newItem = { title: '', date: '', image: '' };
                             }
                             const newArray = [...arrayValue, newItem];
                             setLocalContent({ ...localContent, [key]: newArray });
@@ -1000,7 +1000,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                             width: '100%'
                         }}
                     >
-                        + Add {key === 'events' ? 'Event' : 'Item'} {key === 'events' && arrayValue.length >= 4 ? '' : `(${arrayValue.length}/4)`}
+                        + Add Event ({arrayValue.length}/4)
                     </button>
                 )}
                 {key === 'events' && arrayValue.length >= 4 && (
