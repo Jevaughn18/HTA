@@ -1,0 +1,403 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { contentAPI, mediaAPI } from '../services/api';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import './ContentEditor.css';
+
+function ContentEditor({ page }) {
+    const [sections, setSections] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        loadContent();
+    }, [page]);
+
+    const loadContent = async () => {
+        try {
+            setLoading(true);
+            const response = await contentAPI.getPageContent(page);
+            setSections(response.data);
+        } catch (error) {
+            console.error('Error loading content:', error);
+            // If no content exists, initialize with default sections
+            initializeDefaultSections();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const initializeDefaultSections = () => {
+        const defaultSections = {
+            home: [
+                { section: 'hero', content: { title: '', subtitle: '', backgroundImage: '' } },
+                { section: 'service-times', content: { time: '', location: '' } },
+                { section: 'vision', content: { text: '' } }
+            ],
+            about: [
+                { section: 'hero', content: { title: 'About Us' } },
+                { section: 'story', content: { text: '' } },
+                { section: 'leadership', content: [] }
+            ],
+            // Add defaults for other pages...
+        };
+
+        setSections(defaultSections[page] || []);
+    };
+
+    const handleContentChange = async (sectionName, newContent) => {
+        try {
+            setSaving(true);
+            await contentAPI.updateContent(page, sectionName, newContent);
+
+            setSections(sections.map(s =>
+                s.section === sectionName ? { ...s, content: newContent } : s
+            ));
+
+            showMessage('✓ Saved successfully');
+        } catch (error) {
+            showMessage('✗ Failed to save', true);
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleImageUpload = async (sectionName, file) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await mediaAPI.uploadFile(formData);
+            const imagePath = response.data.file.path;
+
+            const section = sections.find(s => s.section === sectionName);
+            const updatedContent = { ...section.content, backgroundImage: imagePath };
+
+            await handleContentChange(sectionName, updatedContent);
+
+            return imagePath;
+        } catch (error) {
+            console.error('Upload failed:', error);
+            showMessage('✗ Image upload failed', true);
+        }
+    };
+
+    const showMessage = (msg, isError = false) => {
+        setMessage(msg);
+        setTimeout(() => setMessage(''), 3000);
+    };
+
+    if (loading) {
+        return <div className="loading">Loading content...</div>;
+    }
+
+    return (
+        <div className="content-editor">
+            {message && (
+                <div className={`save-message ${message.includes('✗') ? 'error' : 'success'}`}>
+                    {message}
+                </div>
+            )}
+
+            <div className="sections-grid">
+                {sections.map((section, index) => (
+                    <SectionCard
+                        key={index}
+                        section={section}
+                        onUpdate={(content) => handleContentChange(section.section, content)}
+                        onImageUpload={(file) => handleImageUpload(section.section, file)}
+                        saving={saving}
+                    />
+                ))}
+
+                {sections.length === 0 && (
+                    <div className="empty-state">
+                        <h3>No content yet</h3>
+                        <p>Start by adding some content sections for this page</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function SectionCard({ section, onUpdate, onImageUpload, saving }) {
+    const [localContent, setLocalContent] = useState(section.content);
+    const [isEditing, setIsEditing] = useState(false);
+    const quillRef = useRef(null);
+
+    const handleSave = () => {
+        onUpdate(localContent);
+        setIsEditing(false);
+    };
+
+    const renderPreview = () => {
+        if (typeof localContent === 'string') {
+            // For HTML content, render it as HTML
+            return (
+                <div
+                    className="preview-text"
+                    dangerouslySetInnerHTML={{ __html: localContent || '<em style="color: #999">No content yet</em>' }}
+                />
+            );
+        }
+
+        if (typeof localContent === 'object' && localContent !== null) {
+            return (
+                <div className="preview-fields">
+                    {Object.keys(localContent).map(key => {
+                        const value = localContent[key];
+
+                        // Skip empty values
+                        if (!value || (Array.isArray(value) && value.length === 0)) {
+                            return null;
+                        }
+
+                        // Handle arrays (like leaders, events)
+                        if (Array.isArray(value)) {
+                            return (
+                                <div key={key} className="preview-field">
+                                    <strong>{formatFieldName(key)}:</strong>
+                                    <div style={{ marginLeft: '20px' }}>
+                                        {value.map((item, idx) => (
+                                            <div key={idx} style={{ marginBottom: '10px', padding: '10px', background: '#f9f9f9', borderRadius: '4px' }}>
+                                                {typeof item === 'object' ?
+                                                    Object.keys(item).map(subKey => (
+                                                        <div key={subKey}>
+                                                            <strong>{formatFieldName(subKey)}:</strong> {item[subKey] || <em style={{ color: '#999' }}>Not set</em>}
+                                                        </div>
+                                                    ))
+                                                : item}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // Handle nested objects
+                        if (typeof value === 'object') {
+                            return (
+                                <div key={key} className="preview-field">
+                                    <strong>{formatFieldName(key)}:</strong>
+                                    <div style={{ marginLeft: '20px' }}>
+                                        {Object.keys(value).map(subKey => (
+                                            <div key={subKey}>
+                                                <strong>{formatFieldName(subKey)}:</strong> {value[subKey] || <em style={{ color: '#999' }}>Not set</em>}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        // Handle images
+                        if (key.toLowerCase().includes('image') && value) {
+                            return (
+                                <div key={key} className="preview-field">
+                                    <strong>{formatFieldName(key)}:</strong>
+                                    <img
+                                        src={`http://localhost:5001${value}`}
+                                        alt={key}
+                                        style={{ maxWidth: '200px', marginTop: '8px', borderRadius: '4px' }}
+                                    />
+                                </div>
+                            );
+                        }
+
+                        // Handle regular text fields
+                        // Check if it's HTML content
+                        if (typeof value === 'string' && (value.includes('<') && value.includes('>'))) {
+                            return (
+                                <div key={key} className="preview-field">
+                                    <strong>{formatFieldName(key)}:</strong>
+                                    <div dangerouslySetInnerHTML={{ __html: value }} />
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <div key={key} className="preview-field">
+                                <strong>{formatFieldName(key)}:</strong> {value}
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        return <p>No content available</p>;
+    };
+
+    const formatFieldName = (name) => {
+        // Convert camelCase or snake_case to readable format
+        return name
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/_/g, ' ')
+            .replace(/-/g, ' ')
+            .trim()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+    };
+
+    const renderEditor = () => {
+        if (typeof localContent === 'string') {
+            return (
+                <ReactQuill
+                    ref={quillRef}
+                    value={localContent}
+                    onChange={setLocalContent}
+                    theme="snow"
+                    modules={{
+                        toolbar: [
+                            ['bold', 'italic', 'underline'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link'],
+                            ['clean']
+                        ]
+                    }}
+                />
+            );
+        }
+
+        if (typeof localContent === 'object') {
+            return (
+                <div className="object-editor">
+                    {Object.keys(localContent).map(key => {
+                        const value = localContent[key];
+                        const isImage = key.toLowerCase().includes('image');
+                        const isUrl = key.toLowerCase().includes('url') || key.toLowerCase().includes('link');
+                        const isHtml = typeof value === 'string' && value.includes('<') && value.includes('>');
+                        const isLongText = typeof value === 'string' && value.length > 100;
+
+                        return (
+                            <div key={key} className="field-group">
+                                <label>{formatFieldName(key)}</label>
+                                {isImage ? (
+                                    <div>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                const file = e.target.files[0];
+                                                if (file) onImageUpload(file);
+                                            }}
+                                        />
+                                        {localContent[key] && (
+                                            <img
+                                                src={`http://localhost:5001${localContent[key]}`}
+                                                alt="Preview"
+                                                className="image-preview"
+                                            />
+                                        )}
+                                    </div>
+                                ) : isHtml || isLongText || key.toLowerCase() === 'text' || key.toLowerCase() === 'description' ? (
+                                    <ReactQuill
+                                        key={`quill-${key}`}
+                                        value={value || ''}
+                                        onChange={(newValue) => setLocalContent({
+                                            ...localContent,
+                                            [key]: newValue
+                                        })}
+                                        theme="snow"
+                                        modules={{
+                                            toolbar: [
+                                                ['bold', 'italic', 'underline'],
+                                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                                ['link'],
+                                                ['clean']
+                                            ]
+                                        }}
+                                    />
+                                ) : Array.isArray(value) ? (
+                                    <textarea
+                                        value={JSON.stringify(value, null, 2)}
+                                        onChange={(e) => {
+                                            try {
+                                                const parsed = JSON.parse(e.target.value);
+                                                setLocalContent({
+                                                    ...localContent,
+                                                    [key]: parsed
+                                                });
+                                            } catch (err) {
+                                                // Invalid JSON, don't update
+                                            }
+                                        }}
+                                        className="text-input"
+                                        rows="6"
+                                        style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}
+                                    />
+                                ) : typeof value === 'object' ? (
+                                    <textarea
+                                        value={JSON.stringify(value, null, 2)}
+                                        onChange={(e) => {
+                                            try {
+                                                const parsed = JSON.parse(e.target.value);
+                                                setLocalContent({
+                                                    ...localContent,
+                                                    [key]: parsed
+                                                });
+                                            } catch (err) {
+                                                // Invalid JSON, don't update
+                                            }
+                                        }}
+                                        className="text-input"
+                                        rows="6"
+                                        style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}
+                                    />
+                                ) : (
+                                    <input
+                                        type="text"
+                                        value={value || ''}
+                                        onChange={(e) => setLocalContent({
+                                            ...localContent,
+                                            [key]: e.target.value
+                                        })}
+                                        className="text-input"
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        return <p>Unsupported content type</p>;
+    };
+
+    return (
+        <div className="section-card">
+            <div className="section-header">
+                <h3>{section.section.replace(/-/g, ' ').toUpperCase()}</h3>
+                {!isEditing && (
+                    <button onClick={() => setIsEditing(true)} className="edit-button">
+                        ✏️ Edit
+                    </button>
+                )}
+            </div>
+
+            {isEditing ? (
+                <div className="section-content">
+                    {renderEditor()}
+                    <div className="section-actions">
+                        <button onClick={handleSave} disabled={saving} className="save-button">
+                            {saving ? 'Saving...' : '💾 Save Changes'}
+                        </button>
+                        <button onClick={() => setIsEditing(false)} className="cancel-button">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className="section-preview">
+                    {renderPreview()}
+                </div>
+            )}
+        </div>
+    );
+}
+
+export default ContentEditor;

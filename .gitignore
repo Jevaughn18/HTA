@@ -1,6 +1,3 @@
-# CMS directory (broad exclusion)
-hta-cms/
-
 # Environment variables (explicit protection)
 .env
 .env.local

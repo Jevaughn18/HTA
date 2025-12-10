@@ -1,0 +1,637 @@
+/* ========================================
+   CONTENT EDITOR - CLEAN & ORGANIZED
+   ======================================== */
+
+.content-editor {
+    position: relative;
+}
+
+/* ========================================
+   SAVE MESSAGE
+   ======================================== */
+
+.save-message {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 0.95rem;
+}
+
+.save-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.save-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.loading {
+    text-align: center;
+    padding: 3rem 2rem;
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* ========================================
+   SECTIONS GRID
+   ======================================== */
+
+.sections-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* ========================================
+   SECTION CARD - CLEAN DESIGN
+   ======================================== */
+
+.section-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #333;
+}
+
+/* ========================================
+   EDIT BUTTON
+   ======================================== */
+
+.edit-button {
+    background: #4B0082;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.edit-button:hover {
+    background: #6A0DAD;
+}
+
+/* ========================================
+   SECTION CONTENT
+   ======================================== */
+
+.section-content {
+    padding: 1.5rem;
+    background: white;
+}
+
+.section-preview {
+    padding: 1.5rem;
+    background: white;
+    line-height: 1.6;
+    min-height: 80px;
+}
+
+/* ========================================
+   PREVIEW STYLES
+   ======================================== */
+
+.preview-text {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.preview-fields {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.preview-field {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-field:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.preview-field strong {
+    color: #4B0082;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0.2px;
+}
+
+.preview-field > div {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.preview-field em {
+    color: #999;
+    font-style: italic;
+}
+
+/* ========================================
+   ARRAY FIELD DISPLAY (EVENTS, LOCATIONS)
+   ======================================== */
+
+.array-field {
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+.array-items {
+    display: grid;
+    gap: 1rem;
+    margin-top: 0.75rem;
+}
+
+.array-item-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.item-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    align-items: flex-start;
+}
+
+.item-row:last-child {
+    margin-bottom: 0;
+}
+
+.item-label {
+    font-weight: 700;
+    color: #555;
+    font-size: 0.85rem;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.item-value {
+    color: #333;
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+
+/* ========================================
+   OBJECT EDITOR (FORM FIELDS)
+   ======================================== */
+
+.object-editor {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-group label {
+    font-weight: 700;
+    color: #333;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.text-input,
+.text-editor {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    background: white;
+}
+
+.text-input:focus,
+.text-editor:focus {
+    outline: none;
+    border-color: #4B0082;
+    box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.1);
+}
+
+.text-editor {
+    font-family: 'Courier New', monospace;
+    resize: vertical;
+    min-height: 120px;
+}
+
+.json-input {
+    background: #2d2d2d;
+    color: #a9dc76;
+    border-color: #444;
+    font-size: 0.9rem;
+}
+
+.json-input:focus {
+    border-color: #D4A017;
+    box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.1);
+}
+
+/* ========================================
+   IMAGE FIELD & PREVIEW
+   ======================================== */
+
+.image-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.image-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.image-input-group .text-input {
+    flex: 1;
+}
+
+.upload-button {
+    background: #4B0082;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.upload-button:hover {
+    background: #6A0DAD;
+}
+
+.image-preview {
+    max-width: 350px;
+    max-height: 200px;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+/* ========================================
+   ARRAY EDITOR (Events, Locations, Cards)
+   ======================================== */
+
+.array-editor {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.array-item-editor {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1.25rem;
+}
+
+.array-item-editor h4 {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #4B0082;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.item-fields {
+    display: grid;
+    gap: 1rem;
+}
+
+.nested-object {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+/* ========================================
+   SECTION ACTIONS (BUTTONS)
+   ======================================== */
+
+.section-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.save-button,
+.cancel-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.save-button {
+    background: #D4A017;
+    color: white;
+}
+
+.save-button:hover:not(:disabled) {
+    background: #b88a14;
+}
+
+.save-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cancel-button {
+    background: #e9ecef;
+    color: #666;
+}
+
+.cancel-button:hover {
+    background: #dee2e6;
+    color: #333;
+}
+
+/* ========================================
+   EMPTY STATE
+   ======================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #999;
+}
+
+.empty-state h3 {
+    margin: 0 0 0.75rem 0;
+    color: #666;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .section-header {
+        padding: 1rem;
+    }
+
+    .section-header h3 {
+        font-size: 0.85rem;
+    }
+
+    .edit-button {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .section-content,
+    .section-preview {
+        padding: 1rem;
+    }
+
+    .save-message {
+        top: 1rem;
+        right: 1rem;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .item-row {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .item-label {
+        min-width: auto;
+    }
+}
+
+/* ========================================
+   GALLERY EDITOR - GRID LAYOUT
+   ======================================== */
+
+.gallery-editor {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 2px dashed #e5e7eb;
+}
+
+.gallery-item-editor {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-item-editor:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.gallery-item-preview {
+    width: 100%;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+.gallery-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    background: #f9fafb;
+}
+
+.gallery-placeholder i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+.gallery-placeholder span {
+    font-size: 0.85rem;
+}
+
+.gallery-item-controls {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gallery-path-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #4b5563;
+}
+
+.gallery-path-input:focus {
+    outline: none;
+    border-color: #4B0082;
+    box-shadow: 0 0 0 3px rgba(75, 0, 130, 0.1);
+}
+
+.gallery-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #4B0082;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.gallery-upload-btn:hover {
+    background: #3a006b;
+}
+
+.gallery-upload-btn i {
+    font-size: 0.9rem;
+}
+
+.gallery-class-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: #e0e7ff;
+    color: #4338ca;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Responsive gallery grid */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .gallery-item-preview {
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .gallery-item-preview {
+        height: 100px;
+    }
+}
+
