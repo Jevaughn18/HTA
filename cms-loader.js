@@ -466,15 +466,18 @@ function updateUpcomingEvents(content) {
                     if (titleEl) titleEl.textContent = event.title;
                 }
 
-                // Update date
+                // Update date (preserving the calendar icon)
                 if (event.date) {
-                    const dateEl = card.querySelector('.event-date, .date');
-                    if (dateEl) dateEl.textContent = event.date;
+                    const dateEl = card.querySelector('.event-content p, .event-date, .date, p');
+                    if (dateEl) {
+                        dateEl.innerHTML = `<i class="far fa-calendar"></i> ${event.date}`;
+                        console.log('[CMS] Updated event date:', event.date);
+                    }
                 }
 
                 // Update description
                 if (event.description) {
-                    const descEl = card.querySelector('p');
+                    const descEl = card.querySelector('.event-description');
                     if (descEl) descEl.textContent = event.description;
                 }
             }
