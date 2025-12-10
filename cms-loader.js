@@ -444,31 +444,44 @@ function updateUpcomingEvents(content) {
         if (title) title.textContent = content.title;
     }
 
-    // Update event cards
+    // Update event cards - dynamically create/update cards based on CMS data
     if (content.events && Array.isArray(content.events)) {
-        const eventCards = document.querySelectorAll('.event-card');
-        content.events.forEach((event, idx) => {
-            if (eventCards[idx]) {
-                const card = eventCards[idx];
+        const eventsGrid = document.querySelector('.events-grid');
+        if (eventsGrid) {
+            // Clear existing cards
+            eventsGrid.innerHTML = '';
 
-                // Update image (and alt text with title/date info)
+            // Create cards for each event (up to 4)
+            content.events.slice(0, 4).forEach((event, idx) => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+
+                const img = document.createElement('img');
                 if (event.image) {
-                    const img = card.querySelector('img');
-                    if (img) {
-                        const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
-                        img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
-
-                        // Update alt text to include event info since we removed the text overlay
-                        if (event.title && event.date) {
-                            img.alt = `${event.title} - ${event.date}`;
-                        } else if (event.title) {
-                            img.alt = event.title;
-                        }
-                        console.log('[CMS] Updated event image:', event.image);
-                    }
+                    const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
+                    img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
+                } else {
+                    img.src = 'assets/bankspraise.jpg'; // Fallback image
                 }
-            }
-        });
+
+                // Set alt text with event info
+                if (event.title && event.date) {
+                    img.alt = `${event.title} - ${event.date}`;
+                } else if (event.title) {
+                    img.alt = event.title;
+                } else {
+                    img.alt = 'Event';
+                }
+                img.loading = 'lazy';
+
+                card.appendChild(img);
+                eventsGrid.appendChild(card);
+
+                console.log('[CMS] Created event card', idx + 1, ':', event.title || 'Untitled');
+            });
+
+            console.log('[CMS] Rendered', content.events.length, 'event cards');
+        }
     }
 
     // Update button

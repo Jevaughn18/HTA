@@ -716,7 +716,27 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
             <div className="array-editor">
                 {arrayValue.map((item, idx) => (
                     <div key={idx} className="array-item-editor">
-                        <h4>Item {idx + 1}</h4>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                            <h4 style={{ margin: 0 }}>Item {idx + 1}</h4>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const newArray = arrayValue.filter((_, i) => i !== idx);
+                                    setLocalContent({ ...localContent, [key]: newArray });
+                                }}
+                                style={{
+                                    padding: '6px 12px',
+                                    backgroundColor: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.85em'
+                                }}
+                            >
+                                Remove
+                            </button>
+                        </div>
                         {typeof item === 'object' ? (
                             <div className="item-fields">
                                 {Object.keys(item).map(subKey => {
@@ -945,6 +965,57 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                         )}
                     </div>
                 ))}
+                {/* Add Item button - limit to 4 items for events */}
+                {(key !== 'events' || arrayValue.length < 4) && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            // Create a template based on the first item's structure
+                            let newItem;
+                            if (arrayValue.length > 0 && typeof arrayValue[0] === 'object') {
+                                // Clone the structure of the first item with empty values
+                                newItem = Object.keys(arrayValue[0]).reduce((acc, key) => {
+                                    acc[key] = '';
+                                    return acc;
+                                }, {});
+                            } else {
+                                // For events, provide a default structure
+                                newItem = key === 'events'
+                                    ? { title: '', date: '', image: '' }
+                                    : (typeof arrayValue[0] === 'object' ? {} : '');
+                            }
+                            const newArray = [...arrayValue, newItem];
+                            setLocalContent({ ...localContent, [key]: newArray });
+                        }}
+                        style={{
+                            marginTop: '16px',
+                            padding: '10px 20px',
+                            backgroundColor: '#28a745',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '0.9em',
+                            fontWeight: '500',
+                            width: '100%'
+                        }}
+                    >
+                        + Add {key === 'events' ? 'Event' : 'Item'} {key === 'events' && arrayValue.length >= 4 ? '' : `(${arrayValue.length}/4)`}
+                    </button>
+                )}
+                {key === 'events' && arrayValue.length >= 4 && (
+                    <div style={{
+                        marginTop: '12px',
+                        padding: '12px',
+                        backgroundColor: '#fff3cd',
+                        border: '1px solid #ffc107',
+                        borderRadius: '4px',
+                        color: '#856404',
+                        fontSize: '0.9em'
+                    }}>
+                        Maximum of 4 events reached
+                    </div>
+                )}
             </div>
         );
     };
