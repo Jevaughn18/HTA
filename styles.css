@@ -3070,14 +3070,21 @@ section[id] {
     }
 
     .story-container-with-image {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 3rem;
     }
 
+    /* Move Bishop Carter image to appear first on mobile */
     .story-image {
+        order: -1;
         max-width: 400px;
         margin: 0 auto;
         margin-top: 0;
+    }
+
+    .story-content {
+        order: 0;
     }
 
     .history-images {
