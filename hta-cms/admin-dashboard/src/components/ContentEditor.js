@@ -220,8 +220,8 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                         }
 
                         if (Array.isArray(value)) {
-                            // Check if this is any kind of image array (gallery, history images, etc.)
-                            const isImageArray = value.length > 0 && (
+                            // Events should always use standard array preview, not gallery preview
+                            const isImageArray = key !== 'events' && value.length > 0 && (
                                 (typeof value[0] === 'string' && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(value[0])) ||
                                 (typeof value[0] === 'object' && value[0] !== null &&
                                  ('src' in value[0] || 'image' in value[0] || 'img' in value[0]))
@@ -700,21 +700,17 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
 
     const renderArrayEditor = (arrayValue, key) => {
         // Events should always use the standard array editor, not the gallery editor
-        if (key === 'events') {
-            // Skip image array detection for events
-        } else {
-            // Check if this is any kind of image array (gallery, history images, vision gallery, etc.)
-            const isImageArray = arrayValue.length > 0 && (
-                (typeof arrayValue[0] === 'string' && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(arrayValue[0])) ||
-                (typeof arrayValue[0] === 'object' && arrayValue[0] !== null &&
-                 ('src' in arrayValue[0] || 'image' in arrayValue[0] || 'img' in arrayValue[0]))
-            );
+        // Check if this is any kind of image array (gallery, history images, vision gallery, etc.)
+        const isImageArray = key !== 'events' && arrayValue.length > 0 && (
+            (typeof arrayValue[0] === 'string' && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(arrayValue[0])) ||
+            (typeof arrayValue[0] === 'object' && arrayValue[0] !== null &&
+             ('src' in arrayValue[0] || 'image' in arrayValue[0] || 'img' in arrayValue[0]))
+        );
 
-            console.log(`[renderArrayEditor] key="${key}", isImageArray=${isImageArray}, arrayValue[0]:`, arrayValue[0]);
+        console.log(`[renderArrayEditor] key="${key}", isImageArray=${isImageArray}, arrayValue[0]:`, arrayValue[0]);
 
-            if (isImageArray) {
-                return renderGalleryEditor(arrayValue, key);
-            }
+        if (isImageArray) {
+            return renderGalleryEditor(arrayValue, key);
         }
 
         return (
