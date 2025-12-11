@@ -151,12 +151,14 @@ function updateHeroSection(content) {
     if (heroGallery && content.galleryImages.length > 0) {
         console.log('[CMS] Updating hero gallery with', content.galleryImages.length, 'images');
 
-        heroGallery.innerHTML = content.galleryImages.map(img => {
-            const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-            const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
-            const className = img.class ? `gallery-cell ${img.class}` : 'gallery-cell';
-            return `<div class="${className}" style="background-image: url('${imgSrc}');"></div>`;
-        }).join('');
+        heroGallery.innerHTML = content.galleryImages
+            .filter(img => img && img.src && img.src.trim() !== '') // Filter out invalid images
+            .map(img => {
+                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
+                const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
+                const className = img.class ? `gallery-cell ${img.class}` : 'gallery-cell';
+                return `<div class="${className}" style="background-image: url('${imgSrc}');"></div>`;
+            }).join('');
 
         console.log('[CMS] Hero gallery updated!');
     }
