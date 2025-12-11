@@ -776,3 +776,108 @@
         page-break-inside: avoid;
     }
 }
+
+/* ========================================
+   EVENT CAROUSEL RESPONSIVE STYLES
+   ======================================== */
+
+/* Mobile - Small (up to 480px) */
+@media (max-width: 480px) {
+    .event-carousel {
+        padding: 0 3rem;
+    }
+
+    .carousel-item.event-poster-card {
+        width: 280px;
+        height: 190px;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    .carousel-track {
+        gap: 1rem;
+    }
+}
+
+/* Mobile - Medium (481px to 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .event-carousel {
+        padding: 0 3.5rem;
+    }
+
+    .carousel-item.event-poster-card {
+        width: 350px;
+        height: 235px;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .carousel-track {
+        gap: 1.5rem;
+    }
+}
+
+/* Tablet - Portrait (768px to 912px) */
+@media (min-width: 768px) and (max-width: 912px) {
+    .event-carousel {
+        padding: 0 4rem;
+    }
+
+    .carousel-item.event-poster-card {
+        width: 450px;
+        height: 300px;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+
+    .carousel-track {
+        gap: 1.75rem;
+    }
+}
+
+/* Tablet - Landscape (913px to 1200px) */
+@media (min-width: 913px) and (max-width: 1200px) {
+    .event-carousel {
+        padding: 0 4rem;
+    }
+
+    .carousel-item.event-poster-card {
+        width: 500px;
+        height: 335px;
+    }
+
+    .carousel-track {
+        gap: 1.75rem;
+    }
+}
+
+/* Desktop - Small (1201px to 1400px) */
+@media (min-width: 1201px) and (max-width: 1400px) {
+    .carousel-item.event-poster-card {
+        width: 550px;
+        height: 370px;
+    }
+}
+
+/* Desktop - Large (1401px+) - Already styled in main CSS */
+@media (min-width: 1401px) {
+    .carousel-item.event-poster-card {
+        width: 600px;
+        height: 400px;
+    }
+}
