@@ -165,13 +165,36 @@
                 <div class="gold-underline"></div>
                 <a href="events.html" class="btn btn-primary-outline">View More Events</a>
             </div>
-            <div class="events-grid">
-                <div class="event-card">
-                    <img src="assets/bankspraise.jpg" alt="Sunday Service" loading="lazy">
+
+            <!-- Event Carousel - Rectangle Poster Slideshow -->
+            <div id="eventCarousel" class="event-carousel">
+                <button class="carousel-prev" aria-label="Previous event">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        <!-- Original Events -->
+                        <div class="carousel-item event-poster-card">
+                            <img src="assets/bankspraise.jpg" alt="Sunday Service" loading="lazy">
+                        </div>
+                        <div class="carousel-item event-poster-card">
+                            <img src="assets/youth.jpeg" alt="Youth Week" loading="lazy">
+                        </div>
+
+                        <!-- Duplicates for seamless loop -->
+                        <div class="carousel-item event-poster-card">
+                            <img src="assets/bankspraise.jpg" alt="Sunday Service" loading="lazy">
+                        </div>
+                        <div class="carousel-item event-poster-card">
+                            <img src="assets/youth.jpeg" alt="Youth Week" loading="lazy">
+                        </div>
+                    </div>
                 </div>
-                <div class="event-card">
-                    <img src="assets/youth.jpeg" alt="Youth Week" loading="lazy">
-                </div>
+
+                <button class="carousel-next" aria-label="Next event">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </section>
 
@@ -459,6 +482,9 @@
             });
         })();
     </script>
+
+    <!-- Event Carousel Script -->
+    <script src="event-carousel.js"></script>
 
     <!-- CMS Content Loader -->
     <script src="cms-loader.js"></script>

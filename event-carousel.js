@@ -3,7 +3,7 @@
 // Auto-scrolling with manual controls
 // ===================================
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeEventCarousel() {
     const carousel = document.getElementById('eventCarousel');
 
     if (!carousel) return;
@@ -13,10 +13,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = carousel.querySelector('.carousel-prev');
     const nextBtn = carousel.querySelector('.carousel-next');
 
-    if (!track || items.length === 0) return;
+    if (!track || items.length === 0) {
+        console.log('Event carousel: waiting for content...');
+        return;
+    }
 
-    // Configuration
-    const itemWidth = 350 + 24; // item width (350px) + gap (1.5rem = 24px)
+    // Configuration - Dynamic based on screen size
+    function getItemWidth() {
+        const windowWidth = window.innerWidth;
+        if (windowWidth <= 480) return 280 + 16; // mobile small
+        if (windowWidth <= 767) return 350 + 24; // mobile medium
+        if (windowWidth <= 912) return 450 + 28; // tablet portrait
+        if (windowWidth <= 1200) return 500 + 28; // tablet landscape
+        if (windowWidth <= 1400) return 550 + 32; // desktop small
+        return 600 + 32; // desktop large (600px + 2rem gap)
+    }
+
+    let itemWidth = getItemWidth();
     const scrollSpeed = 1; // pixels per frame
     const autoScrollInterval = 30; // milliseconds between frames (faster = smoother)
 
@@ -255,35 +268,29 @@ document.addEventListener('DOMContentLoaded', () => {
     track.style.transition = 'transform 0.5s ease';
     startAutoScroll();
 
-    // Responsive adjustments
-    function updateCarouselDimensions() {
-        const windowWidth = window.innerWidth;
-
-        if (windowWidth <= 480) {
-            // Mobile: smaller items
-            const mobileItemWidth = 250 + 24;
-            return mobileItemWidth;
-        } else if (windowWidth <= 768) {
-            // Tablet: medium items
-            const tabletItemWidth = 280 + 24;
-            return tabletItemWidth;
-        }
-
-        return itemWidth; // Desktop
-    }
-
     // Update on resize (debounced)
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            const newItemWidth = updateCarouselDimensions();
+            const oldItemWidth = itemWidth;
+            itemWidth = getItemWidth();
+
             // Adjust current position proportionally
-            const ratio = newItemWidth / itemWidth;
+            const ratio = itemWidth / oldItemWidth;
             currentPosition *= ratio;
             track.style.transform = `translateX(-${currentPosition}px)`;
         }, 250);
     });
 
     console.log('Event carousel initialized with auto-scroll');
+}
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', initializeEventCarousel);
+
+// Reinitialize when CMS updates content
+document.addEventListener('carouselContentUpdated', () => {
+    console.log('Carousel content updated, reinitializing...');
+    initializeEventCarousel();
 });

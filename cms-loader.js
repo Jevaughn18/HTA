@@ -444,64 +444,47 @@ function updateUpcomingEvents(content) {
         if (title) title.textContent = content.title;
     }
 
-    // Update event cards - dynamically create/update cards based on CMS data
+    // Update event carousel - dynamically create/update carousel items based on CMS data
     if (content.events && Array.isArray(content.events)) {
+        const carouselTrack = document.querySelector('#eventCarousel .carousel-track');
         const eventsGrid = document.querySelector('.events-grid');
-        if (eventsGrid) {
-            // Clear existing cards
-            eventsGrid.innerHTML = '';
 
-            // Create cards for each event (up to 4)
-            content.events.slice(0, 4).forEach((event, idx) => {
-                const card = document.createElement('div');
-                card.className = 'event-card';
+        // Try carousel first (new format), fallback to grid (legacy)
+        const container = carouselTrack || eventsGrid;
 
-                // Create image
-                const img = document.createElement('img');
-                if (event.image) {
-                    const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
-                    img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
-                } else {
-                    img.src = 'assets/bankspraise.jpg'; // Fallback image
-                }
+        if (container) {
+            // Clear existing items
+            container.innerHTML = '';
 
-                // Set alt text with event info
-                if (event.title && event.date) {
-                    img.alt = `${event.title} - ${event.date}`;
-                } else if (event.title) {
-                    img.alt = event.title;
-                } else {
-                    img.alt = 'Event';
-                }
-                img.loading = 'lazy';
+            // Create items for each event (up to 4 original + 4 duplicates for carousel)
+            const events = content.events.slice(0, 4);
+            const useCarousel = !!carouselTrack;
 
-                // Create overlay with event details
-                const overlay = document.createElement('div');
-                overlay.className = 'event-card-overlay';
-
-                // Add title if available
-                if (event.title) {
-                    const title = document.createElement('h3');
-                    title.textContent = event.title;
-                    overlay.appendChild(title);
-                }
-
-                // Add date if available
-                if (event.date) {
-                    const date = document.createElement('p');
-                    date.innerHTML = `<i class="far fa-calendar"></i> ${event.date}`;
-                    overlay.appendChild(date);
-                }
-
-                // Append elements to card
-                card.appendChild(img);
-                card.appendChild(overlay);
-                eventsGrid.appendChild(card);
-
-                console.log('[CMS] Created event card', idx + 1, ':', event.title || 'Untitled');
+            // Add original events
+            events.forEach((event) => {
+                const item = createEventItem(event, useCarousel);
+                container.appendChild(item);
             });
 
-            console.log('[CMS] Rendered', content.events.length, 'event cards');
+            // For carousel: add duplicates for seamless infinite scroll
+            if (useCarousel && events.length > 0) {
+                // Add comment marker for carousel script
+                const comment = document.createComment(' Duplicates for seamless loop ');
+                container.appendChild(comment);
+
+                // Add duplicate items
+                events.forEach((event) => {
+                    const item = createEventItem(event, useCarousel);
+                    container.appendChild(item);
+                });
+
+                console.log('[CMS] Created carousel with', events.length, 'original events +', events.length, 'duplicates');
+
+                // Reinitialize carousel after loading new events
+                reinitializeEventCarousel();
+            } else {
+                console.log('[CMS] Rendered', events.length, 'event cards');
+            }
         }
     }
 
@@ -513,6 +496,49 @@ function updateUpcomingEvents(content) {
             if (content.button.link) btn.href = content.button.link;
         }
     }
+}
+
+/**
+ * Reinitialize event carousel after CMS loads new events
+ * This triggers the carousel script to detect the new items
+ */
+function reinitializeEventCarousel() {
+    // Dispatch a custom event that the carousel script can listen to
+    const event = new CustomEvent('carouselContentUpdated');
+    document.dispatchEvent(event);
+    console.log('[CMS] Dispatched carousel reinitialize event');
+}
+
+/**
+ * Helper function to create event item (carousel or grid card)
+ */
+function createEventItem(event, isCarousel = false) {
+    const item = document.createElement('div');
+    item.className = isCarousel ? 'carousel-item event-poster-card' : 'event-card';
+
+    // Create image
+    const img = document.createElement('img');
+    if (event.image) {
+        const imagePath = event.image.startsWith('/') ? event.image.substring(1) : event.image;
+        img.src = event.image.startsWith('http') ? event.image : `${API_BASE_URL}/${imagePath}`;
+    } else {
+        img.src = 'assets/bankspraise.jpg'; // Fallback image
+    }
+
+    // Set alt text with event info
+    if (event.title && event.date) {
+        img.alt = `${event.title} - ${event.date}`;
+    } else if (event.title) {
+        img.alt = event.title;
+    } else {
+        img.alt = 'Event';
+    }
+    img.loading = 'lazy';
+
+    // Append image to item
+    item.appendChild(img);
+
+    return item;
 }
 
 /**
