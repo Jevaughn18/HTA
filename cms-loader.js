@@ -249,50 +249,33 @@ function updateServiceDetails(content) {
 
     // Update location cards
     if (content.locations && Array.isArray(content.locations)) {
-        const locationCards = document.querySelectorAll('.location-card');
-        console.log('[CMS] Found', locationCards.length, 'location cards');
+        const container = document.querySelector('.service-info-cards');
+        if (container) {
+            // Remove existing location cards
+            const existingLocationCards = container.querySelectorAll('.location-card');
+            existingLocationCards.forEach(card => card.remove());
 
-        content.locations.forEach((location, idx) => {
-            if (locationCards[idx]) {
-                const card = locationCards[idx];
+            // Create and append new location cards
+            content.locations.forEach(location => {
+                const card = document.createElement('div');
+                card.className = 'info-card location-card';
 
-                // Update location name
-                if (location.name) {
-                    const nameEl = card.querySelector('h3');
-                    if (nameEl) {
-                        nameEl.textContent = location.name;
-                        console.log('[CMS] Updated location name:', location.name);
-                    }
-                }
-
-                // Update pastor name
-                if (location.pastor) {
-                    const pastorEl = card.querySelector('.pastor-name');
-                    if (pastorEl) {
-                        pastorEl.textContent = location.pastor;
-                        console.log('[CMS] Updated pastor name:', location.pastor);
-                    }
-                }
-
-                // Update address
-                if (location.address) {
-                    const addressEl = card.querySelector('.address');
-                    if (addressEl) {
-                        addressEl.innerHTML = location.address.replace('\n', '<br>');
-                        console.log('[CMS] Updated address');
-                    }
-                }
-
-                // Update badge if provided
+                let badgeHTML = '';
                 if (location.badge) {
-                    const badgeEl = card.querySelector('.badge');
-                    if (badgeEl) {
-                        badgeEl.textContent = location.badge;
-                    }
+                    badgeHTML = `<span class="badge">${location.badge}</span>`;
                 }
-            }
-        });
-        console.log('[CMS] Updated', content.locations.length, 'location cards');
+
+                card.innerHTML = `
+                    <i class="fas fa-church"></i>
+                    <h3>${location.name || ''}</h3>
+                    <p class="pastor-name">${location.pastor || ''}</p>
+                    <p class="address">${(location.address || '').replace(/\n/, '<br>')}</p>
+                    ${badgeHTML}
+                `;
+                container.appendChild(card);
+            });
+            console.log('[CMS] Recreated', content.locations.length, 'location cards');
+        }
     }
 }
 
