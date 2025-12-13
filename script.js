@@ -276,10 +276,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    function initializeAccordionListeners() {
+    const accordionItems = document.querySelectorAll('.accordion-item');
+
+    accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        const content = item.querySelector('.accordion-content');
+        const icon = header.querySelector('i');
+
+        header.addEventListener('click', () => {
+            const isActive = header.classList.contains('active');
+
+            // Close all items
+            accordionItems.forEach(otherItem => {
+                otherItem.querySelector('.accordion-header').classList.remove('active');
+                otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                const otherIcon = otherItem.querySelector('.accordion-header i');
+                if (otherIcon) {
+                    otherIcon.classList.remove('fa-chevron-up');
+                    otherIcon.classList.add('fa-chevron-down');
+                }
+            });
+
+            // If the clicked item was not already active, open it
+            if (!isActive) {
+                header.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + 'px';
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            }
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (existing code)
+
     // ===================================
     // ACCORDION (What We Believe)
     // ===================================
     initializeAccordionListeners();
+
+    // ... (existing code)
+});
 
     // ===================================
     // VISION GALLERY CAROUSEL
@@ -520,6 +561,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // IMAGE LIGHTBOX FOR HISTORY IMAGES
     // ===================================
     initializeImageLightbox();
+
+    document.addEventListener('carouselContentUpdated', initializeEventLightbox);
 
     // ===================================
     // LOG INITIALIZATION
@@ -893,4 +936,26 @@ function initializeImageLightbox() {
         lightbox.style.display = 'none';
         document.body.style.overflow = '';
     }
+}
+
+function initializeEventLightbox() {
+    const lightbox = document.getElementById('imageLightbox');
+    if (!lightbox) return; // Make sure lightbox exists
+
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    const eventItems = document.querySelectorAll('#eventCarousel .carousel-item');
+    eventItems.forEach(item => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            if (img) {
+                lightbox.style.display = 'block';
+                lightboxImg.src = img.src;
+                lightboxCaption.innerHTML = img.alt; // Use alt text for caption
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
 }

@@ -154,8 +154,14 @@ function updateHeroSection(content) {
         heroGallery.innerHTML = content.galleryImages
             .filter(img => img && img.src && img.src.trim() !== '') // Filter out invalid images
             .map(img => {
-                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-                const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
+                let imgSrc = img.src;
+                if (!imgSrc.startsWith('http')) {
+                    if (imgSrc.startsWith('/')) {
+                        // Path from CMS upload, prepend API URL
+                        imgSrc = `${API_BASE_URL}${imgSrc}`;
+                    }
+                    // else, it's a local path like 'assets/image.jpg', so leave it as is.
+                }
                 const className = img.class ? `gallery-cell ${img.class}` : 'gallery-cell';
                 return `<div class="${className}" style="background-image: url('${imgSrc}');"></div>`;
             }).join('');
@@ -269,7 +275,7 @@ function updateServiceDetails(content) {
                     <i class="fas fa-church"></i>
                     <h3>${location.name || ''}</h3>
                     <p class="pastor-name">${location.pastor || ''}</p>
-                    <p class="address">${(location.address || '').replace(/\n/, '<br>')}</p>
+                    <p class="address">${(location.address || '').replace(/\n/g, '<br>')}</p>
                     ${badgeHTML}
                 `;
                 container.appendChild(card);
