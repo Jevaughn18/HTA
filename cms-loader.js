@@ -471,7 +471,7 @@ function updateUpcomingEvents(content) {
             // For carousel: add duplicates for seamless infinite scroll
             if (useCarousel && events.length > 0) {
                 // Add comment marker for carousel script
-                const comment = document.createComment(' Duplicates for seamless loop ');
+                const comment = document.createComment('Duplicates for seamless loop');
                 container.appendChild(comment);
 
                 // Add duplicate items
