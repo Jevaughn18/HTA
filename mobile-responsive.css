@@ -199,7 +199,8 @@
     }
 
     .hero-video {
-        min-height: 60vh !important;
+        height: 100vh !important;
+        min-height: 500px !important;
     }
 
     .hero-video-bg {
@@ -788,8 +789,12 @@
     }
 
     .carousel-item.event-poster-card {
-        width: 280px;
-        height: 190px;
+        width: 420px;
+        height: 280px;
+    }
+
+    .carousel-container {
+        min-height: 320px;
     }
 
     .carousel-prev,
@@ -811,8 +816,12 @@
     }
 
     .carousel-item.event-poster-card {
-        width: 350px;
-        height: 235px;
+        width: 525px;
+        height: 350px;
+    }
+
+    .carousel-container {
+        min-height: 400px;
     }
 
     .carousel-prev,
@@ -834,8 +843,12 @@
     }
 
     .carousel-item.event-poster-card {
-        width: 450px;
-        height: 300px;
+        width: 675px;
+        height: 450px;
+    }
+
+    .carousel-container {
+        min-height: 500px;
     }
 
     .carousel-prev,
@@ -857,8 +870,12 @@
     }
 
     .carousel-item.event-poster-card {
-        width: 500px;
-        height: 335px;
+        width: 750px;
+        height: 500px;
+    }
+
+    .carousel-container {
+        min-height: 550px;
     }
 
     .carousel-track {
@@ -869,15 +886,23 @@
 /* Desktop - Small (1201px to 1400px) */
 @media (min-width: 1201px) and (max-width: 1400px) {
     .carousel-item.event-poster-card {
-        width: 550px;
-        height: 370px;
+        width: 825px;
+        height: 550px;
+    }
+
+    .carousel-container {
+        min-height: 600px;
     }
 }
 
 /* Desktop - Large (1401px+) - Already styled in main CSS */
 @media (min-width: 1401px) {
     .carousel-item.event-poster-card {
-        width: 600px;
-        height: 400px;
+        width: 900px;
+        height: 600px;
+    }
+
+    .carousel-container {
+        min-height: 650px;
     }
 }

@@ -276,7 +276,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function initializeAccordionListeners() {
+    // ===================================
+    // ACCORDION (What We Believe)
+    // ===================================
     const accordionItems = document.querySelectorAll('.accordion-item');
 
     accordionItems.forEach(item => {
@@ -284,43 +286,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const content = item.querySelector('.accordion-content');
         const icon = header.querySelector('i');
 
-        header.addEventListener('click', () => {
-            const isActive = header.classList.contains('active');
+        if (header && content) {
+            header.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
 
-            // Close all items
-            accordionItems.forEach(otherItem => {
-                otherItem.querySelector('.accordion-header').classList.remove('active');
-                otherItem.querySelector('.accordion-content').style.maxHeight = null;
-                const otherIcon = otherItem.querySelector('.accordion-header i');
-                if (otherIcon) {
-                    otherIcon.classList.remove('fa-chevron-up');
-                    otherIcon.classList.add('fa-chevron-down');
+                // Close all items
+                accordionItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    const otherContent = otherItem.querySelector('.accordion-content');
+                    const otherIcon = otherItem.querySelector('.accordion-header i');
+                    if (otherContent) {
+                        otherContent.style.maxHeight = null;
+                    }
+                    if (otherIcon) {
+                        otherIcon.classList.remove('fa-chevron-up');
+                        otherIcon.classList.add('fa-chevron-down');
+                    }
+                });
+
+                // If the clicked item was not already active, open it
+                if (!isActive) {
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
                 }
             });
-
-            // If the clicked item was not already active, open it
-            if (!isActive) {
-                header.classList.add('active');
-                content.style.maxHeight = content.scrollHeight + 'px';
-                if (icon) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                }
-            }
-        });
+        }
     });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // ... (existing code)
-
-    // ===================================
-    // ACCORDION (What We Believe)
-    // ===================================
-    initializeAccordionListeners();
-
-    // ... (existing code)
-});
 
     // ===================================
     // VISION GALLERY CAROUSEL
