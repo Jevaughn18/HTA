@@ -784,43 +784,72 @@
 /* Mobile - Small (up to 480px) */
 @media (max-width: 480px) {
     .event-carousel {
-        padding: 0 3rem;
+        padding: 0 0.5rem;
     }
 
     .carousel-item.event-poster-card {
-        width: 420px;
-        height: 280px;
+        width: 160px;
+        height: 232px;
     }
 
     .carousel-container {
-        min-height: 320px;
+        min-height: 280px;
     }
 
     .carousel-prev,
     .carousel-next {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
     }
 
     .carousel-track {
-        gap: 1rem;
+        gap: 0.5rem;
+        padding-left: 0.5rem;
     }
 }
 
 /* Mobile - Medium (481px to 767px) */
 @media (min-width: 481px) and (max-width: 767px) {
     .event-carousel {
+        padding: 0 1rem;
+    }
+
+    .carousel-item.event-poster-card {
+        width: 200px;
+        height: 290px;
+    }
+
+    .carousel-container {
+        min-height: 340px;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .carousel-track {
+        gap: 0.5rem;
+        padding-left: 1rem;
+    }
+}
+
+/* Tablet - Portrait (768px to 912px) */
+@media (min-width: 768px) and (max-width: 912px) {
+    .event-carousel {
         padding: 0 3.5rem;
     }
 
     .carousel-item.event-poster-card {
-        width: 525px;
-        height: 350px;
+        width: 465px;
+        height: 675px;
     }
 
     .carousel-container {
-        min-height: 400px;
+        min-height: 725px;
     }
 
     .carousel-prev,
@@ -831,34 +860,8 @@
     }
 
     .carousel-track {
-        gap: 1.5rem;
-    }
-}
-
-/* Tablet - Portrait (768px to 912px) */
-@media (min-width: 768px) and (max-width: 912px) {
-    .event-carousel {
-        padding: 0 4rem;
-    }
-
-    .carousel-item.event-poster-card {
-        width: 675px;
-        height: 450px;
-    }
-
-    .carousel-container {
-        min-height: 500px;
-    }
-
-    .carousel-prev,
-    .carousel-next {
-        width: 55px;
-        height: 55px;
-        font-size: 1.3rem;
-    }
-
-    .carousel-track {
         gap: 1.75rem;
+        padding-left: 3.5rem;
     }
 }
 
@@ -869,39 +872,40 @@
     }
 
     .carousel-item.event-poster-card {
-        width: 750px;
-        height: 500px;
+        width: 520px;
+        height: 750px;
     }
 
     .carousel-container {
-        min-height: 550px;
+        min-height: 800px;
     }
 
     .carousel-track {
         gap: 1.75rem;
+        padding-left: 4rem;
     }
 }
 
 /* Desktop - Small (1201px to 1400px) */
 @media (min-width: 1201px) and (max-width: 1400px) {
     .carousel-item.event-poster-card {
-        width: 825px;
-        height: 550px;
+        width: 570px;
+        height: 825px;
     }
 
     .carousel-container {
-        min-height: 600px;
+        min-height: 875px;
     }
 }
 
 /* Desktop - Large (1401px+) - Already styled in main CSS */
 @media (min-width: 1401px) {
     .carousel-item.event-poster-card {
-        width: 900px;
-        height: 600px;
+        width: 620px;
+        height: 900px;
     }
 
     .carousel-container {
-        min-height: 650px;
+        min-height: 950px;
     }
 }
