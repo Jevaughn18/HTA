@@ -199,8 +199,7 @@
     }
 
     .hero-video {
-        height: 100vh !important;
-        min-height: 500px !important;
+        min-height: 60vh !important;
     }
 
     .hero-video-bg {
