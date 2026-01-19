@@ -18,15 +18,15 @@ function initializeEventCarousel() {
         return;
     }
 
-    // Configuration - Dynamic based on screen size
+    // Configuration - Dynamic based on screen size (portrait cards)
     function getItemWidth() {
         const windowWidth = window.innerWidth;
-        if (windowWidth <= 480) return 280 + 16; // mobile small
-        if (windowWidth <= 767) return 350 + 24; // mobile medium
-        if (windowWidth <= 912) return 450 + 28; // tablet portrait
-        if (windowWidth <= 1200) return 500 + 28; // tablet landscape
-        if (windowWidth <= 1400) return 550 + 32; // desktop small
-        return 600 + 32; // desktop large (600px + 2rem gap)
+        if (windowWidth <= 480) return 160 + 8; // mobile small (160px + 0.5rem gap)
+        if (windowWidth <= 767) return 200 + 8; // mobile medium (200px + 0.5rem gap)
+        if (windowWidth <= 912) return 465 + 28; // tablet portrait
+        if (windowWidth <= 1200) return 520 + 28; // tablet landscape
+        if (windowWidth <= 1400) return 570 + 32; // desktop small
+        return 620 + 32; // desktop large (620px portrait card + 2rem gap)
     }
 
     let itemWidth = getItemWidth();
@@ -40,24 +40,11 @@ function initializeEventCarousel() {
     let startX = 0;
     let scrollLeft = 0;
 
-    // Count duplicates by checking for the comment "Duplicates for seamless loop"
-    // All items before that comment are originals
-    let originalItemCount = 0;
-    const trackHTML = track.innerHTML;
-    const duplicateMarkerIndex = trackHTML.indexOf('Duplicates for seamless loop');
-
-    if (duplicateMarkerIndex !== -1) {
-        // Count items before the duplicate marker
-        const itemsBeforeDuplicates = track.innerHTML.substring(0, duplicateMarkerIndex);
-        originalItemCount = (itemsBeforeDuplicates.match(/carousel-item/g) || []).length;
-    } else {
-        // Fallback: assume last 4 items are duplicates
-        originalItemCount = items.length - 4;
-    }
-
+    // Count all items (no duplicates needed for this carousel)
+    const originalItemCount = items.length;
     const maxScroll = originalItemCount * itemWidth;
 
-    console.log(`Carousel has ${items.length} total items, ${originalItemCount} originals, ${items.length - originalItemCount} duplicates`);
+    console.log(`Event Carousel initialized with ${items.length} items, itemWidth: ${itemWidth}px, maxScroll: ${maxScroll}px`);
 
     // Auto-scroll function
     function autoScroll() {
@@ -101,43 +88,17 @@ function initializeEventCarousel() {
     function scrollBy(direction) {
         stopAutoScroll();
 
-        const scrollAmount = itemWidth * 1; // Scroll 1 item at a time for smoother control
-        currentPosition += direction * scrollAmount;
+        currentPosition += direction * itemWidth;
 
-        // Handle infinite wrapping
+        // Handle wrapping
         if (currentPosition < 0) {
-            // Wrap to end
-            track.style.transition = 'none';
-            currentPosition = maxScroll + currentPosition;
-            track.style.transform = `translateX(-${currentPosition}px)`;
-
-            // Re-enable transition and continue
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-                currentPosition += direction * scrollAmount;
-                track.style.transform = `translateX(-${currentPosition}px)`;
-            }, 50);
+            currentPosition = maxScroll - itemWidth;
         } else if (currentPosition >= maxScroll) {
-            // Wrap to start
-            track.style.transition = 'transform 0.5s ease';
-            track.style.transform = `translateX(-${currentPosition}px)`;
-
-            // After animation, jump to start
-            setTimeout(() => {
-                track.style.transition = 'none';
-                currentPosition = currentPosition - maxScroll;
-                track.style.transform = `translateX(-${currentPosition}px)`;
-
-                // Re-enable transition
-                setTimeout(() => {
-                    track.style.transition = 'transform 0.5s ease';
-                }, 50);
-            }, 500);
-        } else {
-            // Normal scroll
-            track.style.transition = 'transform 0.5s ease';
-            track.style.transform = `translateX(-${currentPosition}px)`;
+            currentPosition = 0;
         }
+
+        track.style.transition = 'transform 0.5s ease';
+        track.style.transform = `translateX(-${currentPosition}px)`;
 
         // Resume auto-scroll after 5 seconds
         setTimeout(() => {
@@ -283,6 +244,20 @@ function initializeEventCarousel() {
         }, 250);
     });
 
+    // Click to enlarge - lightbox functionality
+    items.forEach(item => {
+        const img = item.querySelector('img');
+        if (img) {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', () => {
+                // Only trigger if not dragging
+                if (!hasDragged) {
+                    openEventFlyerLightbox(img.src, img.alt || 'Event Flyer');
+                }
+            });
+        }
+    });
+
     console.log('Event carousel initialized with auto-scroll');
 }
 
@@ -294,3 +269,59 @@ document.addEventListener('carouselContentUpdated', () => {
     console.log('Carousel content updated, reinitializing...');
     initializeEventCarousel();
 });
+
+// ===================================
+// EVENT FLYER LIGHTBOX
+// ===================================
+function openEventFlyerLightbox(imageSrc, caption) {
+    // Create lightbox if it doesn't exist
+    let lightbox = document.getElementById('eventFlyerLightbox');
+
+    if (!lightbox) {
+        const lightboxHTML = `
+            <div id="eventFlyerLightbox" class="event-flyer-lightbox">
+                <span class="flyer-lightbox-close">&times;</span>
+                <img class="flyer-lightbox-content" id="flyerLightboxImg" alt="Event Flyer">
+                <div class="flyer-lightbox-caption" id="flyerLightboxCaption"></div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+
+        lightbox = document.getElementById('eventFlyerLightbox');
+        const closeBtn = document.querySelector('.flyer-lightbox-close');
+
+        // Close on X button click
+        closeBtn.addEventListener('click', closeEventFlyerLightbox);
+
+        // Close on outside click
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeEventFlyerLightbox();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeEventFlyerLightbox();
+            }
+        });
+    }
+
+    // Show lightbox with image
+    const lightboxImg = document.getElementById('flyerLightboxImg');
+    const lightboxCaption = document.getElementById('flyerLightboxCaption');
+
+    lightboxImg.src = imageSrc;
+    lightboxCaption.textContent = caption;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeEventFlyerLightbox() {
+    const lightbox = document.getElementById('eventFlyerLightbox');
+    if (lightbox) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+}
