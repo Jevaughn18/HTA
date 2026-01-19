@@ -30,8 +30,7 @@ function initializeEventCarousel() {
     }
 
     let itemWidth = getItemWidth();
-    const scrollSpeed = 1; // pixels per frame
-    const autoScrollInterval = 30; // milliseconds between frames (faster = smoother)
+    let currentIndex = 0; // Track which card we're on
 
     let currentPosition = 0;
     let isAutoScrolling = true;
@@ -46,33 +45,28 @@ function initializeEventCarousel() {
 
     console.log(`Event Carousel initialized with ${items.length} items, itemWidth: ${itemWidth}px, maxScroll: ${maxScroll}px`);
 
-    // Auto-scroll function
+    // Auto-scroll function - moves to next card every 3 seconds
     function autoScroll() {
         if (!isAutoScrolling || isDragging) return;
 
-        currentPosition += scrollSpeed;
+        // Move to next card
+        currentIndex++;
 
-        // Check if we've scrolled past the original set
-        if (currentPosition >= maxScroll) {
-            // Jump back to the start without transition
-            track.style.transition = 'none';
-            currentPosition = 0;
-            track.style.transform = `translateX(-${currentPosition}px)`;
-
-            // Re-enable transition after a brief moment
-            setTimeout(() => {
-                track.style.transition = 'transform 0.5s ease';
-            }, 50);
-        } else {
-            track.style.transform = `translateX(-${currentPosition}px)`;
+        // Loop back to first card after last card
+        if (currentIndex >= originalItemCount) {
+            currentIndex = 0;
         }
+
+        currentPosition = currentIndex * itemWidth;
+        track.style.transition = 'transform 0.5s ease';
+        track.style.transform = `translateX(-${currentPosition}px)`;
     }
 
-    // Start auto-scrolling
+    // Start auto-scrolling - change cards every 4 seconds
     function startAutoScroll() {
         if (autoScrollTimer) return;
         isAutoScrolling = true;
-        autoScrollTimer = setInterval(autoScroll, autoScrollInterval);
+        autoScrollTimer = setInterval(autoScroll, 4000); // 4 seconds between cards
     }
 
     // Stop auto-scrolling
@@ -88,15 +82,16 @@ function initializeEventCarousel() {
     function scrollBy(direction) {
         stopAutoScroll();
 
-        currentPosition += direction * itemWidth;
+        currentIndex += direction;
 
         // Handle wrapping
-        if (currentPosition < 0) {
-            currentPosition = maxScroll - itemWidth;
-        } else if (currentPosition >= maxScroll) {
-            currentPosition = 0;
+        if (currentIndex < 0) {
+            currentIndex = originalItemCount - 1;
+        } else if (currentIndex >= originalItemCount) {
+            currentIndex = 0;
         }
 
+        currentPosition = currentIndex * itemWidth;
         track.style.transition = 'transform 0.5s ease';
         track.style.transform = `translateX(-${currentPosition}px)`;
 
@@ -172,6 +167,14 @@ function initializeEventCarousel() {
         track.style.transition = 'transform 0.5s ease';
         document.body.style.userSelect = '';
 
+        // Snap to nearest card
+        currentIndex = Math.round(currentPosition / itemWidth);
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex >= originalItemCount) currentIndex = originalItemCount - 1;
+
+        currentPosition = currentIndex * itemWidth;
+        track.style.transform = `translateX(-${currentPosition}px)`;
+
         // Resume auto-scroll after 5 seconds
         setTimeout(() => {
             startAutoScroll();
@@ -234,12 +237,10 @@ function initializeEventCarousel() {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            const oldItemWidth = itemWidth;
             itemWidth = getItemWidth();
 
-            // Adjust current position proportionally
-            const ratio = itemWidth / oldItemWidth;
-            currentPosition *= ratio;
+            // Recalculate position based on current card index
+            currentPosition = currentIndex * itemWidth;
             track.style.transform = `translateX(-${currentPosition}px)`;
         }, 250);
     });
