@@ -26,10 +26,19 @@ function Login() {
         } else {
             // Handle rate limiting errors with special message
             if (result.rateLimited) {
-                const minutes = result.retryAfter || 15;
+                const minutes = result.retryAfter || 1;
                 setError(`Too many login attempts. Please wait ${minutes} minute${minutes !== 1 ? 's' : ''} before trying again.`);
             } else {
-                setError(result.error);
+                // Show error with remaining attempts if available
+                let errorMessage = result.error;
+                if (result.remainingAttempts !== undefined) {
+                    if (result.remainingAttempts > 0) {
+                        errorMessage += ` (${result.remainingAttempts} attempt${result.remainingAttempts !== 1 ? 's' : ''} remaining)`;
+                    } else {
+                        errorMessage = 'Too many login attempts. Please wait 1 minute before trying again.';
+                    }
+                }
+                setError(errorMessage);
             }
         }
 
@@ -47,8 +56,8 @@ function Login() {
                 <div className="login-content">
                     <div className="logo">
                         <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="60" height="60" rx="12" fill="white"/>
-                            <path d="M30 15L42 27L30 39L18 27L30 15Z" fill="#4361EE"/>
+                            <rect width="60" height="60" rx="12" fill="white" />
+                            <path d="M30 15L42 27L30 39L18 27L30 15Z" fill="#4361EE" />
                         </svg>
                         <div className="logo-text">
                             <span className="logo-title">HTA Admin</span>
@@ -143,8 +152,8 @@ function Login() {
                         <div className="profile-avatar small"></div>
                         <div className="checkmark">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="12" fill="#4361EE"/>
-                                <path d="M7 12L10.5 15.5L17 9" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                                <circle cx="12" cy="12" r="12" fill="#4361EE" />
+                                <path d="M7 12L10.5 15.5L17 9" stroke="white" strokeWidth="2" strokeLinecap="round" />
                             </svg>
                         </div>
                     </div>

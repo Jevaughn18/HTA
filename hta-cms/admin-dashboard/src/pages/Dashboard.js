@@ -182,7 +182,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                 <h4 style={{ margin: '0 0 0.5rem 0', color: '#6b7280', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Your Session Role</h4>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                     <span className={`role-badge role-${user?.role}`}>{user?.role}</span>
-                                    {user?.email === 'admin@htachurch.com' && <span style={{ color: '#ffd700' }}>👑 Super Admin</span>}
+                                    {user?.email === 'admin@htachurch.com' && <span style={{ color: '#1e3a8a', fontWeight: '600', fontSize: '0.875rem' }}>Super Admin</span>}
                                 </div>
                             </div>
                             <div style={{ flex: 2, minWidth: '300px' }}>
@@ -191,16 +191,18 @@ Share these credentials with ${newUserName}. They will be required to change the
                                     <span className="status-badge" style={{
                                         backgroundColor: user?.permissions?.canDeleteAdmins ? '#d1fae5' : '#fee2e2',
                                         color: user?.permissions?.canDeleteAdmins ? '#065f46' : '#991b1b',
-                                        opacity: user?.permissions?.canDeleteAdmins ? 1 : 0.6
+                                        opacity: user?.permissions?.canDeleteAdmins ? 1 : 0.6,
+                                        fontWeight: '500'
                                     }}>
-                                        {user?.permissions?.canDeleteAdmins ? '✅ Can Delete Admins' : '❌ Cannot Delete Admins'}
+                                        {user?.permissions?.canDeleteAdmins ? 'Can Delete Admins' : 'Cannot Delete Admins'}
                                     </span>
                                     <span className="status-badge" style={{
                                         backgroundColor: user?.permissions?.canGrantAdminDelete ? '#d1fae5' : '#fee2e2',
                                         color: user?.permissions?.canGrantAdminDelete ? '#065f46' : '#991b1b',
-                                        opacity: user?.permissions?.canGrantAdminDelete ? 1 : 0.6
+                                        opacity: user?.permissions?.canGrantAdminDelete ? 1 : 0.6,
+                                        fontWeight: '500'
                                     }}>
-                                        {user?.permissions?.canGrantAdminDelete ? '✅ Can Grant Permissions' : '❌ Cannot Grant Permissions'}
+                                        {user?.permissions?.canGrantAdminDelete ? 'Can Grant Permissions' : 'Cannot Grant Permissions'}
                                     </span>
                                 </div>
                             </div>
@@ -348,7 +350,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                 <td>
                                                     {u.name}
                                                     {u.email === 'admin@htachurch.com' && (
-                                                        <span style={{ marginLeft: '0.5rem', color: '#ffd700', fontSize: '0.9rem' }}>👑</span>
+                                                        <span style={{ marginLeft: '0.5rem', color: '#ffd700', fontSize: '0.85rem', fontWeight: '600' }}>Super Admin</span>
                                                     )}
                                                 </td>
                                                 <td>{u.email}</td>
@@ -358,15 +360,16 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {u.role === 'admin' && u.permissions?.canDeleteAdmins && (
-                                                        <span className="status-badge" style={{ backgroundColor: '#4a5568', color: '#fbbf24' }}>
-                                                            🔑 Can Delete Admins
+                                                    {u.email === 'admin@htachurch.com' ? (
+                                                        <span className="status-badge" style={{ backgroundColor: '#1e3a8a', color: '#fbbf24', fontWeight: '600' }}>
+                                                            Super Admin
                                                         </span>
-                                                    )}
-                                                    {u.email === 'admin@htachurch.com' && (
-                                                        <span className="status-badge" style={{ backgroundColor: '#1e3a8a', color: '#fbbf24' }}>
-                                                            ⭐ Super Admin
+                                                    ) : u.role === 'admin' && u.permissions?.canDeleteAdmins ? (
+                                                        <span className="status-badge" style={{ backgroundColor: '#059669', color: '#ffffff', fontWeight: '500' }}>
+                                                            Can Delete Admins
                                                         </span>
+                                                    ) : (
+                                                        <span style={{ color: '#9ca3af', fontSize: '0.875rem' }}>—</span>
                                                     )}
                                                 </td>
                                                 <td>
@@ -389,14 +392,18 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                                 className="btn-secondary"
                                                                 onClick={() => handleGrantPermission(u._id, u.name, u.permissions?.canDeleteAdmins)}
                                                                 style={{
-                                                                    fontSize: '0.85rem',
-                                                                    padding: '0.4rem 0.8rem',
-                                                                    backgroundColor: u.permissions?.canDeleteAdmins ? '#059669' : '#6366f1',
+                                                                    fontSize: '0.8rem',
+                                                                    padding: '0.5rem 1rem',
+                                                                    backgroundColor: u.permissions?.canDeleteAdmins ? '#dc2626' : '#059669',
                                                                     color: 'white',
-                                                                    border: 'none'
+                                                                    border: 'none',
+                                                                    borderRadius: '6px',
+                                                                    fontWeight: '500',
+                                                                    cursor: 'pointer',
+                                                                    transition: 'all 0.2s'
                                                                 }}
                                                             >
-                                                                {u.permissions?.canDeleteAdmins ? '✓ Has Permission' : '🔑 Grant Permission'}
+                                                                {u.permissions?.canDeleteAdmins ? 'Revoke Permission' : 'Grant Permission'}
                                                             </button>
                                                         )}
 
@@ -405,6 +412,12 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                             <button
                                                                 className="btn-delete"
                                                                 onClick={() => handleDeleteUser(u._id, u.name)}
+                                                                style={{
+                                                                    fontSize: '0.8rem',
+                                                                    padding: '0.5rem 1rem',
+                                                                    borderRadius: '6px',
+                                                                    fontWeight: '500'
+                                                                }}
                                                             >
                                                                 Delete
                                                             </button>
