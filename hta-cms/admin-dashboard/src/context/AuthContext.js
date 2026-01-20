@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
                 const response = await authAPI.getCurrentUser();
                 setUser(response.data.user);
             } catch (error) {
-                console.error('Auth check failed:', error);
                 localStorage.removeItem('token');
                 setToken(null);
                 setUser(null);

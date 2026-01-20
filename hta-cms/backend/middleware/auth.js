@@ -9,7 +9,13 @@ const auth = async (req, res, next) => {
             throw new Error();
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'hta-cms-secret-key');
+        // Validate JWT_SECRET is configured
+        if (!process.env.JWT_SECRET) {
+            console.error('FATAL: JWT_SECRET environment variable is not set');
+            return res.status(500).json({ error: 'Server configuration error' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findOne({ _id: decoded.userId, isActive: true });
 
         if (!user) {

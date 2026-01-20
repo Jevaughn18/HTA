@@ -38,7 +38,7 @@ function Dashboard() {
             const response = await authAPI.getUsers();
             setUsers(response.data);
         } catch (error) {
-            console.error('Failed to fetch users:', error);
+            // Error handled by user feedback
         }
     };
 
@@ -218,7 +218,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                         <option value="admin">Admin</option>
                                                     </select>
                                                     <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
-                                                        <strong>Default Password:</strong> Admin2025! (user must change on first login)
+                                                        A secure temporary password will be generated and displayed after creation. User must change it on first login.
                                                     </p>
                                                 </div>
 

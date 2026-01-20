@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { contentAPI, mediaAPI, BASE_URL } from '../services/api';
+import DOMPurify from 'dompurify';
 import './ContentEditor.css';
 
 // Helper function to get full image URL
@@ -194,17 +195,21 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
     }, [section.content, isEditing]);
 
     const handleSave = () => {
-        console.log('Saving localContent:', localContent);
         onUpdate(localContent);
         setIsEditing(false);
     };
 
     const renderPreview = () => {
         if (typeof localContent === 'string') {
+            // Sanitize HTML content before rendering to prevent XSS
+            const sanitizedContent = DOMPurify.sanitize(localContent || '<em style="color: #999">No content yet</em>', {
+                ADD_TAGS: ['iframe'],
+                ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+            });
             return (
                 <div
                     className="preview-text"
-                    dangerouslySetInnerHTML={{ __html: localContent || '<em style="color: #999">No content yet</em>' }}
+                    dangerouslySetInnerHTML={{ __html: sanitizedContent }}
                 />
             );
         }
@@ -227,7 +232,6 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                  ('src' in value[0] || 'image' in value[0] || 'img' in value[0]))
                             );
 
-                            console.log(`[ContentEditor] Array key="${key}", isImageArray=${isImageArray}, length=${value.length}, first item:`, value[0]);
 
                             if (isImageArray) {
                                 // Show image array preview with grid
@@ -236,12 +240,10 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                         <strong>{formatFieldName(key)} ({value.length} items)</strong>
                                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '0.5rem', marginTop: '0.5rem' }}>
                                             {value.slice(0, 12).map((item, idx) => {
-                                                console.log(`[Preview Map] key="${key}", idx=${idx}, item:`, item);
                                                 const imageSrc = typeof item === 'object'
                                                     ? (item.src || item.image || item.img)
                                                     : item;
                                                 const imageUrl = getImageUrl(imageSrc);
-                                                console.log(`[Preview Map] imageSrc="${imageSrc}", imageUrl="${imageUrl}"`);
                                                 return imageUrl ? (
                                                     <img
                                                         key={idx}
@@ -535,12 +537,12 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
             .join(' ');
     };
 
-    // Helper to strip HTML tags for display
+    // Helper to strip HTML tags for display - using DOMParser instead of innerHTML
     const stripHtmlTags = (html) => {
         if (typeof html !== 'string') return html;
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || '';
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        return doc.body.textContent || '';
     };
 
     // Helper to check if content contains HTML
@@ -551,7 +553,6 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
 
     // Special gallery image grid editor
     const renderGalleryEditor = (arrayValue, key) => {
-        console.log(`[renderGalleryEditor] key="${key}", arrayValue:`, arrayValue);
         return (
             <div className="gallery-editor" style={{ marginTop: '12px' }}>
                 <div className="gallery-grid" style={{
@@ -561,7 +562,6 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                     padding: '12px'
                 }}>
                     {arrayValue.map((item, idx) => {
-                        console.log(`[renderGalleryEditor] Rendering item ${idx}:`, item);
                         const imageSrc = typeof item === 'object' ? (item.src || item.image || item.img) : item;
                         const imageClass = typeof item === 'object' ? item.class : '';
 
@@ -657,9 +657,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                                 onChange={async (e) => {
                                                     const file = e.target.files[0];
                                                     if (file) {
-                                                        console.log('Gallery upload: file selected', file);
                                                         const uploadedPath = await onImageUpload(file, key);
-                                                        console.log('Gallery upload: got path', uploadedPath);
                                                         if (uploadedPath) {
                                                             const newArray = [...arrayValue];
                                                             if (typeof item === 'object') {
@@ -707,7 +705,6 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
              ('src' in arrayValue[0] || 'image' in arrayValue[0] || 'img' in arrayValue[0]))
         );
 
-        console.log(`[renderArrayEditor] key="${key}", isImageArray=${isImageArray}, arrayValue[0]:`, arrayValue[0]);
 
         if (isImageArray) {
             return renderGalleryEditor(arrayValue, key);
