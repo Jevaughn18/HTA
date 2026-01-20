@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/User');
 const { auth, adminOnly } = require('../middleware/auth');
+const { body, param, validationResult } = require('express-validator');
 
 const router = express.Router();
 
@@ -10,79 +11,116 @@ const router = express.Router();
 // Only admins can create new user accounts via /register endpoint
 
 // Register new user (admin only)
-router.post('/register', auth, adminOnly, async (req, res) => {
-    try {
-        const { name, email, role } = req.body;
-
-        // Check if user exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ error: 'Email already registered' });
+router.post('/register',
+    auth,
+    adminOnly,
+    [
+        body('name').trim().notEmpty().withMessage('Name is required').isLength({ max: 100 }),
+        body('email').trim().isEmail().withMessage('Valid email is required').normalizeEmail(),
+        body('role').optional().isIn(['admin', 'editor']).withMessage('Role must be admin or editor')
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        // Create new user with default password
-        const user = new User({
-            name,
-            email,
-            password: 'Admin2025!', // Default password
-            role: role || 'editor',
-            requirePasswordChange: true // Force password change on first login
-        });
-        await user.save();
+        try {
+            const { name, email, role } = req.body;
 
-        res.status(201).json({
-            message: 'User created successfully',
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role
-            },
-            temporaryPassword: 'Admin2025!' // Return for admin to share
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to create user' });
+            // Check if user exists
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ error: 'Email already registered' });
+            }
+
+            // Generate secure random temporary password
+            const tempPassword = crypto.randomBytes(8).toString('hex') + 'A1!';
+
+            // Create new user with temporary password
+            const user = new User({
+                name,
+                email,
+                password: tempPassword,
+                role: role || 'editor',
+                requirePasswordChange: true // Force password change on first login
+            });
+            await user.save();
+
+            res.status(201).json({
+                message: 'User created successfully. Temporary password provided - user must change on first login.',
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role
+                },
+                temporaryPassword: tempPassword // Return for admin to share with new user
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to create user' });
+        }
     }
-});
+);
 
 // Login
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Find user
-        const user = await User.findOne({ email, isActive: true });
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid email or password' });
+router.post('/login',
+    [
+        body('email').trim().isEmail().withMessage('Valid email is required').normalizeEmail(),
+        body('password').notEmpty().withMessage('Password is required')
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        // Check password
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
+        try {
+            const { email, password } = req.body;
 
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET || 'hta-cms-secret-key',
-            { expiresIn: '7d' }
-        );
+            // Add small delay to mitigate timing attacks
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 100));
 
-        res.json({
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                requirePasswordChange: user.requirePasswordChange || false
+            // Find user
+            const user = await User.findOne({ email, isActive: true });
+            if (!user) {
+                return res.status(401).json({ error: 'Invalid email or password' });
             }
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Login failed' });
+
+            // Check password
+            const isMatch = await user.comparePassword(password);
+            if (!isMatch) {
+                return res.status(401).json({ error: 'Invalid email or password' });
+            }
+
+            // Validate JWT_SECRET is configured
+            if (!process.env.JWT_SECRET) {
+                console.error('FATAL: JWT_SECRET not configured');
+                return res.status(500).json({ error: 'Server configuration error' });
+            }
+
+            // Generate JWT token with 1 hour expiry
+            const token = jwt.sign(
+                { userId: user._id },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
+
+            res.json({
+                token,
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    requirePasswordChange: user.requirePasswordChange || false
+                }
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Login failed' });
+        }
     }
-});
+);
 
 // Get current user
 router.get('/me', auth, async (req, res) => {
@@ -151,86 +189,61 @@ router.get('/users', auth, adminOnly, async (req, res) => {
 });
 
 // Delete user (admin only)
-router.delete('/users/:id', auth, adminOnly, async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+router.delete('/users/:id',
+    auth,
+    adminOnly,
+    [
+        param('id').isMongoId().withMessage('Invalid user ID')
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
-        res.json({ message: 'User deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to delete user' });
+
+        try {
+            // Prevent admin from deleting their own account
+            if (req.params.id === req.user._id.toString()) {
+                return res.status(400).json({ error: 'Cannot delete your own account' });
+            }
+
+            const user = await User.findByIdAndDelete(req.params.id);
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            res.json({ message: 'User deleted successfully' });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to delete user' });
+        }
     }
-});
+);
 
-// Request password reset
-router.post('/forgot-password', async (req, res) => {
-    try {
-        const { email } = req.body;
+// DISABLED: Password reset via email not used
+// Users only reset passwords on first login via /change-password
+// If forgot password functionality is needed in the future, uncomment and implement email sending
 
-        const user = await User.findOne({ email, isActive: true });
-        if (!user) {
-            // Don't reveal if email exists for security
-            return res.json({ message: 'If that email exists, a reset code has been sent' });
-        }
-
-        // Generate reset token (6-digit code)
-        const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
-
-        // Save hashed token and expiry (valid for 15 minutes)
-        user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-        user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
-        await user.save();
-
-        // In a real app, you'd send this via email
-        // For now, return it in the response (DEV ONLY!)
-        res.json({
-            message: 'Reset code generated',
-            resetCode: resetToken, // REMOVE THIS IN PRODUCTION!
-            email: user.email
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to process request' });
+/*
+router.post('/forgot-password',
+    [
+        body('email').trim().isEmail().withMessage('Valid email is required').normalizeEmail()
+    ],
+    async (req, res) => {
+        // Disabled - password resets only happen on first login
+        res.status(404).json({ error: 'Password reset via email is not available. Please contact an administrator.' });
     }
-});
+);
+*/
 
-// Reset password with token
-router.post('/reset-password', async (req, res) => {
-    try {
-        const { email, resetCode, newPassword } = req.body;
+// DISABLED: Password reset via email not used
+// Users only reset passwords on first login via /change-password
 
-        if (!email || !resetCode || !newPassword) {
-            return res.status(400).json({ error: 'Email, reset code, and new password are required' });
-        }
-
-        if (newPassword.length < 6) {
-            return res.status(400).json({ error: 'Password must be at least 6 characters' });
-        }
-
-        // Hash the provided reset code to compare with stored hash
-        const hashedToken = crypto.createHash('sha256').update(resetCode).digest('hex');
-
-        // Find user with matching email, token, and unexpired token
-        const user = await User.findOne({
-            email,
-            resetPasswordToken: hashedToken,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
-
-        if (!user) {
-            return res.status(400).json({ error: 'Invalid or expired reset code' });
-        }
-
-        // Update password
-        user.password = newPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        await user.save();
-
-        res.json({ message: 'Password reset successful' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to reset password' });
+/*
+router.post('/reset-password',
+    async (req, res) => {
+        // Disabled - password resets only happen on first login
+        res.status(404).json({ error: 'Password reset via email is not available. Please contact an administrator.' });
     }
-});
+);
+*/
 
 module.exports = router;

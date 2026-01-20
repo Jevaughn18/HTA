@@ -20,8 +20,8 @@ function ForgotPassword() {
         setLoading(true);
 
         try {
-            const response = await authAPI.forgotPassword(email);
-            setSuccess(`Reset code sent! Check your email. (Dev: Code is ${response.data.resetCode})`);
+            await authAPI.forgotPassword(email);
+            setSuccess('Reset code sent! Check your email.');
             setStep(2);
         } catch (error) {
             setError(error.response?.data?.error || 'Failed to send reset code');
@@ -40,8 +40,8 @@ function ForgotPassword() {
             return;
         }
 
-        if (newPassword.length < 6) {
-            setError('Password must be at least 6 characters');
+        if (newPassword.length < 8) {
+            setError('Password must be at least 8 characters');
             return;
         }
 
@@ -116,7 +116,7 @@ function ForgotPassword() {
                                 id="newPassword"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                placeholder="Enter new password (min 6 characters)"
+                                placeholder="Enter new password (min 8 characters)"
                                 required
                             />
                         </div>

@@ -107,7 +107,7 @@ function ChangePassword() {
                                     id="currentPassword"
                                     value={currentPassword}
                                     onChange={(e) => setCurrentPassword(e.target.value)}
-                                    placeholder="Admin2025!"
+                                    placeholder="Enter your temporary password"
                                     required
                                     autoFocus
                                 />
