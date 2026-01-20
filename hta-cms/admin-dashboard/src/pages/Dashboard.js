@@ -18,6 +18,7 @@ function Dashboard() {
     const [createUserSuccess, setCreateUserSuccess] = useState('');
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [confirmModal, setConfirmModal] = useState({
         isOpen: false,
         title: '',
@@ -154,12 +155,41 @@ Share these credentials with ${newUserName}. They will be required to change the
 
     return (
         <div className="dashboard">
-            <aside className="sidebar">
+            {/* Mobile Menu Toggle Button */}
+            <button
+                className="mobile-menu-toggle"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+            >
+                <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+            </button>
+
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+                <div
+                    className="mobile-menu-overlay"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
+
+            <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
                 <div className="sidebar-header">
-                    <h2>Harvest Temple</h2>
-                    <h3>Content Management</h3>
-                    <p>{user?.name}</p>
-                    <span className="user-role">{user?.role}</span>
+                    <div className="logo-section">
+                        <div className="logo-icon">HT</div>
+                        <div>
+                            <h2>Harvest Temple</h2>
+                            <h3>Content Management</h3>
+                        </div>
+                    </div>
+                    <div className="user-info">
+                        <div className="user-avatar">
+                            {user?.name?.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="user-details">
+                            <p className="user-name">{user?.name}</p>
+                            <span className="user-role">{user?.role}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <nav className="sidebar-nav">
@@ -169,8 +199,12 @@ Share these credentials with ${newUserName}. They will be required to change the
                             <button
                                 key={page.id}
                                 className={`nav-item ${selectedPage === page.id ? 'active' : ''}`}
-                                onClick={() => setSelectedPage(page.id)}
+                                onClick={() => {
+                                    setSelectedPage(page.id);
+                                    setIsMobileMenuOpen(false); // Close menu on mobile after selection
+                                }}
                             >
+                                <span className="nav-icon">📄</span>
                                 <span className="nav-text">{page.name}</span>
                             </button>
                         ))}
@@ -180,13 +214,18 @@ Share these credentials with ${newUserName}. They will be required to change the
                         <h3>Administration</h3>
                         <button
                             className={`nav-item ${selectedPage === 'users' ? 'active' : ''} ${!isAdmin ? 'locked' : ''}`}
-                            onClick={() => isAdmin && setSelectedPage('users')}
+                            onClick={() => {
+                                if (isAdmin) {
+                                    setSelectedPage('users');
+                                    setIsMobileMenuOpen(false); // Close menu on mobile after selection
+                                }
+                            }}
                         >
+                            <span className="nav-icon">👥</span>
                             <span className="nav-text">User Management</span>
                             {!isAdmin && (
                                 <>
                                     <i className="fas fa-lock lock-icon"></i>
-                                    <span className="locked-tooltip">Admin access required</span>
                                 </>
                             )}
                         </button>
@@ -194,6 +233,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                 </nav>
 
                 <button onClick={logout} className="logout-button">
+                    <span>🚪</span>
                     Sign Out
                 </button>
             </aside>
