@@ -3,8 +3,38 @@
  * Dynamically loads images from the CMS API and updates the page
  */
 
-// CMS Backend URL - change this to your production URL when deploying
-const API_BASE_URL = 'https://hta-kwfr.onrender.com';
+// Get API URL from configuration (set in cms-config.js)
+const API_BASE_URL = window.CMS_CONFIG?.API_BASE_URL || 'https://hta-kwfr.onrender.com';
+
+/**
+ * Helper to resolve image URLs and filter out broken Render /uploads/ paths
+ * @param {string|object} imgData - The image source string or object with src property
+ * @returns {string|null} - The resolved URL or null if broken/invalid
+ */
+function resolveImageUrl(imgData) {
+    if (!imgData) return null;
+    let src = typeof imgData === 'object' ? imgData.src : imgData;
+
+    if (!src || src.trim() === '') return null;
+    if (src.includes('undefined') || src.includes('null')) return null;
+
+    // Skip /uploads/ paths as they are broken on Render's ephemeral filesystem
+    if (src.startsWith('/uploads/') || src.startsWith('uploads/')) {
+        console.warn('[CMS] Skipping broken Render /uploads/ image:', src);
+        return null;
+    }
+
+    if (src.startsWith('http')) {
+        return src;
+    }
+
+    // Handle relative assets
+    if (src.startsWith('assets/')) {
+        return src;
+    }
+
+    return src;
+}
 
 (async function loadCMSImages() {
     try {
@@ -14,10 +44,10 @@ const API_BASE_URL = 'https://hta-kwfr.onrender.com';
         const page = pageName === 'index' ? 'home' : pageName;
 
         console.log('[CMS] Loading images for page:', page);
+        console.log('[CMS] Using API URL:', API_BASE_URL);
 
-        // Fetch content from CMS - use Render backend URL
-        const API_BASE_URL = 'https://hta-kwfr.onrender.com';
-        const response = await fetch(`${API_BASE_URL}/api/content/${page}`);
+        // Fetch content from CMS with cache busting
+        const response = await fetch(`${API_BASE_URL}/api/content/${page}?t=${Date.now()}`);
         if (!response.ok) {
             console.warn('[CMS] No content found for page:', page);
             return;
@@ -164,31 +194,23 @@ function updateHeroGallery(content) {
     if (!heroGallery) return;
 
     // Validate that we have valid images
-    const validImages = content.galleryImages.filter(img => {
-        return img && img.src && img.src.trim() !== '' &&
-            !img.src.includes('undefined') &&
-            !img.src.includes('null');
-    });
+    const validImages = content.galleryImages
+        .map(img => {
+            const src = resolveImageUrl(img);
+            return src ? { ...img, resolvedSrc: src } : null;
+        })
+        .filter(img => img !== null);
 
-    // Only update if we have at least 10 valid images (to ensure good coverage)
-    if (validImages.length >= 10) {
+    console.log('[CMS DEBUG] Raw galleryImages from API:', content.galleryImages);
+    console.log('[CMS DEBUG] Valid images after filtering:', validImages);
+
+    // Update if we have ANY valid images
+    if (validImages.length > 0) {
         console.log('[CMS] Updating hero gallery with', validImages.length, 'images');
 
         heroGallery.innerHTML = validImages.map(img => {
-            let imgSrc;
-            if (img.src.startsWith('http')) {
-                // External URL - use as is
-                imgSrc = img.src;
-            } else if (img.src.startsWith('/uploads/') || img.src.startsWith('uploads/')) {
-                // CMS uploaded image - use backend URL
-                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-                imgSrc = `${API_BASE_URL}/${imagePath}`;
-            } else {
-                // Local static asset (assets/) - use relative path
-                imgSrc = img.src;
-            }
             const className = img.class ? `gallery-cell ${img.class}` : 'gallery-cell';
-            return `<div class="${className}" style="background-image: url('${imgSrc}');"></div>`;
+            return `<div class="${className}" style="background-image: url('${img.resolvedSrc}');"></div>`;
         }).join('');
 
         console.log('[CMS] Hero gallery updated!');
@@ -199,22 +221,10 @@ function updateHeroGallery(content) {
     // Update vision carousel
     const visionCarousel = document.getElementById('visionCarousel');
     if (visionCarousel && content.galleryImages) {
-        const visionImages = content.galleryImages.slice(0, 10);
+        const visionImages = validImages.slice(0, 10);
         visionCarousel.innerHTML = visionImages.map((img, idx) => {
-            let imgSrc;
-            if (img.src.startsWith('http')) {
-                // External URL - use as is
-                imgSrc = img.src;
-            } else if (img.src.startsWith('/uploads/') || img.src.startsWith('uploads/')) {
-                // CMS uploaded image - use backend URL
-                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-                imgSrc = `${API_BASE_URL}/${imagePath}`;
-            } else {
-                // Local static asset (assets/) - use relative path
-                imgSrc = img.src;
-            }
             const alt = img.alt || `Gallery image ${idx + 1}`;
-            return `<div class="gallery-item"><img src="${imgSrc}" alt="${alt}" loading="lazy"></div>`;
+            return `<div class="gallery-item"><img src="${img.resolvedSrc}" alt="${alt}" loading="lazy"></div>`;
         }).join('');
     }
 }
@@ -279,10 +289,11 @@ function updateHistoryImages(content) {
     if (content.founderImage) {
         const founderImg = document.querySelector('.story-image img');
         if (founderImg) {
-            const imagePath = content.founderImage.src.startsWith('/') ? content.founderImage.src.substring(1) : content.founderImage.src;
-            const imgSrc = content.founderImage.src.startsWith('http') ? content.founderImage.src : `${API_BASE_URL}/${imagePath}`;
-            founderImg.src = imgSrc;
-            console.log('[CMS] Updated founder image:', imgSrc);
+            const imgSrc = resolveImageUrl(content.founderImage);
+            if (imgSrc) {
+                founderImg.src = imgSrc;
+                console.log('[CMS] Updated founder image:', imgSrc);
+            }
         }
     }
 
@@ -300,10 +311,11 @@ function updateHistoryImages(content) {
         const historyImageItems = document.querySelectorAll('.history-image-item img');
         content.historyImages.forEach((img, idx) => {
             if (historyImageItems[idx]) {
-                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-                const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
-                historyImageItems[idx].src = imgSrc;
-                console.log('[CMS] Updated history image', idx + 1, ':', imgSrc);
+                const imgSrc = resolveImageUrl(img);
+                if (imgSrc) {
+                    historyImageItems[idx].src = imgSrc;
+                    console.log('[CMS] Updated history image', idx + 1, ':', imgSrc);
+                }
             }
         });
     }
@@ -542,10 +554,11 @@ function updateDepartmentImages(content, sectionName) {
     if (content.image) {
         const img = section.querySelector('.ministry-image img');
         if (img) {
-            const imagePath = content.image.startsWith('/') ? content.image.substring(1) : content.image;
-            const imgSrc = content.image.startsWith('http') ? content.image : `${API_BASE_URL}/${imagePath}`;
-            img.src = imgSrc;
-            console.log('[CMS] Updated department image for', ariaLabel, ':', imgSrc);
+            const imgSrc = resolveImageUrl(content.image);
+            if (imgSrc) {
+                img.src = imgSrc;
+                console.log('[CMS] Updated department image for', ariaLabel, ':', imgSrc);
+            }
         } else {
             console.warn('[CMS] Could not find img element in section:', ariaLabel);
         }
@@ -573,6 +586,37 @@ function updateDepartmentImages(content, sectionName) {
  */
 function updateMediaPage(content, sectionName) {
     console.log('[CMS] Updating media page section:', sectionName);
+
+    if (sectionName === 'hero') {
+        // Update hero video
+        if (content.videoSrc) {
+            const heroVideo = document.querySelector('.hero-video-bg source');
+            const videoElement = document.querySelector('.hero-video-bg');
+            if (heroVideo && videoElement) {
+                let videoUrl;
+                if (content.videoSrc.startsWith('http')) {
+                    videoUrl = content.videoSrc;
+                } else if (content.videoSrc.startsWith('/uploads/') || content.videoSrc.startsWith('uploads/')) {
+                    // Skip broken Render uploads for videos too
+                    console.warn('[CMS] Skipping broken Render /uploads/ video:', content.videoSrc);
+                    return;
+                } else {
+                    videoUrl = content.videoSrc; // Local asset
+                }
+
+                heroVideo.src = videoUrl;
+                videoElement.load(); // Reload video with new source
+                console.log('[CMS] Updated media hero video:', videoUrl);
+            }
+        }
+
+        // Update hero title
+        if (content.title) {
+            const heroTitle = document.querySelector('.hero-video-content h1');
+            if (heroTitle) heroTitle.textContent = content.title;
+        }
+        return;
+    }
 
     if (sectionName === 'youtube-channels' && content.channels) {
         // Update YouTube channel cards
