@@ -143,8 +143,18 @@ function updateHeroGallery(content) {
         console.log('[CMS] Updating hero gallery with', validImages.length, 'images');
 
         heroGallery.innerHTML = validImages.map(img => {
-            const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-            const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
+            let imgSrc;
+            if (img.src.startsWith('http')) {
+                // External URL - use as is
+                imgSrc = img.src;
+            } else if (img.src.startsWith('/uploads/') || img.src.startsWith('uploads/')) {
+                // CMS uploaded image - use backend URL
+                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
+                imgSrc = `${API_BASE_URL}/${imagePath}`;
+            } else {
+                // Local static asset (assets/) - use relative path
+                imgSrc = img.src;
+            }
             const className = img.class ? `gallery-cell ${img.class}` : 'gallery-cell';
             return `<div class="${className}" style="background-image: url('${imgSrc}');"></div>`;
         }).join('');
@@ -159,8 +169,18 @@ function updateHeroGallery(content) {
     if (visionCarousel && content.galleryImages) {
         const visionImages = content.galleryImages.slice(0, 10);
         visionCarousel.innerHTML = visionImages.map((img, idx) => {
-            const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
-            const imgSrc = img.src.startsWith('http') ? img.src : `${API_BASE_URL}/${imagePath}`;
+            let imgSrc;
+            if (img.src.startsWith('http')) {
+                // External URL - use as is
+                imgSrc = img.src;
+            } else if (img.src.startsWith('/uploads/') || img.src.startsWith('uploads/')) {
+                // CMS uploaded image - use backend URL
+                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
+                imgSrc = `${API_BASE_URL}/${imagePath}`;
+            } else {
+                // Local static asset (assets/) - use relative path
+                imgSrc = img.src;
+            }
             const alt = img.alt || `Gallery image ${idx + 1}`;
             return `<div class="gallery-item"><img src="${imgSrc}" alt="${alt}" loading="lazy"></div>`;
         }).join('');
