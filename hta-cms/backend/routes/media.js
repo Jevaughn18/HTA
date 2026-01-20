@@ -1,27 +1,20 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const ImageKit = require('imagekit');
 const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Configure multer for file upload
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
+// Initialize ImageKit
+const imagekit = new ImageKit({
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
 });
+
+// Configure multer to store files in memory (not disk)
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage,
@@ -40,38 +33,59 @@ const upload = multer({
 });
 
 // Upload single file
-router.post('/upload', auth, upload.single('file'), (req, res) => {
+router.post('/upload', auth, upload.single('file'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
+        // Upload to ImageKit
+        const uploadResponse = await imagekit.upload({
+            file: req.file.buffer.toString('base64'),
+            fileName: req.file.originalname,
+            folder: '/hta-cms'
+        });
+
         res.json({
             message: 'File uploaded successfully',
             file: {
-                filename: req.file.filename,
+                filename: uploadResponse.name,
                 originalName: req.file.originalname,
                 size: req.file.size,
-                path: `/uploads/${req.file.filename}`
+                path: uploadResponse.url,
+                fileId: uploadResponse.fileId
             }
         });
     } catch (error) {
+        console.error('ImageKit upload error:', error);
         res.status(500).json({ error: 'File upload failed' });
     }
 });
 
 // Upload multiple files
-router.post('/upload-multiple', auth, upload.array('files', 10), (req, res) => {
+router.post('/upload-multiple', auth, upload.array('files', 10), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: 'No files uploaded' });
         }
 
-        const files = req.files.map(file => ({
-            filename: file.filename,
-            originalName: file.originalname,
-            size: file.size,
-            path: `/uploads/${file.filename}`
+        // Upload all files to ImageKit
+        const uploadPromises = req.files.map(file =>
+            imagekit.upload({
+                file: file.buffer.toString('base64'),
+                fileName: file.originalname,
+                folder: '/hta-cms'
+            })
+        );
+
+        const uploadResponses = await Promise.all(uploadPromises);
+
+        const files = uploadResponses.map((response, idx) => ({
+            filename: response.name,
+            originalName: req.files[idx].originalname,
+            size: req.files[idx].size,
+            path: response.url,
+            fileId: response.fileId
         }));
 
         res.json({
@@ -79,42 +93,45 @@ router.post('/upload-multiple', auth, upload.array('files', 10), (req, res) => {
             files
         });
     } catch (error) {
+        console.error('ImageKit upload error:', error);
         res.status(500).json({ error: 'File upload failed' });
     }
 });
 
-// Get all uploaded files
-router.get('/files', auth, (req, res) => {
+// Get all uploaded files from ImageKit
+router.get('/files', auth, async (req, res) => {
     try {
-        const files = fs.readdirSync(uploadsDir).map(filename => ({
-            filename,
-            path: `/uploads/${filename}`,
-            size: fs.statSync(path.join(uploadsDir, filename)).size
+        const result = await imagekit.listFiles({
+            path: '/hta-cms',
+            limit: 1000
+        });
+
+        const files = result.map(file => ({
+            filename: file.name,
+            path: file.url,
+            size: file.size,
+            fileId: file.fileId
         }));
 
         res.json(files);
     } catch (error) {
+        console.error('ImageKit list files error:', error);
         res.status(500).json({ error: 'Failed to fetch files' });
     }
 });
 
-// Delete file
-router.delete('/files/:filename', auth, (req, res) => {
+// Delete file from ImageKit
+router.delete('/files/:fileId', auth, async (req, res) => {
     try {
-        const filePath = path.join(uploadsDir, req.params.filename);
-
-        if (!fs.existsSync(filePath)) {
-            return res.status(404).json({ error: 'File not found' });
-        }
-
-        fs.unlinkSync(filePath);
+        await imagekit.deleteFile(req.params.fileId);
         res.json({ message: 'File deleted successfully' });
     } catch (error) {
+        console.error('ImageKit delete error:', error);
+        if (error.message && error.message.includes('not found')) {
+            return res.status(404).json({ error: 'File not found' });
+        }
         res.status(500).json({ error: 'Failed to delete file' });
     }
 });
-
-// Serve uploaded files
-router.use('/uploads', express.static(uploadsDir));
 
 module.exports = router;
