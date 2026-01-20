@@ -54,6 +54,9 @@ function updateImagesInSection(section, page) {
                 updateEventCarousel(sectionContent);
             } else if (sectionName === 'footer') {
                 updateFooter(sectionContent);
+            } else {
+                // Use generic updaters for unhandled sections
+                updateGenericImages(sectionContent, sectionName);
             }
             break;
         case 'about':
@@ -63,6 +66,9 @@ function updateImagesInSection(section, page) {
                 updateTeamImages(sectionContent);
             } else if (sectionName === 'footer') {
                 updateFooter(sectionContent);
+            } else {
+                // Use generic updaters for unhandled sections
+                updateGenericImages(sectionContent, sectionName);
             }
             break;
         case 'events':
@@ -123,6 +129,23 @@ function updateImagesInSection(section, page) {
  * Update hero gallery on home page
  */
 function updateHeroGallery(content) {
+    // Update hero text content
+    if (content.title) {
+        const heroTitle = document.querySelector('.hero-video-content h1');
+        if (heroTitle) {
+            heroTitle.textContent = content.title;
+            console.log('[CMS] Updated hero title:', content.title);
+        }
+    }
+
+    if (content.subtitle) {
+        const heroSubtitle = document.querySelector('.hero-video-content p');
+        if (heroSubtitle) {
+            heroSubtitle.textContent = content.subtitle;
+            console.log('[CMS] Updated hero subtitle:', content.subtitle);
+        }
+    }
+
     if (!content.galleryImages) {
         console.log('[CMS] No gallery images in CMS, keeping hardcoded images');
         return;
@@ -891,4 +914,82 @@ function updateGenericImages(content, sectionName) {
     }
 
     updateImagesInObject(content);
+
+    // Also update text content generically
+    updateGenericText(content, sectionName);
+}
+
+/**
+ * Generic text content updater for any section
+ * Updates text fields like title, description, etc.
+ */
+function updateGenericText(content, sectionName) {
+    console.log('[CMS] Generic text update for section:', sectionName);
+
+    // Skip if content is not an object
+    if (!content || typeof content !== 'object' || Array.isArray(content)) {
+        return;
+    }
+
+    // Map of common text field names to their likely HTML selectors
+    const textFieldMappings = {
+        'title': ['h1', 'h2', 'h3', '.title', '.section-title', '.page-title'],
+        'subtitle': ['h2', 'h3', 'h4', 'p', '.subtitle', '.section-subtitle'],
+        'heading': ['h1', 'h2', 'h3', '.heading'],
+        'description': ['p', '.description', '.text', '.content-text'],
+        'text': ['p', '.text', '.content', '.description'],
+        'content': ['.content', '.text-content', 'p'],
+        'intro': ['.intro', '.intro-text', 'p'],
+        'label': ['.label', 'span', '.section-label']
+    };
+
+    // Try to find the section container first
+    const sectionSelectors = [
+        `section[aria-label*="${sectionName}"]`,
+        `#${sectionName}`,
+        `.${sectionName}`,
+        `[data-section="${sectionName}"]`,
+        `section.${sectionName}-section`
+    ];
+
+    let sectionContainer = null;
+    for (const selector of sectionSelectors) {
+        sectionContainer = document.querySelector(selector);
+        if (sectionContainer) {
+            console.log('[CMS] Found section container with selector:', selector);
+            break;
+        }
+    }
+
+    // Update each text field in the content
+    for (const [fieldName, fieldValue] of Object.entries(content)) {
+        // Skip non-text fields
+        if (typeof fieldValue !== 'string' || fieldValue.trim() === '') continue;
+        if (fieldName.toLowerCase().includes('image') ||
+            fieldName.toLowerCase().includes('img') ||
+            fieldName.toLowerCase().includes('src') ||
+            fieldName.toLowerCase().includes('url')) continue;
+
+        const selectors = textFieldMappings[fieldName.toLowerCase()] || [];
+
+        // Try to update within section container first
+        if (sectionContainer) {
+            for (const selector of selectors) {
+                const element = sectionContainer.querySelector(selector);
+                if (element) {
+                    element.textContent = fieldValue;
+                    console.log(`[CMS] Updated ${fieldName} in section ${sectionName}:`, fieldValue.substring(0, 50));
+                    break;
+                }
+            }
+        }
+
+        // Also try data attributes
+        const dataElement = document.querySelector(`[data-cms-field="${fieldName}"]`) ||
+                           document.querySelector(`[data-field="${fieldName}"]`);
+        if (dataElement) {
+            dataElement.textContent = fieldValue;
+            console.log(`[CMS] Updated ${fieldName} via data attribute:`, fieldValue.substring(0, 50));
+        }
+    }
 }

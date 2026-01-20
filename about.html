@@ -317,13 +317,47 @@
                 <div class="gold-underline"></div>
 
                 <div class="officers-content">
-                    <div class="officers-image">
+                    <div class="officers-image" onclick="openOfficersLightbox()">
                         <img src="assets/officers.jpeg" alt="HTA Officers - Missionaries, Evangelists, and Deacons" loading="lazy">
+                        <div class="image-overlay">
+                            <i class="fas fa-expand"></i>
+                            <span>Click to view larger</span>
+                        </div>
                     </div>
                     <div class="officers-description">
                         <p>HTA officers consisting of Missionaries, Evangelists, and Deacons.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Officers Image Lightbox -->
+        <div id="officersLightbox" class="image-lightbox" onclick="closeOfficersLightbox()">
+            <span class="lightbox-close">&times;</span>
+            <img class="lightbox-content" src="assets/officers.jpeg" alt="HTA Officers - Missionaries, Evangelists, and Deacons">
+            <div class="lightbox-caption">HTA Officers - Missionaries, Evangelists, and Deacons</div>
+        </div>
+
+        <script>
+            function openOfficersLightbox() {
+                document.getElementById('officersLightbox').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeOfficersLightbox() {
+                document.getElementById('officersLightbox').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            // Close lightbox with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeOfficersLightbox();
+                }
+            });
+        </script>
+
+        <!-- Our Name Section
             </div>
         </section>
 
@@ -353,7 +387,7 @@
             <div class="footer-col">
                 <i class="fas fa-map-marker-alt fa-2x"></i>
                 <h3>Find Us</h3>
-                <a href="https://maps.google.com" target="_blank">822A Southern Parade<br>Waterford P.O, Jamaica</a>
+                <a href="https://www.google.com/maps/place/Harvest+Temple+Apostolic+Church/@17.9793358,-76.8659004,883m/data=!3m1!1e3!4m14!1m7!3m6!1s0x8edb150b16637073:0x3e9405307f06f931!2sHarvest+Temple+Apostolic+Church!8m2!3d17.9793358!4d-76.8633255!16s%2Fg%2F11f6y4t9f_!3m5!1s0x8edb150b16637073:0x3e9405307f06f931!8m2!3d17.9793358!4d-76.8633255!16s%2Fg%2F11f6y4t9f_?entry=ttu&g_ep=EgoyMDI2MDExMy4wIKXMDSoKLDEwMDc5MjA3MUgBUAM%3D" target="_blank" rel="noopener noreferrer">822A Southern Parade<br>Waterford P.O, Jamaica</a>
             </div>
             <div class="footer-col">
                 <i class="fas fa-credit-card fa-2x"></i>
