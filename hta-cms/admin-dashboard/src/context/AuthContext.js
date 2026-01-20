@@ -17,24 +17,26 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
 
     useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await authAPI.getCurrentUser();
+                setUser(response.data.user);
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                localStorage.removeItem('token');
+                setToken(null);
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (token) {
             checkAuth();
         } else {
             setLoading(false);
         }
     }, [token]);
-
-    const checkAuth = async () => {
-        try {
-            const response = await authAPI.getCurrentUser();
-            setUser(response.data.user);
-        } catch (error) {
-            console.error('Auth check failed:', error);
-            logout();
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const login = async (email, password) => {
         try {
