@@ -26,13 +26,6 @@ function Dashboard() {
         { id: 'give', name: 'Give' }
     ];
 
-    // Fetch users if admin
-    useEffect(() => {
-        if (isAdmin && selectedPage === 'users') {
-            fetchUsers();
-        }
-    }, [isAdmin, selectedPage, fetchUsers]);
-
     const fetchUsers = useCallback(async () => {
         try {
             console.log('Fetching users...');
@@ -45,6 +38,13 @@ function Dashboard() {
             // Error handled by user feedback
         }
     }, [user]);
+
+    // Fetch users if admin
+    useEffect(() => {
+        if (isAdmin && selectedPage === 'users') {
+            fetchUsers();
+        }
+    }, [isAdmin, selectedPage, fetchUsers]);
 
     const handleCreateUser = async (e) => {
         e.preventDefault();
