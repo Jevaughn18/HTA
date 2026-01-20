@@ -2134,6 +2134,64 @@ section[id] {
     color: var(--white);
 }
 
+/* Our Officers Section */
+.our-officers-section {
+    background: var(--white);
+    padding: 6rem 2rem;
+}
+
+.officers-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.officers-container h2 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.officers-container .gold-underline {
+    margin: 0 auto 3rem;
+}
+
+.officers-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.officers-image {
+    width: 100%;
+    max-width: 800px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.officers-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.officers-description {
+    max-width: 800px;
+    text-align: center;
+}
+
+.officers-description p {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-weight: 500;
+}
+
 /* ========================================
    MEDIA PAGE STYLES
    ======================================== */
