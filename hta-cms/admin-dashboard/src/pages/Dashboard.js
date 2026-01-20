@@ -5,7 +5,7 @@ import { authAPI } from '../services/api';
 import './Dashboard.css';
 
 function Dashboard() {
-    const { user, logout, isAdmin } = useAuth();
+    const { user, logout, isAdmin, canDeleteUser, isSuperAdmin, canGrantAdminDelete } = useAuth();
     const [selectedPage, setSelectedPage] = useState('home');
     const [users, setUsers] = useState([]);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
@@ -84,6 +84,25 @@ Share these credentials with ${newUserName}. They will be required to change the
             fetchUsers();
         } catch (error) {
             alert('Failed to delete user: ' + (error.response?.data?.error || 'Unknown error'));
+        }
+    };
+
+    const handleGrantPermission = async (userId, userName, currentPermission) => {
+        const action = currentPermission ? 'revoke' : 'grant';
+        const message = currentPermission
+            ? `Remove admin deletion permission from "${userName}"?`
+            : `Grant admin deletion permission to "${userName}"?`;
+
+        if (!window.confirm(message)) {
+            return;
+        }
+
+        try {
+            await authAPI.grantAdminDeletePermission(userId, !currentPermission);
+            fetchUsers();
+            alert(`Successfully ${action}ed permission ${action === 'grant' ? 'to' : 'from'} ${userName}`);
+        } catch (error) {
+            alert('Failed to update permissions: ' + (error.response?.data?.error || 'Unknown error'));
         }
     };
 
@@ -264,6 +283,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>Permissions</th>
                                         <th>Status</th>
                                         <th>Created</th>
                                         <th>Actions</th>
@@ -272,19 +292,36 @@ Share these credentials with ${newUserName}. They will be required to change the
                                 <tbody>
                                     {users.length === 0 ? (
                                         <tr>
-                                            <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>
+                                            <td colSpan="7" style={{ textAlign: 'center', padding: '2rem' }}>
                                                 No users found
                                             </td>
                                         </tr>
                                     ) : (
                                         users.map((u) => (
                                             <tr key={u._id}>
-                                                <td>{u.name}</td>
+                                                <td>
+                                                    {u.name}
+                                                    {u.email === 'admin@htachurch.com' && (
+                                                        <span style={{ marginLeft: '0.5rem', color: '#ffd700', fontSize: '0.9rem' }}>👑</span>
+                                                    )}
+                                                </td>
                                                 <td>{u.email}</td>
                                                 <td>
                                                     <span className={`role-badge role-${u.role}`}>
                                                         {u.role}
                                                     </span>
+                                                </td>
+                                                <td>
+                                                    {u.role === 'admin' && u.permissions?.canDeleteAdmins && (
+                                                        <span className="status-badge" style={{ backgroundColor: '#4a5568', color: '#fbbf24' }}>
+                                                            🔑 Can Delete Admins
+                                                        </span>
+                                                    )}
+                                                    {u.email === 'admin@htachurch.com' && (
+                                                        <span className="status-badge" style={{ backgroundColor: '#1e3a8a', color: '#fbbf24' }}>
+                                                            ⭐ Super Admin
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     {u.requirePasswordChange ? (
@@ -299,14 +336,34 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                 </td>
                                                 <td>{new Date(u.createdAt).toLocaleDateString()}</td>
                                                 <td>
-                                                    {u._id !== user.id && (
-                                                        <button
-                                                            className="btn-delete"
-                                                            onClick={() => handleDeleteUser(u._id, u.name)}
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    )}
+                                                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                                        {/* Grant/Revoke Permission Button - Super Admin Only */}
+                                                        {canGrantAdminDelete && u.role === 'admin' && u.email !== 'admin@htachurch.com' && (
+                                                            <button
+                                                                className="btn-secondary"
+                                                                onClick={() => handleGrantPermission(u._id, u.name, u.permissions?.canDeleteAdmins)}
+                                                                style={{
+                                                                    fontSize: '0.85rem',
+                                                                    padding: '0.4rem 0.8rem',
+                                                                    backgroundColor: u.permissions?.canDeleteAdmins ? '#059669' : '#6366f1',
+                                                                    color: 'white',
+                                                                    border: 'none'
+                                                                }}
+                                                            >
+                                                                {u.permissions?.canDeleteAdmins ? '✓ Has Permission' : '🔑 Grant Permission'}
+                                                            </button>
+                                                        )}
+
+                                                        {/* Delete Button - Conditional based on permissions */}
+                                                        {canDeleteUser(u) && (
+                                                            <button
+                                                                className="btn-delete"
+                                                                onClick={() => handleDeleteUser(u._id, u.name)}
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))

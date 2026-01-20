@@ -38,4 +38,35 @@ const adminOnly = async (req, res, next) => {
     next();
 };
 
-module.exports = { auth, adminOnly };
+// Super admin check - only admin@htachurch.com or admins with canDeleteAdmins permission
+const canDeleteAdmins = async (req, res, next) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+
+    // Check if user is super admin or has permission
+    const isSuperAdmin = req.user.email === 'admin@htachurch.com';
+    const hasPermission = req.user.permissions?.canDeleteAdmins === true;
+
+    if (!isSuperAdmin && !hasPermission) {
+        return res.status(403).json({
+            error: 'Only the super admin (admin@htachurch.com) or admins with delete permissions can perform this action'
+        });
+    }
+
+    // Store if user is super admin for later use
+    req.isSuperAdmin = isSuperAdmin;
+    next();
+};
+
+// Only super admin can grant permissions
+const superAdminOnly = async (req, res, next) => {
+    if (req.user.email !== 'admin@htachurch.com') {
+        return res.status(403).json({
+            error: 'Only the super admin (admin@htachurch.com) can grant admin deletion permissions'
+        });
+    }
+    next();
+};
+
+module.exports = { auth, adminOnly, canDeleteAdmins, superAdminOnly };

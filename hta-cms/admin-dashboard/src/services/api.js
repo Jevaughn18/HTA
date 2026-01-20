@@ -31,7 +31,9 @@ export const authAPI = {
     createUser: (name, email, role) =>
         api.post('/auth/register', { name, email, role }),
     getUsers: () => api.get('/auth/users'),
-    deleteUser: (id) => api.delete(`/auth/users/${id}`)
+    deleteUser: (id) => api.delete(`/auth/users/${id}`),
+    grantAdminDeletePermission: (userId, canDeleteAdmins) =>
+        api.patch(`/auth/users/${userId}/permissions`, { canDeleteAdmins })
     // Removed: signup, forgotPassword, resetPassword (disabled for security)
 };
 

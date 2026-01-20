@@ -92,6 +92,29 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    // Helper function to check if current user can delete a specific user
+    const canDeleteUser = (userToDelete) => {
+        if (!user || !userToDelete) return false;
+
+        // Cannot delete yourself
+        if (userToDelete._id === user.id || userToDelete.id === user.id) return false;
+
+        // Cannot delete super admin
+        if (userToDelete.email === 'admin@htachurch.com') return false;
+
+        // Deleting an editor - any admin can delete
+        if (userToDelete.role === 'editor') {
+            return user.role === 'admin';
+        }
+
+        // Deleting an admin - need canDeleteAdmins permission
+        if (userToDelete.role === 'admin') {
+            return user.permissions?.canDeleteAdmins === true;
+        }
+
+        return false;
+    };
+
     const value = {
         user,
         token,
@@ -101,7 +124,11 @@ export const AuthProvider = ({ children }) => {
         logout,
         isAuthenticated: !!user,
         isAdmin: user?.role === 'admin',
-        requirePasswordChange: user?.requirePasswordChange || false
+        isSuperAdmin: user?.permissions?.isSuperAdmin || false,
+        canDeleteAdmins: user?.permissions?.canDeleteAdmins || false,
+        canGrantAdminDelete: user?.permissions?.canGrantAdminDelete || false,
+        requirePasswordChange: user?.requirePasswordChange || false,
+        canDeleteUser
     };
 
     return (
