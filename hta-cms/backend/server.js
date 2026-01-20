@@ -37,11 +37,20 @@ const generalLimiter = rateLimit({
 });
 
 const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 1 * 60 * 1000, // 1 minute
     max: 5, // Limit each IP to 5 login attempts per windowMs
     message: 'Too many login attempts, please try again later.',
     standardHeaders: true,
-    legacyHeaders: false
+    legacyHeaders: false,
+    handler: (req, res) => {
+        res.status(429).json({
+            error: 'Too many login attempts. Please wait 1 minute before trying again.',
+            retryAfter: 1, // 1 minute
+            rateLimited: true
+        });
+    },
+    // Add skip successful requests to only count failed attempts
+    skipSuccessfulRequests: true
 });
 
 const uploadLimiter = rateLimit({

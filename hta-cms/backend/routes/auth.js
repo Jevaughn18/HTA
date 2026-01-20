@@ -63,6 +63,21 @@ router.post('/register',
     }
 );
 
+// Login attempt tracking (in-memory store)
+const loginAttempts = new Map();
+const MAX_LOGIN_ATTEMPTS = 5;
+const ATTEMPT_WINDOW_MS = 1 * 60 * 1000; // 1 minute
+
+// Clean up old entries periodically
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, data] of loginAttempts.entries()) {
+        if (now - data.firstAttempt > ATTEMPT_WINDOW_MS) {
+            loginAttempts.delete(ip);
+        }
+    }
+}, 60000); // Clean every minute
+
 // Login
 router.post('/login',
     [
@@ -77,6 +92,25 @@ router.post('/login',
 
         try {
             const { email, password } = req.body;
+            const clientIp = req.ip || req.connection.remoteAddress;
+
+            // Check login attempts
+            const attemptData = loginAttempts.get(clientIp);
+            const now = Date.now();
+
+            if (attemptData) {
+                // Reset if window has passed
+                if (now - attemptData.firstAttempt > ATTEMPT_WINDOW_MS) {
+                    loginAttempts.delete(clientIp);
+                } else if (attemptData.count >= MAX_LOGIN_ATTEMPTS) {
+                    // Too many attempts
+                    return res.status(429).json({
+                        error: 'Too many login attempts. Please wait 1 minute before trying again.',
+                        retryAfter: 1,
+                        rateLimited: true
+                    });
+                }
+            }
 
             // Add small delay to mitigate timing attacks
             await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 100));
@@ -84,13 +118,33 @@ router.post('/login',
             // Find user
             const user = await User.findOne({ email, isActive: true });
             if (!user) {
-                return res.status(401).json({ error: 'Invalid email or password' });
+                // Track failed attempt
+                const current = loginAttempts.get(clientIp) || { count: 0, firstAttempt: now };
+                current.count++;
+                if (current.count === 1) current.firstAttempt = now;
+                loginAttempts.set(clientIp, current);
+
+                const remainingAttempts = MAX_LOGIN_ATTEMPTS - current.count;
+                return res.status(401).json({
+                    error: 'Invalid email or password',
+                    remainingAttempts: Math.max(0, remainingAttempts)
+                });
             }
 
             // Check password
             const isMatch = await user.comparePassword(password);
             if (!isMatch) {
-                return res.status(401).json({ error: 'Invalid email or password' });
+                // Track failed attempt
+                const current = loginAttempts.get(clientIp) || { count: 0, firstAttempt: now };
+                current.count++;
+                if (current.count === 1) current.firstAttempt = now;
+                loginAttempts.set(clientIp, current);
+
+                const remainingAttempts = MAX_LOGIN_ATTEMPTS - current.count;
+                return res.status(401).json({
+                    error: 'Invalid email or password',
+                    remainingAttempts: Math.max(0, remainingAttempts)
+                });
             }
 
             // Validate JWT_SECRET is configured
@@ -98,6 +152,9 @@ router.post('/login',
                 console.error('FATAL: JWT_SECRET not configured');
                 return res.status(500).json({ error: 'Server configuration error' });
             }
+
+            // Successful login - clear attempts
+            loginAttempts.delete(clientIp);
 
             // Generate JWT token with 1 hour expiry
             const token = jwt.sign(

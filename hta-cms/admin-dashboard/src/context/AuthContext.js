@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
             // Handle rate limiting errors specially
             if (error.response?.status === 429) {
-                const retryAfter = errorData?.retryAfter || 15; // Default to 15 minutes
+                const retryAfter = errorData?.retryAfter || 1; // Default to 1 minute
                 return {
                     success: false,
                     error: errorData?.error || 'Too many login attempts',
@@ -61,9 +61,11 @@ export const AuthProvider = ({ children }) => {
                 };
             }
 
+            // Handle regular login errors with remaining attempts
             return {
                 success: false,
-                error: errorData?.error || 'Login failed'
+                error: errorData?.error || 'Login failed',
+                remainingAttempts: errorData?.remainingAttempts
             };
         }
     };
