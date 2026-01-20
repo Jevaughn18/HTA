@@ -35,9 +35,13 @@ function Dashboard() {
 
     const fetchUsers = async () => {
         try {
+            console.log('Fetching users...');
             const response = await authAPI.getUsers();
+            console.log('Users response:', response.data);
+            console.log('Current user:', user);
             setUsers(response.data);
         } catch (error) {
+            console.error('Error fetching users:', error);
             // Error handled by user feedback
         }
     };
