@@ -204,7 +204,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                     setIsMobileMenuOpen(false); // Close menu on mobile after selection
                                 }}
                             >
-                                <span className="nav-icon">📄</span>
+                                <i className="fas fa-file-alt nav-icon"></i>
                                 <span className="nav-text">{page.name}</span>
                             </button>
                         ))}
@@ -221,7 +221,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                 }
                             }}
                         >
-                            <span className="nav-icon">👥</span>
+                            <i className="fas fa-users nav-icon"></i>
                             <span className="nav-text">User Management</span>
                             {!isAdmin && (
                                 <>
@@ -233,7 +233,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                 </nav>
 
                 <button onClick={logout} className="logout-button">
-                    <span>🚪</span>
+                    <i className="fas fa-sign-out-alt"></i>
                     Sign Out
                 </button>
             </aside>
@@ -483,6 +483,96 @@ Share these credentials with ${newUserName}. They will be required to change the
                                     )}
                                 </tbody>
                             </table>
+                        </div>
+
+                        {/* Mobile Cards View */}
+                        <div className="users-mobile-cards">
+                            {users.length === 0 ? (
+                                <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#9ca3af' }}>
+                                    <i className="fas fa-users" style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.3 }}></i>
+                                    <p>No users found</p>
+                                </div>
+                            ) : (
+                                users.map((u) => (
+                                    <div key={u._id} className="user-card">
+                                        <div className="user-card-header">
+                                            <div className="user-card-avatar">
+                                                {u.name?.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div className="user-card-info">
+                                                <div className="user-card-name">{u.name}</div>
+                                                <div className="user-card-email">{u.email}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="user-card-details">
+                                            <div className="user-card-row">
+                                                <span className="user-card-label">Role</span>
+                                                <span className={`role-badge role-${u.role}`}>
+                                                    {u.role}
+                                                </span>
+                                            </div>
+
+                                            <div className="user-card-row">
+                                                <span className="user-card-label">Permissions</span>
+                                                <span className="user-card-value">
+                                                    {u.email === 'admin@htachurch.com' ? (
+                                                        <span className="permission-badge-super">Super Admin</span>
+                                                    ) : u.role === 'admin' && u.permissions?.canDeleteAdmins ? (
+                                                        <span className="permission-badge">Can Delete Admins</span>
+                                                    ) : (
+                                                        <span style={{ color: '#9ca3af' }}>—</span>
+                                                    )}
+                                                </span>
+                                            </div>
+
+                                            <div className="user-card-row">
+                                                <span className="user-card-label">Status</span>
+                                                <span className="user-card-value">
+                                                    {u.requirePasswordChange ? (
+                                                        <span className="status-badge status-pending">
+                                                            Pending Password Change
+                                                        </span>
+                                                    ) : (
+                                                        <span className="status-badge status-active">
+                                                            Active
+                                                        </span>
+                                                    )}
+                                                </span>
+                                            </div>
+
+                                            <div className="user-card-row">
+                                                <span className="user-card-label">Created</span>
+                                                <span className="user-card-value">
+                                                    {new Date(u.createdAt).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="user-card-actions">
+                                            {/* Grant/Revoke Permission Button - Super Admin Only */}
+                                            {canGrantAdminDelete && u.role === 'admin' && u.email !== 'admin@htachurch.com' && (
+                                                <button
+                                                    className={u.permissions?.canDeleteAdmins ? 'btn-revoke' : 'btn-grant'}
+                                                    onClick={() => handleGrantPermission(u._id, u.name, u.permissions?.canDeleteAdmins)}
+                                                >
+                                                    {u.permissions?.canDeleteAdmins ? 'Revoke' : 'Grant'}
+                                                </button>
+                                            )}
+
+                                            {/* Delete Button - Conditional based on permissions */}
+                                            {canDeleteUser(u) && (
+                                                <button
+                                                    className="btn-delete"
+                                                    onClick={() => handleDeleteUser(u._id, u.name)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 ) : (
