@@ -36,30 +36,30 @@ function initializeEventCarousel() {
     let isAutoScrolling = true;
     let autoScrollTimer = null;
     let isDragging = false;
-    let startX = 0;
-    let scrollLeft = 0;
 
-    // Count all items (no duplicates needed for this carousel)
+    // Count all items
     const originalItemCount = items.length;
-    const maxScroll = originalItemCount * itemWidth;
 
-    console.log(`Event Carousel initialized with ${items.length} items, itemWidth: ${itemWidth}px, maxScroll: ${maxScroll}px`);
+    console.log(`Event Carousel initialized with ${originalItemCount} items, itemWidth: ${itemWidth}px`);
 
-    // Auto-scroll function - moves to next card every 3 seconds
+    // Auto-scroll function - moves to next card every 4 seconds
     function autoScroll() {
         if (!isAutoScrolling || isDragging) return;
 
-        // Move to next card
+        // Increment to next card
         currentIndex++;
 
-        // Loop back to first card after last card
+        // If we've gone past the last card, reset to first card
         if (currentIndex >= originalItemCount) {
             currentIndex = 0;
         }
 
+        // Apply the scroll
         currentPosition = currentIndex * itemWidth;
         track.style.transition = 'transform 0.5s ease';
         track.style.transform = `translateX(-${currentPosition}px)`;
+
+        console.log(`Auto-scrolled to card ${currentIndex + 1} of ${originalItemCount}`);
     }
 
     // Start auto-scrolling - change cards every 4 seconds
@@ -178,7 +178,7 @@ function initializeEventCarousel() {
         // Resume auto-scroll after 5 seconds
         setTimeout(() => {
             startAutoScroll();
-        }, 5000);
+        }, 2000);
     }
 
     // Mouse events - attach to track instead of carousel for better control
