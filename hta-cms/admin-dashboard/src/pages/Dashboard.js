@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ContentEditor from '../components/ContentEditor';
 import Toast from '../components/Toast';
+import ConfirmModal from '../components/ConfirmModal';
 import { authAPI } from '../services/api';
 import './Dashboard.css';
 
@@ -17,6 +18,14 @@ function Dashboard() {
     const [createUserSuccess, setCreateUserSuccess] = useState('');
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null);
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: '',
+        message: '',
+        onConfirm: null,
+        type: 'danger',
+        confirmText: 'Confirm'
+    });
 
     const showToast = (message, type = 'success') => {
         setToast({ message, type });
@@ -24,6 +33,10 @@ function Dashboard() {
 
     const hideToast = () => {
         setToast(null);
+    };
+
+    const closeConfirmModal = () => {
+        setConfirmModal(prev => ({ ...prev, isOpen: false }));
     };
 
     const pages = [
@@ -90,38 +103,53 @@ Share these credentials with ${newUserName}. They will be required to change the
         }
     };
 
-    const handleDeleteUser = async (userId, userName) => {
-        if (!window.confirm(`Are you sure you want to delete user "${userName}"?`)) {
-            return;
-        }
-
-        try {
-            await authAPI.deleteUser(userId);
-            fetchUsers();
-            showToast(`Successfully deleted user "${userName}"`, 'success');
-        } catch (error) {
-            showToast('Failed to delete user: ' + (error.response?.data?.error || 'Unknown error'), 'error');
-        }
+    const handleDeleteUser = (userId, userName) => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Delete User',
+            message: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+            confirmText: 'Delete User',
+            type: 'danger',
+            onConfirm: async () => {
+                try {
+                    await authAPI.deleteUser(userId);
+                    fetchUsers();
+                    showToast(`Successfully deleted user "${userName}"`, 'success');
+                } catch (error) {
+                    showToast('Failed to delete user: ' + (error.response?.data?.error || 'Unknown error'), 'error');
+                } finally {
+                    closeConfirmModal();
+                }
+            }
+        });
     };
 
-    const handleGrantPermission = async (userId, userName, currentPermission) => {
+    const handleGrantPermission = (userId, userName, currentPermission) => {
         const action = currentPermission ? 'revoke' : 'grant';
         const actionText = currentPermission ? 'Revoked' : 'Granted';
+        const modalTitle = currentPermission ? 'Revoke Permission' : 'Grant Permission';
         const message = currentPermission
-            ? `Remove admin deletion permission from "${userName}"?`
-            : `Grant admin deletion permission to "${userName}"?`;
+            ? `Are you sure you want to remove admin deletion permission from "${userName}"?`
+            : `Are you sure you want to grant admin deletion permission to "${userName}"?`;
 
-        if (!window.confirm(message)) {
-            return;
-        }
-
-        try {
-            await authAPI.grantAdminDeletePermission(userId, !currentPermission);
-            fetchUsers();
-            showToast(`${actionText} admin deletion permission ${action === 'grant' ? 'to' : 'from'} "${userName}"`, 'success');
-        } catch (error) {
-            showToast('Failed to update permissions: ' + (error.response?.data?.error || 'Unknown error'), 'error');
-        }
+        setConfirmModal({
+            isOpen: true,
+            title: modalTitle,
+            message: message,
+            confirmText: currentPermission ? 'Revoke Permission' : 'Grant Permission',
+            type: currentPermission ? 'danger' : 'primary-type',
+            onConfirm: async () => {
+                try {
+                    await authAPI.grantAdminDeletePermission(userId, !currentPermission);
+                    fetchUsers();
+                    showToast(`${actionText} admin deletion permission ${action === 'grant' ? 'to' : 'from'} "${userName}"`, 'success');
+                } catch (error) {
+                    showToast('Failed to update permissions: ' + (error.response?.data?.error || 'Unknown error'), 'error');
+                } finally {
+                    closeConfirmModal();
+                }
+            }
+        });
     };
 
     return (
@@ -437,6 +465,17 @@ Share these credentials with ${newUserName}. They will be required to change the
                     onClose={hideToast}
                 />
             )}
+
+            {/* Confirmation Modal */}
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                title={confirmModal.title}
+                message={confirmModal.message}
+                confirmText={confirmModal.confirmText}
+                type={confirmModal.type}
+                onConfirm={confirmModal.onConfirm}
+                onCancel={closeConfirmModal}
+            />
         </div>
     );
 }
