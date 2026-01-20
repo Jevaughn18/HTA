@@ -64,6 +64,12 @@ function updateImagesInSection(section, page) {
                 updateHistoryImages(sectionContent);
             } else if (sectionName === 'our-team') {
                 updateTeamImages(sectionContent);
+            } else if (sectionName === 'who-we-are') {
+                updateWhoWeAre(sectionContent);
+            } else if (sectionName === 'what-we-believe') {
+                updateWhatWeBelieve(sectionContent);
+            } else if (sectionName === 'our-officers') {
+                updateOurOfficers(sectionContent);
             } else if (sectionName === 'footer') {
                 updateFooter(sectionContent);
             } else {
@@ -216,6 +222,56 @@ function updateHeroGallery(content) {
 function updateHistoryImages(content) {
     console.log('[CMS] Updating history section');
 
+    const section = document.querySelector('#our-story');
+    if (!section) {
+        console.warn('[CMS] History section not found');
+        return;
+    }
+
+    // Update section label
+    if (content.label) {
+        const label = section.querySelector('.section-label');
+        if (label) {
+            label.textContent = content.label;
+            console.log('[CMS] Updated history label:', content.label);
+        }
+    }
+
+    // Update main heading
+    if (content.heading || content.title) {
+        const heading = section.querySelector('h2');
+        if (heading) {
+            heading.textContent = content.heading || content.title;
+            console.log('[CMS] Updated history heading');
+        }
+    }
+
+    // Update main history paragraphs
+    if (content.paragraph1 || content.text1) {
+        const paragraphs = section.querySelectorAll('.story-content > p:not(.mission-quote)');
+        if (paragraphs[0]) {
+            paragraphs[0].textContent = content.paragraph1 || content.text1;
+            console.log('[CMS] Updated history paragraph 1');
+        }
+    }
+
+    if (content.paragraph2 || content.text2) {
+        const paragraphs = section.querySelectorAll('.story-content > p:not(.mission-quote)');
+        if (paragraphs[1]) {
+            paragraphs[1].textContent = content.paragraph2 || content.text2;
+            console.log('[CMS] Updated history paragraph 2');
+        }
+    }
+
+    // Update mission quote
+    if (content.quote) {
+        const quote = section.querySelector('.mission-quote em');
+        if (quote) {
+            quote.textContent = content.quote;
+            console.log('[CMS] Updated mission quote');
+        }
+    }
+
     // Update founder image (Bishop Carter)
     if (content.founderImage) {
         const founderImg = document.querySelector('.story-image img');
@@ -224,6 +280,15 @@ function updateHistoryImages(content) {
             const imgSrc = content.founderImage.src.startsWith('http') ? content.founderImage.src : `${API_BASE_URL}/${imagePath}`;
             founderImg.src = imgSrc;
             console.log('[CMS] Updated founder image:', imgSrc);
+        }
+    }
+
+    // Update founder caption
+    if (content.founderCaption) {
+        const caption = section.querySelector('.story-image .image-caption');
+        if (caption) {
+            caption.innerHTML = content.founderCaption;
+            console.log('[CMS] Updated founder caption');
         }
     }
 
@@ -239,6 +304,20 @@ function updateHistoryImages(content) {
             }
         });
     }
+
+    // Update history image captions
+    if (content.historyCaptions && content.historyCaptions.length > 0) {
+        const captions = document.querySelectorAll('.history-image-item .image-caption');
+        content.historyCaptions.forEach((caption, idx) => {
+            if (captions[idx]) {
+                captions[idx].innerHTML = caption;
+                console.log('[CMS] Updated history caption', idx + 1);
+            }
+        });
+    }
+
+    // Also update text content using generic updater
+    updateGenericText(content, 'our-history');
 }
 
 /**
@@ -247,19 +326,238 @@ function updateHistoryImages(content) {
 function updateTeamImages(content) {
     if (!content.staff) return;
 
-    console.log('[CMS] Updating team images');
+    console.log('[CMS] Updating team images and info');
 
     content.staff.forEach((member, idx) => {
-        const staffImg = document.querySelector(`.staff-card:nth-child(${idx + 1}) img, .staff-member:nth-child(${idx + 1}) img, .team-member:nth-child(${idx + 1}) img`);
-        if (staffImg && member.image) {
-            const imagePath = member.image.startsWith('/') ? member.image.substring(1) : member.image;
-            const imgSrc = member.image.startsWith('http') ? member.image : `${API_BASE_URL}/${imagePath}`;
-            staffImg.src = imgSrc;
-            console.log('[CMS] Updated team member image', idx + 1, ':', imgSrc);
+        const staffCard = document.querySelector(`.staff-card:nth-child(${idx + 1})`);
+
+        if (staffCard) {
+            // Update image
+            if (member.image) {
+                const staffImg = staffCard.querySelector('img');
+                if (staffImg) {
+                    const imagePath = member.image.startsWith('/') ? member.image.substring(1) : member.image;
+                    const imgSrc = member.image.startsWith('http') ? member.image : `${API_BASE_URL}/${imagePath}`;
+                    staffImg.src = imgSrc;
+                    console.log('[CMS] Updated team member image', idx + 1, ':', imgSrc);
+                }
+            }
+
+            // Update name
+            if (member.name) {
+                const nameEl = staffCard.querySelector('h3');
+                if (nameEl) {
+                    nameEl.textContent = member.name;
+                    console.log('[CMS] Updated team member name', idx + 1, ':', member.name);
+                }
+            }
+
+            // Update title/role
+            if (member.title || member.role) {
+                const titleEl = staffCard.querySelector('.staff-title, .role');
+                if (titleEl) {
+                    titleEl.textContent = member.title || member.role;
+                    console.log('[CMS] Updated team member title', idx + 1, ':', member.title || member.role);
+                }
+            }
+
+            // Update location
+            if (member.location) {
+                const locationEl = staffCard.querySelector('.staff-location, .location');
+                if (locationEl) {
+                    locationEl.textContent = member.location;
+                    console.log('[CMS] Updated team member location', idx + 1, ':', member.location);
+                }
+            }
         } else {
-            console.warn('[CMS] Could not find staff image element for member', idx + 1, 'or image property missing');
+            console.warn('[CMS] Could not find staff card for member', idx + 1);
         }
     });
+
+    // Also update any other text content using generic updater
+    updateGenericText(content, 'our-team');
+}
+
+/**
+ * Update Who We Are section on about page
+ */
+function updateWhoWeAre(content) {
+    console.log('[CMS] Updating Who We Are section');
+
+    const section = document.querySelector('#who-we-are');
+    if (!section) {
+        console.warn('[CMS] Who We Are section not found');
+        return;
+    }
+
+    // Update section label
+    if (content.label) {
+        const label = section.querySelector('.section-label');
+        if (label) {
+            label.textContent = content.label;
+            console.log('[CMS] Updated Who We Are label:', content.label);
+        }
+    }
+
+    // Update main heading
+    if (content.heading || content.title) {
+        const heading = section.querySelector('h2');
+        if (heading) {
+            heading.innerHTML = content.heading || content.title;
+            console.log('[CMS] Updated Who We Are heading');
+        }
+    }
+
+    // Update lead text
+    if (content.leadText || content.description) {
+        const leadText = section.querySelector('.lead-text');
+        if (leadText) {
+            leadText.textContent = content.leadText || content.description;
+            console.log('[CMS] Updated Who We Are lead text');
+        }
+    }
+
+    // Update Vision card
+    if (content.vision) {
+        const visionCard = section.querySelector('.vm-card:nth-child(1)');
+        if (visionCard) {
+            const visionText = visionCard.querySelector('p');
+            if (visionText) {
+                visionText.textContent = content.vision;
+                console.log('[CMS] Updated vision text');
+            }
+        }
+    }
+
+    // Update Mission card
+    if (content.mission) {
+        const missionCard = section.querySelector('.vm-card:nth-child(2)');
+        if (missionCard) {
+            const missionText = missionCard.querySelector('p');
+            if (missionText) {
+                missionText.textContent = content.mission;
+                console.log('[CMS] Updated mission text');
+            }
+        }
+    }
+
+    // Use generic updater for any other fields
+    updateGenericText(content, 'who-we-are');
+}
+
+/**
+ * Update What We Believe section on about page
+ */
+function updateWhatWeBelieve(content) {
+    console.log('[CMS] Updating What We Believe section');
+
+    const section = document.querySelector('#what-we-believe');
+    if (!section) {
+        console.warn('[CMS] What We Believe section not found');
+        return;
+    }
+
+    // Update main heading
+    if (content.title || content.heading) {
+        const heading = section.querySelector('h2');
+        if (heading) {
+            heading.textContent = content.title || content.heading;
+            console.log('[CMS] Updated What We Believe heading');
+        }
+    }
+
+    // Update intro paragraphs
+    if (content.intro1) {
+        const intros = section.querySelectorAll('.belief-intro');
+        if (intros[0]) {
+            intros[0].textContent = content.intro1;
+            console.log('[CMS] Updated What We Believe intro 1');
+        }
+    }
+
+    if (content.intro2) {
+        const intros = section.querySelectorAll('.belief-intro');
+        if (intros[1]) {
+            intros[1].innerHTML = content.intro2; // Using innerHTML to preserve <em> tags if present
+            console.log('[CMS] Updated What We Believe intro 2');
+        }
+    }
+
+    // Update accordion items if provided
+    if (content.articles && Array.isArray(content.articles)) {
+        content.articles.forEach((article, idx) => {
+            const accordionItem = section.querySelector(`.accordion-item:nth-child(${idx + 1})`);
+            if (accordionItem && article.title) {
+                const titleSpan = accordionItem.querySelector('.accordion-header span');
+                if (titleSpan) {
+                    titleSpan.textContent = article.title;
+                    console.log(`[CMS] Updated accordion article ${idx + 1} title`);
+                }
+            }
+            if (accordionItem && article.content) {
+                const contentDiv = accordionItem.querySelector('.accordion-content');
+                if (contentDiv) {
+                    contentDiv.innerHTML = article.content;
+                    console.log(`[CMS] Updated accordion article ${idx + 1} content`);
+                }
+            }
+        });
+    }
+
+    // Use generic updater for any other fields
+    updateGenericText(content, 'what-we-believe');
+}
+
+/**
+ * Update Our Officers section on about page
+ */
+function updateOurOfficers(content) {
+    console.log('[CMS] Updating Our Officers section');
+
+    const section = document.querySelector('#our-officers');
+    if (!section) {
+        console.warn('[CMS] Our Officers section not found');
+        return;
+    }
+
+    // Update main heading
+    if (content.title || content.heading) {
+        const heading = section.querySelector('h2');
+        if (heading) {
+            heading.textContent = content.title || content.heading;
+            console.log('[CMS] Updated Our Officers heading');
+        }
+    }
+
+    // Update description
+    if (content.description || content.text) {
+        const description = section.querySelector('.officers-description p');
+        if (description) {
+            description.textContent = content.description || content.text;
+            console.log('[CMS] Updated Our Officers description');
+        }
+    }
+
+    // Update image if provided
+    if (content.image) {
+        const img = section.querySelector('.officers-image img');
+        if (img) {
+            const imagePath = content.image.startsWith('/') ? content.image.substring(1) : content.image;
+            const imgSrc = content.image.startsWith('http') ? content.image : `${API_BASE_URL}/${imagePath}`;
+            img.src = imgSrc;
+
+            // Also update lightbox image
+            const lightboxImg = document.querySelector('#officersLightbox .lightbox-content');
+            if (lightboxImg) {
+                lightboxImg.src = imgSrc;
+            }
+
+            console.log('[CMS] Updated Our Officers image:', imgSrc);
+        }
+    }
+
+    // Use generic updater for any other fields
+    updateGenericText(content, 'our-officers');
 }
 
 /**
