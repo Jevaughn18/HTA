@@ -94,24 +94,45 @@ export const AuthProvider = ({ children }) => {
 
     // Helper function to check if current user can delete a specific user
     const canDeleteUser = (userToDelete) => {
-        if (!user || !userToDelete) return false;
+        if (!user || !userToDelete) {
+            console.log('canDeleteUser: Missing user or userToDelete');
+            return false;
+        }
+
+        console.log('Checking delete permission for:', {
+            userToDelete: userToDelete.email,
+            currentUser: user.email,
+            currentUserPermissions: user.permissions,
+            userToDeleteRole: userToDelete.role
+        });
 
         // Cannot delete yourself
-        if (userToDelete._id === user.id || userToDelete.id === user.id) return false;
+        if (userToDelete._id === user.id || userToDelete.id === user.id) {
+            console.log('Cannot delete yourself');
+            return false;
+        }
 
         // Cannot delete super admin
-        if (userToDelete.email === 'admin@htachurch.com') return false;
+        if (userToDelete.email === 'admin@htachurch.com') {
+            console.log('Cannot delete super admin');
+            return false;
+        }
 
         // Deleting an editor - any admin can delete
         if (userToDelete.role === 'editor') {
-            return user.role === 'admin';
+            const canDelete = user.role === 'admin';
+            console.log('Deleting editor, can delete:', canDelete);
+            return canDelete;
         }
 
         // Deleting an admin - need canDeleteAdmins permission
         if (userToDelete.role === 'admin') {
-            return user.permissions?.canDeleteAdmins === true;
+            const canDelete = user.permissions?.canDeleteAdmins === true;
+            console.log('Deleting admin, has permission:', canDelete, 'user.permissions:', user.permissions);
+            return canDelete;
         }
 
+        console.log('No matching condition, returning false');
         return false;
     };
 
