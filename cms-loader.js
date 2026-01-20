@@ -67,7 +67,10 @@ function updateImagesInSection(section, page) {
             } else if (sectionName === 'who-we-are') {
                 updateWhoWeAre(sectionContent);
             } else if (sectionName === 'what-we-believe') {
-                updateWhatWeBelieve(sectionContent);
+                // COMMENTED OUT: Keep default HTML content from about.html
+                // This preserves the rich formatting with <strong> and <em> tags
+                // updateWhatWeBelieve(sectionContent);
+                console.log('[CMS] Skipping What We Believe section - using default HTML content');
             } else if (sectionName === 'our-officers') {
                 updateOurOfficers(sectionContent);
             } else if (sectionName === 'footer') {
@@ -163,8 +166,8 @@ function updateHeroGallery(content) {
     // Validate that we have valid images
     const validImages = content.galleryImages.filter(img => {
         return img && img.src && img.src.trim() !== '' &&
-               !img.src.includes('undefined') &&
-               !img.src.includes('null');
+            !img.src.includes('undefined') &&
+            !img.src.includes('null');
     });
 
     // Only update if we have at least 10 valid images (to ensure good coverage)
@@ -449,63 +452,8 @@ function updateWhoWeAre(content) {
  * Update What We Believe section on about page
  */
 function updateWhatWeBelieve(content) {
-    console.log('[CMS] Updating What We Believe section');
-
-    const section = document.querySelector('#what-we-believe');
-    if (!section) {
-        console.warn('[CMS] What We Believe section not found');
-        return;
-    }
-
-    // Update main heading
-    if (content.title || content.heading) {
-        const heading = section.querySelector('h2');
-        if (heading) {
-            heading.textContent = content.title || content.heading;
-            console.log('[CMS] Updated What We Believe heading');
-        }
-    }
-
-    // Update intro paragraphs
-    if (content.intro1) {
-        const intros = section.querySelectorAll('.belief-intro');
-        if (intros[0]) {
-            intros[0].textContent = content.intro1;
-            console.log('[CMS] Updated What We Believe intro 1');
-        }
-    }
-
-    if (content.intro2) {
-        const intros = section.querySelectorAll('.belief-intro');
-        if (intros[1]) {
-            intros[1].innerHTML = content.intro2; // Using innerHTML to preserve <em> tags if present
-            console.log('[CMS] Updated What We Believe intro 2');
-        }
-    }
-
-    // Update accordion items if provided
-    if (content.articles && Array.isArray(content.articles)) {
-        content.articles.forEach((article, idx) => {
-            const accordionItem = section.querySelector(`.accordion-item:nth-child(${idx + 1})`);
-            if (accordionItem && article.title) {
-                const titleSpan = accordionItem.querySelector('.accordion-header span');
-                if (titleSpan) {
-                    titleSpan.textContent = article.title;
-                    console.log(`[CMS] Updated accordion article ${idx + 1} title`);
-                }
-            }
-            if (accordionItem && article.content) {
-                const contentDiv = accordionItem.querySelector('.accordion-content');
-                if (contentDiv) {
-                    contentDiv.innerHTML = article.content;
-                    console.log(`[CMS] Updated accordion article ${idx + 1} content`);
-                }
-            }
-        });
-    }
-
-    // Use generic updater for any other fields
-    updateGenericText(content, 'what-we-believe');
+    // CMS update for this section is disabled to preserve hardcoded styling in about.html
+    console.log('[CMS] What We Believe section update skipped to preserve styling');
 }
 
 /**
@@ -984,7 +932,7 @@ function updateServiceInfo(content) {
     // Update Portsmouth branch info
     if (content.portsmouth) {
         const portsmouthSection = document.querySelector('[data-branch="portsmouth"]') ||
-                                 document.querySelector('.branch-info:first-child');
+            document.querySelector('.branch-info:first-child');
 
         if (portsmouthSection) {
             // Update address
@@ -1012,7 +960,7 @@ function updateServiceInfo(content) {
     // Update Banks branch info
     if (content.banks) {
         const banksSection = document.querySelector('[data-branch="banks"]') ||
-                            document.querySelector('.branch-info:last-child');
+            document.querySelector('.branch-info:last-child');
 
         if (banksSection) {
             // Update address
@@ -1284,7 +1232,7 @@ function updateGenericText(content, sectionName) {
 
         // Also try data attributes
         const dataElement = document.querySelector(`[data-cms-field="${fieldName}"]`) ||
-                           document.querySelector(`[data-field="${fieldName}"]`);
+            document.querySelector(`[data-field="${fieldName}"]`);
         if (dataElement) {
             dataElement.textContent = fieldValue;
             console.log(`[CMS] Updated ${fieldName} via data attribute:`, fieldValue.substring(0, 50));
