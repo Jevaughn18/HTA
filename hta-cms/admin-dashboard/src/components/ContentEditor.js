@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { contentAPI, mediaAPI, BASE_URL } from '../services/api';
 import './ContentEditor.css';
 
@@ -46,27 +46,8 @@ function ContentEditor({ page }) {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
 
-    useEffect(() => {
-        loadContent();
-    }, [page]);
-
-    const loadContent = async () => {
-        try {
-            setLoading(true);
-            const response = await contentAPI.getPageContent(page);
-            // Sort sections in proper website order
-            const sortedSections = sortSectionsByPageOrder(response.data, page);
-            setSections(sortedSections);
-        } catch (error) {
-            console.error('Error loading content:', error);
-            initializeDefaultSections();
-        } finally {
-            setLoading(false);
-        }
-    };
-
     // Sort sections according to website layout order
-    const sortSectionsByPageOrder = (sections, page) => {
+    const sortSectionsByPageOrder = useCallback((sections, page) => {
         const orderMap = {
             home: ['hero', 'service-times', 'service-details', 'upcoming-events', 'vision', 'vision-gallery', 'next-steps', 'generosity', 'locations'],
             about: ['hero', 'who-we-are', 'what-we-believe', 'our-story', 'our-name', 'leadership'],
@@ -86,9 +67,9 @@ function ContentEditor({ page }) {
             if (indexB === -1) return -1;
             return indexA - indexB;
         });
-    };
+    }, []);
 
-    const initializeDefaultSections = () => {
+    const initializeDefaultSections = useCallback(() => {
         const defaultSections = {
             home: [
                 { section: 'hero', content: { title: '', subtitle: '', backgroundImage: '' } },
@@ -103,7 +84,26 @@ function ContentEditor({ page }) {
         };
 
         setSections(defaultSections[page] || []);
-    };
+    }, [page]);
+
+    const loadContent = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await contentAPI.getPageContent(page);
+            // Sort sections in proper website order
+            const sortedSections = sortSectionsByPageOrder(response.data, page);
+            setSections(sortedSections);
+        } catch (error) {
+            console.error('Error loading content:', error);
+            initializeDefaultSections();
+        } finally {
+            setLoading(false);
+        }
+    }, [page, sortSectionsByPageOrder, initializeDefaultSections]);
+
+    useEffect(() => {
+        loadContent();
+    }, [loadContent]);
 
     const handleContentChange = async (sectionName, newContent) => {
         try {
@@ -246,7 +246,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                                     <img
                                                         key={idx}
                                                         src={imageUrl}
-                                                        alt={`Image ${idx + 1}`}
+                                                        alt={`${idx + 1}`}
                                                         style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
                                                         onError={(e) => {
                                                             e.target.style.display = 'none';
@@ -588,7 +588,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                     {imageUrl ? (
                                         <img
                                             src={`${imageUrl}?t=${Date.now()}`}
-                                            alt={`Gallery image ${idx + 1}`}
+                                            alt={`Gallery ${idx + 1}`}
                                             className="gallery-thumbnail"
                                             style={{
                                                 width: '100%',
