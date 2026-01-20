@@ -194,7 +194,28 @@ router.post('/change-password', auth, async (req, res) => {
 router.get('/users', auth, adminOnly, async (req, res) => {
     try {
         const users = await User.find({}).select('-password');
-        res.json(users);
+
+        // Add computed permissions to each user
+        const usersWithPermissions = users.map(user => {
+            const isSuperAdmin = user.email === 'admin@htachurch.com';
+            return {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                isActive: user.isActive,
+                requirePasswordChange: user.requirePasswordChange,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+                permissions: {
+                    canDeleteAdmins: isSuperAdmin || (user.permissions?.canDeleteAdmins === true),
+                    canGrantAdminDelete: isSuperAdmin,
+                    isSuperAdmin: isSuperAdmin
+                }
+            };
+        });
+
+        res.json(usersWithPermissions);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch users' });
     }
