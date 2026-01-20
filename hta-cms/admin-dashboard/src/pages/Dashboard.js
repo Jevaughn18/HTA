@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ContentEditor from '../components/ContentEditor';
 import { authAPI } from '../services/api';
@@ -31,20 +31,20 @@ function Dashboard() {
         if (isAdmin && selectedPage === 'users') {
             fetchUsers();
         }
-    }, [isAdmin, selectedPage]);
+    }, [isAdmin, selectedPage, fetchUsers]);
 
-    const fetchUsers = async () => {
+    const fetchUsers = useCallback(async () => {
         try {
             console.log('Fetching users...');
             const response = await authAPI.getUsers();
-            console.log('Users response:', response.data);
-            console.log('Current user:', user);
+            console.log('Users response details:', response.data.map(u => ({ email: u.email, role: u.role, permissions: u.permissions })));
+            console.log('Current user permissions:', user?.permissions);
             setUsers(response.data);
         } catch (error) {
             console.error('Error fetching users:', error);
             // Error handled by user feedback
         }
-    };
+    }, [user]);
 
     const handleCreateUser = async (e) => {
         e.preventDefault();
