@@ -5,7 +5,7 @@ import { authAPI } from '../services/api';
 import './Dashboard.css';
 
 function Dashboard() {
-    const { user, logout, isAdmin, canDeleteUser, isSuperAdmin, canGrantAdminDelete } = useAuth();
+    const { user, logout, isAdmin, canDeleteUser, canGrantAdminDelete } = useAuth();
     const [selectedPage, setSelectedPage] = useState('home');
     const [users, setUsers] = useState([]);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
