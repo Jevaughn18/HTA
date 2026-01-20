@@ -46,6 +46,10 @@ function updateImagesInSection(section, page) {
         case 'home':
             if (sectionName === 'hero') {
                 updateHeroGallery(sectionContent);
+            } else if (sectionName === 'event-flyers' || sectionName === 'events') {
+                updateEventCarousel(sectionContent);
+            } else if (sectionName === 'footer') {
+                updateFooter(sectionContent);
             }
             break;
         case 'about':
@@ -53,32 +57,61 @@ function updateImagesInSection(section, page) {
                 updateHistoryImages(sectionContent);
             } else if (sectionName === 'our-team') {
                 updateTeamImages(sectionContent);
+            } else if (sectionName === 'footer') {
+                updateFooter(sectionContent);
             }
             break;
         case 'events':
-            updateGenericImages(sectionContent, sectionName);
+            if (sectionName === 'footer') {
+                updateFooter(sectionContent);
+            } else {
+                updateGenericImages(sectionContent, sectionName);
+            }
             break;
         case 'give':
-            updateGenericImages(sectionContent, sectionName);
+            if (sectionName === 'give-content') {
+                updateGivePage(sectionContent);
+            } else if (sectionName === 'footer') {
+                updateFooter(sectionContent);
+            } else {
+                updateGenericImages(sectionContent, sectionName);
+            }
             break;
         case 'media':
-            updateMediaPage(sectionContent, sectionName);
+            if (sectionName === 'footer') {
+                updateFooter(sectionContent);
+            } else {
+                updateMediaPage(sectionContent, sectionName);
+            }
             break;
         case 'departments':
-            updateDepartmentImages(sectionContent, sectionName);
+            if (sectionName === 'footer') {
+                updateFooter(sectionContent);
+            } else {
+                updateDepartmentImages(sectionContent, sectionName);
+            }
             break;
         case 'contact':
             if (sectionName === 'faq') {
                 updateFAQSection(sectionContent);
             } else if (sectionName === 'what-to-expect') {
                 updateWhatToExpect(sectionContent);
+            } else if (sectionName === 'service-info') {
+                updateServiceInfo(sectionContent);
+            } else if (sectionName === 'footer') {
+                updateFooter(sectionContent);
             } else {
                 updateContactPage(sectionContent, sectionName);
             }
             break;
         default:
-            // For any other page, try generic image updates
-            updateGenericImages(sectionContent, sectionName);
+            // Check for footer on any page
+            if (sectionName === 'footer') {
+                updateFooter(sectionContent);
+            } else {
+                // For any other page, try generic image updates
+                updateGenericImages(sectionContent, sectionName);
+            }
     }
 }
 
@@ -497,6 +530,275 @@ function updateWhatToExpect(content) {
     });
 
     console.log('[CMS] Updated', content.cards.length, 'What To Expect cards');
+}
+
+/**
+ * Update event carousel flyers on home page
+ */
+function updateEventCarousel(content) {
+    console.log('[CMS] Updating event carousel flyers');
+
+    if (!content.flyers || !Array.isArray(content.flyers)) {
+        console.warn('[CMS] No flyers array found in event content');
+        return;
+    }
+
+    const carouselTrack = document.querySelector('#eventCarousel .carousel-track');
+    if (!carouselTrack) {
+        console.warn('[CMS] Could not find event carousel track');
+        return;
+    }
+
+    // Build carousel items from CMS flyers
+    carouselTrack.innerHTML = content.flyers.map(flyer => {
+        const imagePath = flyer.image.startsWith('/') ? flyer.image.substring(1) : flyer.image;
+        const imgSrc = flyer.image.startsWith('http') ? flyer.image : `http://localhost:5001/${imagePath}`;
+        const alt = flyer.alt || flyer.title || 'Event Flyer';
+
+        return `
+            <div class="carousel-item event-poster-card">
+                <img src="${imgSrc}" alt="${alt}" loading="lazy">
+            </div>
+        `;
+    }).join('');
+
+    console.log('[CMS] Updated event carousel with', content.flyers.length, 'flyers');
+
+    // Dispatch event to reinitialize carousel
+    document.dispatchEvent(new Event('carouselContentUpdated'));
+}
+
+/**
+ * Update footer content on all pages
+ */
+function updateFooter(content) {
+    console.log('[CMS] Updating footer content');
+
+    // Update contact email
+    if (content.email) {
+        const emailLinks = document.querySelectorAll('footer a[href^="mailto:"]');
+        emailLinks.forEach(link => {
+            link.href = `mailto:${content.email}`;
+            link.textContent = content.email;
+        });
+        console.log('[CMS] Updated footer email:', content.email);
+    }
+
+    // Update phone number
+    if (content.phone) {
+        const phoneLinks = document.querySelectorAll('footer a[href^="tel:"]');
+        phoneLinks.forEach(link => {
+            link.href = `tel:${content.phone}`;
+            link.textContent = content.phone;
+        });
+        console.log('[CMS] Updated footer phone:', content.phone);
+    }
+
+    // Update address
+    if (content.address) {
+        const addressElements = document.querySelectorAll('footer .footer-address, footer address');
+        addressElements.forEach(el => {
+            el.textContent = content.address;
+        });
+        console.log('[CMS] Updated footer address');
+    }
+
+    // Update social links
+    if (content.socialLinks) {
+        if (content.socialLinks.facebook) {
+            const fbLinks = document.querySelectorAll('footer a[href*="facebook"]');
+            fbLinks.forEach(link => link.href = content.socialLinks.facebook);
+        }
+        if (content.socialLinks.instagram) {
+            const igLinks = document.querySelectorAll('footer a[href*="instagram"]');
+            igLinks.forEach(link => link.href = content.socialLinks.instagram);
+        }
+        if (content.socialLinks.youtube) {
+            const ytLinks = document.querySelectorAll('footer a[href*="youtube"]');
+            ytLinks.forEach(link => link.href = content.socialLinks.youtube);
+        }
+        console.log('[CMS] Updated footer social links');
+    }
+
+    // Update copyright year and text
+    if (content.copyright) {
+        const copyrightElements = document.querySelectorAll('footer .copyright, footer .footer-bottom p');
+        copyrightElements.forEach(el => {
+            el.innerHTML = content.copyright;
+        });
+        console.log('[CMS] Updated footer copyright');
+    }
+}
+
+/**
+ * Update service times and addresses on contact page
+ */
+function updateServiceInfo(content) {
+    console.log('[CMS] Updating service times and addresses');
+
+    // Update Portsmouth branch info
+    if (content.portsmouth) {
+        const portsmouthSection = document.querySelector('[data-branch="portsmouth"]') ||
+                                 document.querySelector('.branch-info:first-child');
+
+        if (portsmouthSection) {
+            // Update address
+            if (content.portsmouth.address) {
+                const addressEl = portsmouthSection.querySelector('.branch-address, address');
+                if (addressEl) {
+                    addressEl.textContent = content.portsmouth.address;
+                }
+            }
+
+            // Update service times
+            if (content.portsmouth.serviceTimes && Array.isArray(content.portsmouth.serviceTimes)) {
+                const timesContainer = portsmouthSection.querySelector('.service-times, .times-list');
+                if (timesContainer) {
+                    timesContainer.innerHTML = content.portsmouth.serviceTimes.map(time => {
+                        return `<div class="service-time">${time}</div>`;
+                    }).join('');
+                }
+            }
+
+            console.log('[CMS] Updated Portsmouth service info');
+        }
+    }
+
+    // Update Banks branch info
+    if (content.banks) {
+        const banksSection = document.querySelector('[data-branch="banks"]') ||
+                            document.querySelector('.branch-info:last-child');
+
+        if (banksSection) {
+            // Update address
+            if (content.banks.address) {
+                const addressEl = banksSection.querySelector('.branch-address, address');
+                if (addressEl) {
+                    addressEl.textContent = content.banks.address;
+                }
+            }
+
+            // Update service times
+            if (content.banks.serviceTimes && Array.isArray(content.banks.serviceTimes)) {
+                const timesContainer = banksSection.querySelector('.service-times, .times-list');
+                if (timesContainer) {
+                    timesContainer.innerHTML = content.banks.serviceTimes.map(time => {
+                        return `<div class="service-time">${time}</div>`;
+                    }).join('');
+                }
+            }
+
+            console.log('[CMS] Updated Banks service info');
+        }
+    }
+
+    // Update general service times (if not branch-specific)
+    if (content.serviceTimes && Array.isArray(content.serviceTimes)) {
+        const generalTimesContainer = document.querySelector('.general-service-times');
+        if (generalTimesContainer) {
+            generalTimesContainer.innerHTML = content.serviceTimes.map(service => {
+                return `
+                    <div class="service-time-item">
+                        <strong>${service.day}</strong>: ${service.time}
+                    </div>
+                `;
+            }).join('');
+            console.log('[CMS] Updated general service times');
+        }
+    }
+}
+
+/**
+ * Update give page specific content
+ */
+function updateGivePage(content) {
+    console.log('[CMS] Updating give page content');
+
+    // Update page title/heading
+    if (content.title) {
+        const pageTitle = document.querySelector('.give-section h1, .give-section .section-title');
+        if (pageTitle) {
+            pageTitle.textContent = content.title;
+        }
+    }
+
+    // Update intro text
+    if (content.intro) {
+        const introText = document.querySelector('.give-intro, .give-section .intro-text');
+        if (introText) {
+            introText.textContent = content.intro;
+        }
+    }
+
+    // Update giving options
+    if (content.givingOptions && Array.isArray(content.givingOptions)) {
+        const optionsContainer = document.querySelector('.giving-options, .give-methods');
+        if (optionsContainer) {
+            optionsContainer.innerHTML = content.givingOptions.map(option => {
+                const iconClass = option.icon || 'fas fa-hand-holding-heart';
+                return `
+                    <div class="giving-option">
+                        <div class="option-icon">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <h3>${option.title}</h3>
+                        <p>${option.description}</p>
+                        ${option.link ? `<a href="${option.link}" class="btn btn-primary">${option.linkText || 'Give Now'}</a>` : ''}
+                    </div>
+                `;
+            }).join('');
+            console.log('[CMS] Updated', content.givingOptions.length, 'giving options');
+        }
+    }
+
+    // Update payment details (for checks, wire transfers, etc.)
+    if (content.paymentDetails) {
+        const detailsContainer = document.querySelector('.payment-details');
+        if (detailsContainer) {
+            let detailsHTML = '<h3>Payment Details</h3>';
+
+            if (content.paymentDetails.checkPayableTo) {
+                detailsHTML += `<p><strong>Checks payable to:</strong> ${content.paymentDetails.checkPayableTo}</p>`;
+            }
+            if (content.paymentDetails.mailingAddress) {
+                detailsHTML += `<p><strong>Mailing Address:</strong><br>${content.paymentDetails.mailingAddress}</p>`;
+            }
+            if (content.paymentDetails.bankInfo) {
+                detailsHTML += `<p><strong>Bank Information:</strong><br>${content.paymentDetails.bankInfo}</p>`;
+            }
+
+            detailsContainer.innerHTML = detailsHTML;
+            console.log('[CMS] Updated payment details');
+        }
+    }
+
+    // Update images
+    if (content.images && Array.isArray(content.images)) {
+        content.images.forEach((img, idx) => {
+            const imgElement = document.querySelector(`.give-section img:nth-of-type(${idx + 1})`);
+            if (imgElement && img.src) {
+                const imagePath = img.src.startsWith('/') ? img.src.substring(1) : img.src;
+                const imgSrc = img.src.startsWith('http') ? img.src : `http://localhost:5001/${imagePath}`;
+                imgElement.src = imgSrc;
+                if (img.alt) imgElement.alt = img.alt;
+            }
+        });
+        console.log('[CMS] Updated give page images');
+    }
+
+    // Update Bible verse or inspirational quote
+    if (content.verse) {
+        const verseContainer = document.querySelector('.giving-verse, .scripture-quote');
+        if (verseContainer) {
+            verseContainer.innerHTML = `
+                <blockquote>
+                    <p>${content.verse.text}</p>
+                    <cite>${content.verse.reference}</cite>
+                </blockquote>
+            `;
+            console.log('[CMS] Updated giving verse');
+        }
+    }
 }
 
 /**
