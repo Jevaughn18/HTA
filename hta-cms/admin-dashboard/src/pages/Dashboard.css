@@ -337,8 +337,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
@@ -358,6 +363,7 @@
         transform: translateY(40px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -532,15 +538,16 @@
 }
 
 /* ========================================
-   USERS TABLE - MODERN & CLEAN
+   USERS TABLE - PROFESSIONAL & MINIMAL
    ======================================== */
 
 .users-table-container {
     background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    margin-top: 1.5rem;
 }
 
 .users-table {
@@ -549,29 +556,30 @@
 }
 
 .users-table thead {
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .users-table th {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     text-align: left;
-    font-weight: 700;
-    color: #374151;
-    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 2px solid #e5e7eb;
+    letter-spacing: 0.5px;
 }
 
 .users-table td {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid #f3f4f6;
-    color: #4b5563;
-    font-size: 0.9rem;
+    color: #1f2937;
+    font-size: 0.875rem;
+    vertical-align: middle;
 }
 
 .users-table tbody tr {
-    transition: all 0.2s ease;
+    transition: background-color 0.15s ease;
 }
 
 .users-table tbody tr:hover {
@@ -610,72 +618,108 @@
 }
 
 /* ========================================
-   BADGES - COLORFUL & CLEAR
+   BADGES - CLEAN & SIMPLE
    ======================================== */
 
 .role-badge {
     display: inline-block;
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: capitalize;
-    letter-spacing: 0.3px;
 }
 
 .role-admin {
-    background: linear-gradient(135deg, #4B0082 0%, #6a1b9a 100%);
-    color: white;
+    background: #ede9fe;
+    color: #6b21a8;
 }
 
 .role-editor {
-    background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
-    color: #6b21a8;
+    background: #dbeafe;
+    color: #1e40af;
 }
 
 .status-badge {
     display: inline-block;
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
+    font-weight: 600;
 }
 
 .status-active {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    background: #d1fae5;
     color: #065f46;
 }
 
 .status-pending {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.permission-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.permission-badge-super {
+    background: #fef3c7;
     color: #92400e;
 }
 
 /* ========================================
-   DELETE BUTTON
+   ACTION BUTTONS - CLEAN & PROFESSIONAL
    ======================================== */
 
 .btn-delete {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    background: #ef4444;
     color: white;
     border: none;
-    padding: 0.625rem 1.25rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+    transition: background-color 0.15s ease;
 }
 
 .btn-delete:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    background: #dc2626;
 }
 
-.btn-delete:active {
-    transform: translateY(0);
+.btn-grant,
+.btn-revoke {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-grant {
+    background: #059669;
+    color: white;
+}
+
+.btn-grant:hover {
+    background: #047857;
+}
+
+.btn-revoke {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-revoke:hover {
+    background: #4b5563;
 }
 
 /* ========================================

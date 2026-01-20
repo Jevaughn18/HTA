@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ContentEditor from '../components/ContentEditor';
+import Toast from '../components/Toast';
 import { authAPI } from '../services/api';
 import './Dashboard.css';
 
@@ -15,6 +16,15 @@ function Dashboard() {
     const [createUserError, setCreateUserError] = useState('');
     const [createUserSuccess, setCreateUserSuccess] = useState('');
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null);
+
+    const showToast = (message, type = 'success') => {
+        setToast({ message, type });
+    };
+
+    const hideToast = () => {
+        setToast(null);
+    };
 
     const pages = [
         { id: 'home', name: 'Home Page' },
@@ -88,13 +98,15 @@ Share these credentials with ${newUserName}. They will be required to change the
         try {
             await authAPI.deleteUser(userId);
             fetchUsers();
+            showToast(`Successfully deleted user "${userName}"`, 'success');
         } catch (error) {
-            alert('Failed to delete user: ' + (error.response?.data?.error || 'Unknown error'));
+            showToast('Failed to delete user: ' + (error.response?.data?.error || 'Unknown error'), 'error');
         }
     };
 
     const handleGrantPermission = async (userId, userName, currentPermission) => {
         const action = currentPermission ? 'revoke' : 'grant';
+        const actionText = currentPermission ? 'Revoked' : 'Granted';
         const message = currentPermission
             ? `Remove admin deletion permission from "${userName}"?`
             : `Grant admin deletion permission to "${userName}"?`;
@@ -106,9 +118,9 @@ Share these credentials with ${newUserName}. They will be required to change the
         try {
             await authAPI.grantAdminDeletePermission(userId, !currentPermission);
             fetchUsers();
-            alert(`Successfully ${action}ed permission ${action === 'grant' ? 'to' : 'from'} ${userName}`);
+            showToast(`${actionText} admin deletion permission ${action === 'grant' ? 'to' : 'from'} "${userName}"`, 'success');
         } catch (error) {
-            alert('Failed to update permissions: ' + (error.response?.data?.error || 'Unknown error'));
+            showToast('Failed to update permissions: ' + (error.response?.data?.error || 'Unknown error'), 'error');
         }
     };
 
@@ -347,12 +359,7 @@ Share these credentials with ${newUserName}. They will be required to change the
                                     ) : (
                                         users.map((u) => (
                                             <tr key={u._id}>
-                                                <td>
-                                                    {u.name}
-                                                    {u.email === 'admin@htachurch.com' && (
-                                                        <span style={{ marginLeft: '0.5rem', color: '#ffd700', fontSize: '0.85rem', fontWeight: '600' }}>Super Admin</span>
-                                                    )}
-                                                </td>
+                                                <td>{u.name}</td>
                                                 <td>{u.email}</td>
                                                 <td>
                                                     <span className={`role-badge role-${u.role}`}>
@@ -361,15 +368,11 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                 </td>
                                                 <td>
                                                     {u.email === 'admin@htachurch.com' ? (
-                                                        <span className="status-badge" style={{ backgroundColor: '#1e3a8a', color: '#fbbf24', fontWeight: '600' }}>
-                                                            Super Admin
-                                                        </span>
+                                                        <span className="permission-badge-super">Super Admin</span>
                                                     ) : u.role === 'admin' && u.permissions?.canDeleteAdmins ? (
-                                                        <span className="status-badge" style={{ backgroundColor: '#059669', color: '#ffffff', fontWeight: '500' }}>
-                                                            Can Delete Admins
-                                                        </span>
+                                                        <span className="permission-badge">Can Delete Admins</span>
                                                     ) : (
-                                                        <span style={{ color: '#9ca3af', fontSize: '0.875rem' }}>—</span>
+                                                        <span style={{ color: '#9ca3af' }}>—</span>
                                                     )}
                                                 </td>
                                                 <td>
@@ -389,21 +392,10 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                         {/* Grant/Revoke Permission Button - Super Admin Only */}
                                                         {canGrantAdminDelete && u.role === 'admin' && u.email !== 'admin@htachurch.com' && (
                                                             <button
-                                                                className="btn-secondary"
+                                                                className={u.permissions?.canDeleteAdmins ? 'btn-revoke' : 'btn-grant'}
                                                                 onClick={() => handleGrantPermission(u._id, u.name, u.permissions?.canDeleteAdmins)}
-                                                                style={{
-                                                                    fontSize: '0.8rem',
-                                                                    padding: '0.5rem 1rem',
-                                                                    backgroundColor: u.permissions?.canDeleteAdmins ? '#dc2626' : '#059669',
-                                                                    color: 'white',
-                                                                    border: 'none',
-                                                                    borderRadius: '6px',
-                                                                    fontWeight: '500',
-                                                                    cursor: 'pointer',
-                                                                    transition: 'all 0.2s'
-                                                                }}
                                                             >
-                                                                {u.permissions?.canDeleteAdmins ? 'Revoke Permission' : 'Grant Permission'}
+                                                                {u.permissions?.canDeleteAdmins ? 'Revoke' : 'Grant'}
                                                             </button>
                                                         )}
 
@@ -412,12 +404,6 @@ Share these credentials with ${newUserName}. They will be required to change the
                                                             <button
                                                                 className="btn-delete"
                                                                 onClick={() => handleDeleteUser(u._id, u.name)}
-                                                                style={{
-                                                                    fontSize: '0.8rem',
-                                                                    padding: '0.5rem 1rem',
-                                                                    borderRadius: '6px',
-                                                                    fontWeight: '500'
-                                                                }}
                                                             >
                                                                 Delete
                                                             </button>
@@ -442,6 +428,15 @@ Share these credentials with ${newUserName}. They will be required to change the
                     </>
                 )}
             </main>
+
+            {/* Toast Notification */}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={hideToast}
+                />
+            )}
         </div>
     );
 }
