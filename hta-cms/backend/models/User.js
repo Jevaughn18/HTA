@@ -21,6 +21,16 @@ const userSchema = new mongoose.Schema({
         enum: ['admin', 'editor'],
         default: 'editor'
     },
+    permissions: {
+        canDeleteAdmins: {
+            type: Boolean,
+            default: false
+        },
+        canGrantAdminDelete: {
+            type: Boolean,
+            default: false
+        }
+    },
     isActive: {
         type: Boolean,
         default: true

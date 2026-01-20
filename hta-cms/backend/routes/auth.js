@@ -2,7 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/User');
-const { auth, adminOnly } = require('../middleware/auth');
+const { auth, adminOnly, canDeleteAdmins, superAdminOnly } = require('../middleware/auth');
 const { body, param, validationResult } = require('express-validator');
 
 const router = express.Router();
@@ -106,6 +106,7 @@ router.post('/login',
                 { expiresIn: '1h' }
             );
 
+            const isSuperAdmin = user.email === 'admin@htachurch.com';
             res.json({
                 token,
                 user: {
@@ -113,7 +114,12 @@ router.post('/login',
                     name: user.name,
                     email: user.email,
                     role: user.role,
-                    requirePasswordChange: user.requirePasswordChange || false
+                    requirePasswordChange: user.requirePasswordChange || false,
+                    permissions: {
+                        canDeleteAdmins: isSuperAdmin || (user.permissions?.canDeleteAdmins === true),
+                        canGrantAdminDelete: isSuperAdmin,
+                        isSuperAdmin: isSuperAdmin
+                    }
                 }
             });
         } catch (error) {
@@ -124,13 +130,19 @@ router.post('/login',
 
 // Get current user
 router.get('/me', auth, async (req, res) => {
+    const isSuperAdmin = req.user.email === 'admin@htachurch.com';
     res.json({
         user: {
             id: req.user._id,
             name: req.user.name,
             email: req.user.email,
             role: req.user.role,
-            requirePasswordChange: req.user.requirePasswordChange || false
+            requirePasswordChange: req.user.requirePasswordChange || false,
+            permissions: {
+                canDeleteAdmins: isSuperAdmin || (req.user.permissions?.canDeleteAdmins === true),
+                canGrantAdminDelete: isSuperAdmin,
+                isSuperAdmin: isSuperAdmin
+            }
         }
     });
 });
@@ -188,10 +200,10 @@ router.get('/users', auth, adminOnly, async (req, res) => {
     }
 });
 
-// Delete user (admin only)
+// Delete user
+// Note: Deleting admin accounts requires special permission
 router.delete('/users/:id',
     auth,
-    adminOnly,
     [
         param('id').isMongoId().withMessage('Invalid user ID')
     ],
@@ -202,18 +214,108 @@ router.delete('/users/:id',
         }
 
         try {
-            // Prevent admin from deleting their own account
+            // Prevent user from deleting their own account
             if (req.params.id === req.user._id.toString()) {
                 return res.status(400).json({ error: 'Cannot delete your own account' });
             }
 
-            const user = await User.findByIdAndDelete(req.params.id);
+            // Find the user to be deleted
+            const userToDelete = await User.findById(req.params.id);
+            if (!userToDelete) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            // Check if trying to delete an admin
+            if (userToDelete.role === 'admin') {
+                // Only super admin or admins with canDeleteAdmins permission can delete admins
+                const isSuperAdmin = req.user.email === 'admin@htachurch.com';
+                const hasPermission = req.user.permissions?.canDeleteAdmins === true;
+
+                if (!isSuperAdmin && !hasPermission) {
+                    return res.status(403).json({
+                        error: 'Only the super admin (admin@htachurch.com) or admins with delete permissions can delete admin accounts'
+                    });
+                }
+
+                // Prevent deleting the super admin account
+                if (userToDelete.email === 'admin@htachurch.com') {
+                    return res.status(403).json({
+                        error: 'Cannot delete the super admin account (admin@htachurch.com)'
+                    });
+                }
+            } else {
+                // Regular admins can delete editors
+                if (req.user.role !== 'admin') {
+                    return res.status(403).json({ error: 'Admin access required' });
+                }
+            }
+
+            await User.findByIdAndDelete(req.params.id);
+            res.json({
+                message: 'User deleted successfully',
+                deletedUser: {
+                    name: userToDelete.name,
+                    email: userToDelete.email,
+                    role: userToDelete.role
+                }
+            });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to delete user' });
+        }
+    }
+);
+
+// Grant admin deletion permission (super admin only)
+router.patch('/users/:id/permissions',
+    auth,
+    superAdminOnly,
+    [
+        param('id').isMongoId().withMessage('Invalid user ID'),
+        body('canDeleteAdmins').isBoolean().withMessage('canDeleteAdmins must be a boolean')
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        try {
+            const user = await User.findById(req.params.id);
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            res.json({ message: 'User deleted successfully' });
+
+            // Can only grant permissions to admins
+            if (user.role !== 'admin') {
+                return res.status(400).json({
+                    error: 'Can only grant admin deletion permissions to admin users'
+                });
+            }
+
+            // Cannot modify super admin permissions
+            if (user.email === 'admin@htachurch.com') {
+                return res.status(400).json({
+                    error: 'Cannot modify super admin permissions'
+                });
+            }
+
+            // Update permissions
+            user.permissions = user.permissions || {};
+            user.permissions.canDeleteAdmins = req.body.canDeleteAdmins;
+            await user.save();
+
+            res.json({
+                message: `Admin deletion permission ${req.body.canDeleteAdmins ? 'granted to' : 'revoked from'} ${user.name}`,
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    permissions: user.permissions
+                }
+            });
         } catch (error) {
-            res.status(500).json({ error: 'Failed to delete user' });
+            res.status(500).json({ error: 'Failed to update permissions' });
         }
     }
 );
