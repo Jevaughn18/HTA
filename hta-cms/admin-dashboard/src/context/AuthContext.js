@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Cannot delete super admin
-        if (userToDelete.email === 'admin@htachurch.com') {
+        if (userToDelete.email && userToDelete.email.trim().toLowerCase() === 'admin@htachurch.com') {
             console.log('Cannot delete super admin');
             return false;
         }

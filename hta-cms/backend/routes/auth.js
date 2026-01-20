@@ -106,7 +106,7 @@ router.post('/login',
                 { expiresIn: '1h' }
             );
 
-            const isSuperAdmin = user.email === 'admin@htachurch.com';
+            const isSuperAdmin = user.email.trim().toLowerCase() === 'admin@htachurch.com';
             res.json({
                 token,
                 user: {
@@ -130,7 +130,7 @@ router.post('/login',
 
 // Get current user
 router.get('/me', auth, async (req, res) => {
-    const isSuperAdmin = req.user.email === 'admin@htachurch.com';
+    const isSuperAdmin = req.user.email.trim().toLowerCase() === 'admin@htachurch.com';
     res.json({
         user: {
             id: req.user._id,
@@ -249,7 +249,7 @@ router.delete('/users/:id',
             // Check if trying to delete an admin
             if (userToDelete.role === 'admin') {
                 // Only super admin or admins with canDeleteAdmins permission can delete admins
-                const isSuperAdmin = req.user.email === 'admin@htachurch.com';
+                const isSuperAdmin = req.user.email.trim().toLowerCase() === 'admin@htachurch.com';
                 const hasPermission = req.user.permissions?.canDeleteAdmins === true;
 
                 if (!isSuperAdmin && !hasPermission) {
@@ -259,7 +259,7 @@ router.delete('/users/:id',
                 }
 
                 // Prevent deleting the super admin account
-                if (userToDelete.email === 'admin@htachurch.com') {
+                if (userToDelete.email.trim().toLowerCase() === 'admin@htachurch.com') {
                     return res.status(403).json({
                         error: 'Cannot delete the super admin account (admin@htachurch.com)'
                     });
@@ -314,7 +314,7 @@ router.patch('/users/:id/permissions',
             }
 
             // Cannot modify super admin permissions
-            if (user.email === 'admin@htachurch.com') {
+            if (user.email.trim().toLowerCase() === 'admin@htachurch.com') {
                 return res.status(400).json({
                     error: 'Cannot modify super admin permissions'
                 });

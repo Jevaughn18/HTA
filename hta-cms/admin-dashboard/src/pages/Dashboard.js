@@ -26,6 +26,8 @@ function Dashboard() {
         { id: 'give', name: 'Give' }
     ];
 
+    console.log('Sidebar pages configured:', pages.length);
+
     const fetchUsers = useCallback(async () => {
         try {
             console.log('Fetching users...');
@@ -162,6 +164,46 @@ Share these credentials with ${newUserName}. They will be required to change the
                         <div className="content-header">
                             <h1>User Management</h1>
                             <p>Manage CMS user accounts</p>
+                        </div>
+
+                        {/* Session Permission Status (Debug/Info) */}
+                        <div style={{
+                            marginBottom: '2rem',
+                            padding: '1.5rem',
+                            background: 'white',
+                            borderRadius: '16px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                            border: '1px solid rgba(0,0,0,0.08)',
+                            display: 'flex',
+                            gap: '2rem',
+                            flexWrap: 'wrap'
+                        }}>
+                            <div style={{ flex: 1, minWidth: '200px' }}>
+                                <h4 style={{ margin: '0 0 0.5rem 0', color: '#6b7280', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Your Session Role</h4>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                    <span className={`role-badge role-${user?.role}`}>{user?.role}</span>
+                                    {user?.email === 'admin@htachurch.com' && <span style={{ color: '#ffd700' }}>👑 Super Admin</span>}
+                                </div>
+                            </div>
+                            <div style={{ flex: 2, minWidth: '300px' }}>
+                                <h4 style={{ margin: '0 0 0.5rem 0', color: '#6b7280', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Active Permissions</h4>
+                                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                    <span className="status-badge" style={{
+                                        backgroundColor: user?.permissions?.canDeleteAdmins ? '#d1fae5' : '#fee2e2',
+                                        color: user?.permissions?.canDeleteAdmins ? '#065f46' : '#991b1b',
+                                        opacity: user?.permissions?.canDeleteAdmins ? 1 : 0.6
+                                    }}>
+                                        {user?.permissions?.canDeleteAdmins ? '✅ Can Delete Admins' : '❌ Cannot Delete Admins'}
+                                    </span>
+                                    <span className="status-badge" style={{
+                                        backgroundColor: user?.permissions?.canGrantAdminDelete ? '#d1fae5' : '#fee2e2',
+                                        color: user?.permissions?.canGrantAdminDelete ? '#065f46' : '#991b1b',
+                                        opacity: user?.permissions?.canGrantAdminDelete ? 1 : 0.6
+                                    }}>
+                                        {user?.permissions?.canGrantAdminDelete ? '✅ Can Grant Permissions' : '❌ Cannot Grant Permissions'}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="user-management-actions">

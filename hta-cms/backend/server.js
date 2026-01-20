@@ -30,7 +30,7 @@ app.use(helmet({
 // Rate limiting
 const generalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
+    max: 500, // Increased limit to 500 requests per windowMs for admin usage
     message: 'Too many requests from this IP, please try again later.',
     standardHeaders: true,
     legacyHeaders: false
@@ -88,8 +88,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hta-cms')
-.then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.error('MongoDB connection error:', err));
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Request logging (no emojis)
 app.use((req, res, next) => {
