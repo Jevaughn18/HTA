@@ -21,8 +21,9 @@ router.get('/:page',
         }
 
         try {
+            // Don't populate updatedBy for public API - security concern
             const content = await Content.find({ page: req.params.page })
-                .populate('updatedBy', 'name email');
+                .select('-updatedBy');
             res.json(content);
         } catch (error) {
             res.status(500).json({ error: 'Failed to fetch content' });
@@ -43,10 +44,11 @@ router.get('/:page/:section',
         }
 
         try {
+            // Don't populate updatedBy for public API - security concern
             const content = await Content.findOne({
                 page: req.params.page,
                 section: req.params.section
-            }).populate('updatedBy', 'name email');
+            }).select('-updatedBy');
 
             if (!content) {
                 return res.status(404).json({ error: 'Content not found' });
