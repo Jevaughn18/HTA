@@ -571,8 +571,7 @@ h6 {
    ======================================== */
 .hero-video {
     position: relative;
-    height: 100vh;
-    min-height: 600px;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -640,17 +639,15 @@ h6 {
 /* Hero Gallery Grid - Masonry Layout */
 .hero-gallery-grid {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 100vh;
-    min-width: 100vw;
-    min-height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
     gap: 0;
+    overflow: hidden;
 }
 
 .gallery-cell {
@@ -3551,8 +3548,12 @@ section[id] {
         min-height: 70vh;
     }
 
+    /* Hero Gallery Grid - Mobile */
+    .hero-gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
 
-    .service-buttons,
     .hero-buttons,
     .generosity-buttons {
         flex-direction: column;
