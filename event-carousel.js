@@ -39,6 +39,7 @@ function initializeEventCarousel() {
 
     // Count all items
     const originalItemCount = items.length;
+    let maxScroll = originalItemCount * itemWidth;
 
     console.log(`Event Carousel initialized with ${originalItemCount} items, itemWidth: ${itemWidth}px`);
 
@@ -46,13 +47,8 @@ function initializeEventCarousel() {
     function autoScroll() {
         if (!isAutoScrolling || isDragging) return;
 
-        // Increment to next card
-        currentIndex++;
-
-        // If we've gone past the last card, reset to first card
-        if (currentIndex >= originalItemCount) {
-            currentIndex = 0;
-        }
+        // Move to next card (with proper wrapping)
+        currentIndex = (currentIndex + 1) % originalItemCount;
 
         // Apply the scroll
         currentPosition = currentIndex * itemWidth;
@@ -238,6 +234,7 @@ function initializeEventCarousel() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             itemWidth = getItemWidth();
+            maxScroll = originalItemCount * itemWidth;
 
             // Recalculate position based on current card index
             currentPosition = currentIndex * itemWidth;
@@ -295,14 +292,14 @@ function openEventFlyerLightbox(imageSrc, caption) {
         closeBtn.addEventListener('click', closeEventFlyerLightbox);
 
         // Close on outside click
-        lightbox.addEventListener('click', function(e) {
+        lightbox.addEventListener('click', function (e) {
             if (e.target === lightbox) {
                 closeEventFlyerLightbox();
             }
         });
 
         // Close on Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && lightbox.classList.contains('active')) {
                 closeEventFlyerLightbox();
             }
