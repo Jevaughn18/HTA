@@ -82,6 +82,8 @@ function updateImagesInSection(section, page) {
                 updateHeroGallery(sectionContent);
             } else if (sectionName === 'event-flyers' || sectionName === 'events' || sectionName === 'upcoming-events') {
                 updateEventCarousel(sectionContent);
+            } else if (sectionName === 'next-steps') {
+                updateNextSteps(sectionContent);
             } else if (sectionName === 'footer') {
                 updateFooter(sectionContent);
             } else {
@@ -922,6 +924,64 @@ function updateEventCarousel(content) {
     } else {
         console.log('[CMS] No valid event flyers found, keeping hardcoded images');
     }
+}
+
+/**
+ * Update Next Steps section on home page
+ */
+function updateNextSteps(content) {
+    console.log('[CMS] Updating Next Steps section');
+
+    if (!content.steps || !Array.isArray(content.steps)) {
+        console.warn('[CMS] No steps array found in Next Steps content');
+        return;
+    }
+
+    const stepCards = document.querySelectorAll('.next-step-card');
+
+    content.steps.forEach((step, idx) => {
+        if (stepCards[idx]) {
+            const card = stepCards[idx];
+
+            // Update image
+            if (step.image) {
+                const img = card.querySelector('img');
+                if (img) {
+                    const imagePath = step.image.startsWith('/') ? step.image.substring(1) : step.image;
+                    const imgSrc = step.image.startsWith('http') ? step.image : `${API_BASE_URL}/${imagePath}`;
+                    img.src = imgSrc;
+                    console.log('[CMS] Updated next step', idx + 1, 'image:', imgSrc);
+                }
+            }
+
+            // Update title
+            if (step.title) {
+                const title = card.querySelector('h3');
+                if (title) {
+                    title.textContent = step.title;
+                    console.log('[CMS] Updated next step', idx + 1, 'title:', step.title);
+                }
+            }
+
+            // Update description
+            if (step.description) {
+                const description = card.querySelector('p');
+                if (description) {
+                    description.textContent = step.description;
+                    console.log('[CMS] Updated next step', idx + 1, 'description');
+                }
+            }
+
+            // Update button link
+            if (step.link) {
+                const button = card.querySelector('a.btn');
+                if (button) {
+                    button.href = step.link;
+                    console.log('[CMS] Updated next step', idx + 1, 'link:', step.link);
+                }
+            }
+        }
+    });
 }
 
 /**
