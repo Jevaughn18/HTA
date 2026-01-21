@@ -892,7 +892,9 @@ function updateEventCarousel(content) {
     }
 
     // Filter out broken /uploads/ images and build valid flyers
+    // Limit to maximum of 4 images
     const validFlyers = eventData
+        .slice(0, 4) // Limit to 4 events maximum
         .map(flyer => {
             const imgSrc = resolveImageUrl(flyer.image);
             if (!imgSrc) {
@@ -904,7 +906,7 @@ function updateEventCarousel(content) {
         .filter(flyer => flyer !== null);
 
     console.log('[CMS DEBUG] Total event flyers:', eventData.length);
-    console.log('[CMS DEBUG] Valid event flyers after filtering:', validFlyers.length);
+    console.log('[CMS DEBUG] Valid event flyers after filtering (max 4):', validFlyers.length);
 
     // Only update if we have valid flyers, otherwise keep hardcoded images
     if (validFlyers.length > 0) {
@@ -917,7 +919,7 @@ function updateEventCarousel(content) {
             `;
         }).join('');
 
-        console.log('[CMS] Updated event carousel with', validFlyers.length, 'valid flyers');
+        console.log('[CMS] Updated event carousel with', validFlyers.length, 'valid flyers (max 4)');
 
         // Dispatch event to reinitialize carousel
         document.dispatchEvent(new Event('carouselContentUpdated'));
