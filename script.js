@@ -1026,3 +1026,11 @@ function lazyLoadHeroGallery() {
 
     console.log(`🖼️ Lazy loading initialized for ${galleryImages.length} hero gallery images`);
 }
+
+// ===================================
+// HERO VIDEO OPTIMIZATION
+// ===================================
+// Note: Hero videos use preload="metadata" which loads only video metadata
+// (duration, dimensions, etc.) instead of the full video until autoplay starts.
+// This provides a good balance between performance and immediate playback,
+// saving bandwidth while ensuring videos play without delay.
