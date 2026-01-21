@@ -80,7 +80,7 @@ function updateImagesInSection(section, page) {
         case 'home':
             if (sectionName === 'hero') {
                 updateHeroGallery(sectionContent);
-            } else if (sectionName === 'event-flyers' || sectionName === 'events') {
+            } else if (sectionName === 'event-flyers' || sectionName === 'events' || sectionName === 'upcoming-events') {
                 updateEventCarousel(sectionContent);
             } else if (sectionName === 'footer') {
                 updateFooter(sectionContent);
@@ -875,8 +875,11 @@ function updateWhatToExpect(content) {
 function updateEventCarousel(content) {
     console.log('[CMS] Updating event carousel flyers');
 
-    if (!content.flyers || !Array.isArray(content.flyers)) {
-        console.warn('[CMS] No flyers array found in event content');
+    // Support both 'flyers' and 'events' array names
+    const eventData = content.flyers || content.events;
+
+    if (!eventData || !Array.isArray(eventData)) {
+        console.warn('[CMS] No flyers or events array found in event content');
         return;
     }
 
@@ -886,23 +889,39 @@ function updateEventCarousel(content) {
         return;
     }
 
-    // Build carousel items from CMS flyers
-    carouselTrack.innerHTML = content.flyers.map(flyer => {
-        const imagePath = flyer.image.startsWith('/') ? flyer.image.substring(1) : flyer.image;
-        const imgSrc = flyer.image.startsWith('http') ? flyer.image : `${API_BASE_URL}/${imagePath}`;
-        const alt = flyer.alt || flyer.title || 'Event Flyer';
+    // Filter out broken /uploads/ images and build valid flyers
+    const validFlyers = eventData
+        .map(flyer => {
+            const imgSrc = resolveImageUrl(flyer.image);
+            if (!imgSrc) {
+                console.warn('[CMS] Skipping event flyer with broken image:', flyer.title || 'Unknown');
+                return null;
+            }
+            return { ...flyer, resolvedSrc: imgSrc };
+        })
+        .filter(flyer => flyer !== null);
 
-        return `
-            <div class="carousel-item event-poster-card">
-                <img src="${imgSrc}" alt="${alt}" loading="lazy">
-            </div>
-        `;
-    }).join('');
+    console.log('[CMS DEBUG] Total event flyers:', eventData.length);
+    console.log('[CMS DEBUG] Valid event flyers after filtering:', validFlyers.length);
 
-    console.log('[CMS] Updated event carousel with', content.flyers.length, 'flyers');
+    // Only update if we have valid flyers, otherwise keep hardcoded images
+    if (validFlyers.length > 0) {
+        carouselTrack.innerHTML = validFlyers.map(flyer => {
+            const alt = flyer.alt || flyer.title || 'Event Flyer';
+            return `
+                <div class="carousel-item event-poster-card">
+                    <img src="${flyer.resolvedSrc}" alt="${alt}" loading="lazy">
+                </div>
+            `;
+        }).join('');
 
-    // Dispatch event to reinitialize carousel
-    document.dispatchEvent(new Event('carouselContentUpdated'));
+        console.log('[CMS] Updated event carousel with', validFlyers.length, 'valid flyers');
+
+        // Dispatch event to reinitialize carousel
+        document.dispatchEvent(new Event('carouselContentUpdated'));
+    } else {
+        console.log('[CMS] No valid event flyers found, keeping hardcoded images');
+    }
 }
 
 /**
