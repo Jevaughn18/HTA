@@ -21,8 +21,7 @@ function initializeEventCarousel() {
     // Configuration - Dynamic based on screen size (portrait cards)
     function getItemWidth() {
         const windowWidth = window.innerWidth;
-        if (windowWidth <= 480) return 160 + 8; // mobile small (160px + 0.5rem gap)
-        if (windowWidth <= 767) return 200 + 8; // mobile medium (200px + 0.5rem gap)
+        if (windowWidth <= 767) return 280 + 16; // mobile (280px + 1rem gap = 296px)
         if (windowWidth <= 912) return 465 + 28; // tablet portrait
         if (windowWidth <= 1200) return 520 + 28; // tablet landscape
         if (windowWidth <= 1400) return 570 + 32; // desktop small
@@ -50,12 +49,19 @@ function initializeEventCarousel() {
         // Move to next card (with proper wrapping)
         currentIndex = (currentIndex + 1) % originalItemCount;
 
-        // Apply the scroll
+        // Apply the scroll with smooth transition
         currentPosition = currentIndex * itemWidth;
+
+        // Ensure we don't exceed bounds
+        if (currentPosition > maxScroll - itemWidth) {
+            currentPosition = 0;
+            currentIndex = 0;
+        }
+
         track.style.transition = 'transform 0.5s ease';
         track.style.transform = `translateX(-${currentPosition}px)`;
 
-        console.log(`Auto-scrolled to card ${currentIndex + 1} of ${originalItemCount}`);
+        console.log(`Auto-scrolled to card ${currentIndex + 1} of ${originalItemCount}, position: ${currentPosition}px`);
     }
 
     // Start auto-scrolling - change cards every 4 seconds
