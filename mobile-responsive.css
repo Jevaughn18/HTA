@@ -673,16 +673,17 @@
     .carousel-container {
         min-height: auto !important;
         padding: 0 !important;
-        overflow: visible;
+        overflow: hidden !important;
     }
 
     .event-carousel {
         padding: 0 !important;
-        overflow: visible;
+        overflow: hidden !important;
     }
 
     .upcoming-events {
         padding: 3rem 0 !important;
+        overflow: hidden !important;
     }
 
     .carousel-track {
@@ -691,7 +692,7 @@
         overflow: visible !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
-        padding: 1rem !important;
+        padding: 1rem 0 !important;
         margin: 0 !important;
         width: 100% !important;
     }
