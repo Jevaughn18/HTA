@@ -953,4 +953,76 @@ function initializeEventLightbox() {
             }
         });
     });
+
+    // ===================================
+    // HERO GALLERY LAZY LOADING WITH WEBP
+    // ===================================
+    lazyLoadHeroGallery();
+}
+
+function lazyLoadHeroGallery() {
+    const galleryImages = document.querySelectorAll('.gallery-cell img.gallery-img');
+
+    if (!galleryImages.length) return;
+
+    // Create 1px transparent placeholder
+    const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
+
+    // Set up intersection observer for lazy loading
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const picture = img.parentElement;
+
+                // If it's inside a picture element, load sources
+                if (picture.tagName === 'PICTURE') {
+                    const sources = picture.querySelectorAll('source');
+                    sources.forEach(source => {
+                        if (source.dataset.srcset) {
+                            source.srcset = source.dataset.srcset;
+                        }
+                    });
+                }
+
+                // Load the img src
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+
+                img.classList.add('loaded');
+                observer.unobserve(img);
+            }
+        });
+    }, {
+        rootMargin: '50px', // Start loading 50px before visible
+        threshold: 0.01
+    });
+
+    // Set placeholder and observe each image
+    galleryImages.forEach(img => {
+        // Store original src
+        if (!img.dataset.src && img.getAttribute('src')) {
+            img.dataset.src = img.getAttribute('src');
+        }
+
+        // Store source srcset in data attribute
+        const picture = img.parentElement;
+        if (picture.tagName === 'PICTURE') {
+            const sources = picture.querySelectorAll('source');
+            sources.forEach(source => {
+                if (source.srcset && !source.dataset.srcset) {
+                    source.dataset.srcset = source.srcset;
+                    source.removeAttribute('srcset');
+                }
+            });
+        }
+
+        // Set placeholder
+        img.src = placeholder;
+        imageObserver.observe(img);
+    });
+
+    console.log(`🖼️ Lazy loading initialized for ${galleryImages.length} hero gallery images`);
 }
