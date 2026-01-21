@@ -696,15 +696,302 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
         );
     };
 
+    const renderEventFlyerGallery = (arrayValue, key) => {
+        return (
+            <div className="event-flyer-gallery" style={{ marginTop: '12px' }}>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                    gap: '20px',
+                    padding: '12px'
+                }}>
+                    {arrayValue.map((event, idx) => {
+                        const imageSrc = event.image || '';
+                        const imageUrl = getImageUrl(imageSrc);
+
+                        return (
+                            <div key={idx} style={{
+                                border: '2px solid #ddd',
+                                borderRadius: '12px',
+                                padding: '16px',
+                                backgroundColor: '#fff',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                transition: 'box-shadow 0.2s',
+                                '&:hover': {
+                                    boxShadow: '0 4px 16px rgba(0,0,0,0.15)'
+                                }
+                            }}>
+                                {/* Event Flyer Image Preview */}
+                                <div style={{
+                                    width: '100%',
+                                    height: '280px',
+                                    marginBottom: '16px',
+                                    borderRadius: '8px',
+                                    overflow: 'hidden',
+                                    backgroundColor: '#f8f9fa',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: '1px solid #dee2e6'
+                                }}>
+                                    {imageUrl ? (
+                                        <img
+                                            src={`${imageUrl}?t=${Date.now()}`}
+                                            alt={event.title || `Event ${idx + 1}`}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover'
+                                            }}
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                e.target.nextElementSibling.style.display = 'flex';
+                                            }}
+                                        />
+                                    ) : null}
+                                    <div style={{
+                                        display: imageUrl ? 'none' : 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        color: '#6c757d'
+                                    }}>
+                                        <i className="fas fa-calendar-alt" style={{ fontSize: '3em' }}></i>
+                                        <span style={{ fontWeight: '500' }}>No Flyer Image</span>
+                                    </div>
+                                </div>
+
+                                {/* Event Details */}
+                                <div style={{ marginBottom: '12px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '0.85em',
+                                        fontWeight: '600',
+                                        marginBottom: '6px',
+                                        color: '#495057'
+                                    }}>
+                                        Event Flyer Image
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <input
+                                            type="text"
+                                            value={imageSrc}
+                                            onChange={(e) => {
+                                                const newArray = [...arrayValue];
+                                                newArray[idx] = { ...event, image: e.target.value };
+                                                setLocalContent({ ...localContent, [key]: newArray });
+                                            }}
+                                            placeholder="assets/event-flyer.jpg"
+                                            style={{
+                                                flex: 1,
+                                                padding: '10px',
+                                                fontSize: '0.9em',
+                                                border: '1px solid #ced4da',
+                                                borderRadius: '6px',
+                                                fontFamily: 'monospace'
+                                            }}
+                                        />
+                                        <label style={{
+                                            padding: '10px 18px',
+                                            backgroundColor: '#007bff',
+                                            color: 'white',
+                                            borderRadius: '6px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            fontSize: '0.9em',
+                                            fontWeight: '600',
+                                            whiteSpace: 'nowrap'
+                                        }}>
+                                            <i className="fas fa-upload"></i>
+                                            Upload
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                style={{ display: 'none' }}
+                                                onChange={async (e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                        const uploadedPath = await onImageUpload(file, key);
+                                                        if (uploadedPath) {
+                                                            const newArray = [...arrayValue];
+                                                            newArray[idx] = { ...event, image: uploadedPath };
+                                                            setLocalContent({ ...localContent, [key]: newArray });
+                                                            e.target.value = '';
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div style={{ marginBottom: '12px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '0.85em',
+                                        fontWeight: '600',
+                                        marginBottom: '6px',
+                                        color: '#495057'
+                                    }}>
+                                        Event Title
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={event.title || ''}
+                                        onChange={(e) => {
+                                            const newArray = [...arrayValue];
+                                            newArray[idx] = { ...event, title: e.target.value };
+                                            setLocalContent({ ...localContent, [key]: newArray });
+                                        }}
+                                        placeholder="Event Name"
+                                        style={{
+                                            width: '100%',
+                                            padding: '10px',
+                                            fontSize: '0.95em',
+                                            border: '1px solid #ced4da',
+                                            borderRadius: '6px'
+                                        }}
+                                    />
+                                </div>
+
+                                <div style={{ marginBottom: '16px' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '0.85em',
+                                        fontWeight: '600',
+                                        marginBottom: '6px',
+                                        color: '#495057'
+                                    }}>
+                                        Event Date
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={event.date || ''}
+                                        onChange={(e) => {
+                                            const newArray = [...arrayValue];
+                                            newArray[idx] = { ...event, date: e.target.value };
+                                            setLocalContent({ ...localContent, [key]: newArray });
+                                        }}
+                                        placeholder="e.g., Sunday, January 15, 2025"
+                                        style={{
+                                            width: '100%',
+                                            padding: '10px',
+                                            fontSize: '0.95em',
+                                            border: '1px solid #ced4da',
+                                            borderRadius: '6px'
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Remove Button */}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newArray = arrayValue.filter((_, i) => i !== idx);
+                                        setLocalContent({ ...localContent, [key]: newArray });
+                                    }}
+                                    style={{
+                                        width: '100%',
+                                        padding: '10px',
+                                        backgroundColor: '#dc3545',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        cursor: 'pointer',
+                                        fontSize: '0.9em',
+                                        fontWeight: '600',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
+                                        transition: 'background-color 0.2s'
+                                    }}
+                                    onMouseOver={(e) => e.target.style.backgroundColor = '#c82333'}
+                                    onMouseOut={(e) => e.target.style.backgroundColor = '#dc3545'}
+                                >
+                                    <i className="fas fa-trash-alt"></i>
+                                    Remove Event
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Add Event Button */}
+                {arrayValue.length < 4 && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const newEvent = {
+                                title: '',
+                                date: '',
+                                image: ''
+                            };
+                            const newArray = [...arrayValue, newEvent];
+                            setLocalContent({ ...localContent, [key]: newArray });
+                        }}
+                        style={{
+                            marginTop: '20px',
+                            padding: '14px 24px',
+                            backgroundColor: '#28a745',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            width: '100%',
+                            fontSize: '1em',
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '10px',
+                            transition: 'background-color 0.2s'
+                        }}
+                        onMouseOver={(e) => e.target.style.backgroundColor = '#218838'}
+                        onMouseOut={(e) => e.target.style.backgroundColor = '#28a745'}
+                    >
+                        <i className="fas fa-plus-circle"></i>
+                        Add Event Flyer ({arrayValue.length}/4)
+                    </button>
+                )}
+
+                {/* Maximum Limit Warning */}
+                {arrayValue.length >= 4 && (
+                    <div style={{
+                        marginTop: '20px',
+                        padding: '16px',
+                        backgroundColor: '#fff3cd',
+                        border: '2px solid #ffc107',
+                        borderRadius: '8px',
+                        color: '#856404',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        fontSize: '0.95em',
+                        fontWeight: '500'
+                    }}>
+                        <i className="fas fa-exclamation-triangle" style={{ fontSize: '1.5em' }}></i>
+                        <span>Maximum of 4 event flyers reached. Remove an event to add a new one.</span>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     const renderArrayEditor = (arrayValue, key) => {
-        // Events should always use the standard array editor, not the gallery editor
+        // Events use the special event flyer gallery editor
+        if (key === 'events') {
+            return renderEventFlyerGallery(arrayValue, key);
+        }
+
         // Check if this is any kind of image array (gallery, history images, vision gallery, etc.)
-        const isImageArray = key !== 'events' && arrayValue.length > 0 && (
+        const isImageArray = arrayValue.length > 0 && (
             (typeof arrayValue[0] === 'string' && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(arrayValue[0])) ||
             (typeof arrayValue[0] === 'object' && arrayValue[0] !== null &&
              ('src' in arrayValue[0] || 'image' in arrayValue[0] || 'img' in arrayValue[0]))
         );
-
 
         if (isImageArray) {
             return renderGalleryEditor(arrayValue, key);

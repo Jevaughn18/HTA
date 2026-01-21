@@ -1,0 +1,29 @@
+{
+  "title": "Upcoming Events",
+  "events": [
+    {
+      "title": "Singles Seminar",
+      "date": "Coming Soon",
+      "image": "assets/singles-semniar.jpg"
+    },
+    {
+      "title": "Prayer & Fasting",
+      "date": "Coming Soon",
+      "image": "assets/prayer-fasting.jpeg"
+    },
+    {
+      "title": "Hurricane Relief",
+      "date": "Coming Soon",
+      "image": "assets/hurrican.jpeg"
+    },
+    {
+      "title": "Anniversary Celebration",
+      "date": "Coming Soon",
+      "image": "assets/aniversary.jpeg"
+    }
+  ],
+  "button": {
+    "text": "View More Events",
+    "link": "events.html"
+  }
+}
