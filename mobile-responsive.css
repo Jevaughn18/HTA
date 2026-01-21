@@ -663,6 +663,19 @@
     }
 
     /* Event Carousel */
+    .events-header {
+        text-align: center !important;
+        padding: 0 1rem !important;
+    }
+
+    .events-header h2 {
+        margin-bottom: 1rem !important;
+    }
+
+    .events-header .btn {
+        margin-top: 1rem !important;
+    }
+
     .horizontal-carousel {
         overflow: hidden;
         position: relative;
