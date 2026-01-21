@@ -16,15 +16,16 @@ app.use(helmet({
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             scriptSrc: ["'self'"],
-            imgSrc: ["'self'", "https:", "data:", "https://ik.imagekit.io"],
-            connectSrc: ["'self'"],
+            imgSrc: ["'self'", "https:", "data:", "https://ik.imagekit.io", "*"],
+            connectSrc: ["'self'", "https://ik.imagekit.io"],
             fontSrc: ["'self'", "data:"],
             objectSrc: ["'none'"],
-            mediaSrc: ["'self'", "https://ik.imagekit.io"],
+            mediaSrc: ["'self'", "https:", "https://ik.imagekit.io"],
             frameSrc: ["'none'"]
         }
     },
-    crossOriginEmbedderPolicy: false
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 // Rate limiting
@@ -64,18 +65,37 @@ const uploadLimiter = rateLimit({
 // Apply general rate limiter to all API routes
 app.use('/api/', generalLimiter);
 
-// CORS middleware with fixed configuration (removed wildcard regex)
+// CORS middleware - Allow main website and admin dashboard
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://localhost:3002',
-        'http://localhost:5500',
-        'http://localhost:5501',
-        'http://127.0.0.1:5500',
-        'http://127.0.0.1:5501',
-        'https://hta-cms-admin.vercel.app' // Only specific Vercel deployment
-    ],
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, Postman, or same-origin)
+        if (!origin) return callback(null, true);
+
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:3002',
+            'http://localhost:5500',
+            'http://localhost:5501',
+            'http://127.0.0.1:5500',
+            'http://127.0.0.1:5501',
+            'https://hta-cms-admin.vercel.app', // Admin dashboard
+        ];
+
+        // Check if origin is in allowed list
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        // Allow any Vercel deployment (for main website and preview deployments)
+        // This allows: hta-*.vercel.app, harvest-temple-*.vercel.app, etc.
+        if (origin.match(/^https:\/\/.*\.vercel\.app$/)) {
+            return callback(null, true);
+        }
+
+        // Reject other origins
+        callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
 }));
 
