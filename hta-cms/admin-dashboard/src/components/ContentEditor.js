@@ -856,6 +856,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                     />
                                 </div>
 
+                                {/* Date field commented out - not needed
                                 <div style={{ marginBottom: '16px' }}>
                                     <label style={{
                                         display: 'block',
@@ -884,6 +885,7 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
                                         }}
                                     />
                                 </div>
+                                */}
 
                                 {/* Remove Button */}
                                 <button
@@ -1322,6 +1324,11 @@ function SectionCard({ section, onUpdate, onImageUpload, saving }) {
             return (
                 <div className="object-editor">
                     {Object.keys(localContent).map(key => {
+                        // Hide button/buttons fields from CMS UI (they're hardcoded in the site)
+                        if (key === 'button' || key === 'buttons') {
+                            return null;
+                        }
+
                         const value = localContent[key];
                         const isImage = !Array.isArray(value) && (
                                        key.toLowerCase().includes('image') ||
