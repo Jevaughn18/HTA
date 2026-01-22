@@ -969,17 +969,8 @@ function lazyLoadHeroGallery() {
     const immediateLoadCount = 6;
 
     galleryImages.forEach((img, index) => {
-        const picture = img.parentElement;
-
         if (index < immediateLoadCount) {
-            // Load first 6 images immediately - no lazy loading
-            if (picture.tagName === 'PICTURE') {
-                const sources = picture.querySelectorAll('source');
-                sources.forEach(source => {
-                    // Sources already have srcset from HTML
-                });
-            }
-            // Image already has src from HTML, just mark as loaded
+            // First 6 images already have src/srcset in HTML - just mark as loaded
             img.classList.add('loaded');
         } else {
             // Lazy load remaining images aggressively (load 500px before visible)
@@ -987,6 +978,23 @@ function lazyLoadHeroGallery() {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
+                        const picture = img.parentElement;
+
+                        // Swap data-srcset to srcset for picture sources
+                        if (picture.tagName === 'PICTURE') {
+                            const sources = picture.querySelectorAll('source[data-srcset]');
+                            sources.forEach(source => {
+                                source.srcset = source.dataset.srcset;
+                                source.removeAttribute('data-srcset');
+                            });
+                        }
+
+                        // Swap data-src to src for img
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+
                         img.classList.add('loaded');
                         observer.unobserve(img);
                     }
