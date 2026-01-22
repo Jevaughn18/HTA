@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://ik.imagekit.io">
     
     <!-- Preload hero video for instant playback -->
-    <link rel="preload" href="https://ik.imagekit.io/vspqi4z1t/videos/give.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="https://ik.imagekit.io/vspqi4z1t/videos/give.mp4" as="video" type="video/mp4" fetchpriority="high">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="mobile-responsive.css">
     <link rel="stylesheet" href="give.css">
@@ -78,7 +78,7 @@
     <main>
         <!-- Give Hero Section -->
         <section class="give-hero">
-            <video autoplay muted loop playsinline class="hero-video-bg" preload="metadata">
+            <video autoplay muted loop playsinline class="hero-video-bg" preload="auto">
                 <source src="https://ik.imagekit.io/vspqi4z1t/videos/give.mp4" type="video/mp4">
             </video>
             <div class="give-hero-overlay"></div>
