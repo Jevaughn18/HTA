@@ -965,66 +965,42 @@ function lazyLoadHeroGallery() {
 
     if (!galleryImages.length) return;
 
-    // Create 1px transparent placeholder
-    const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
+    // Load first 6 images immediately (visible on page load)
+    const immediateLoadCount = 6;
 
-    // Set up intersection observer for lazy loading
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                const picture = img.parentElement;
-
-                // If it's inside a picture element, load sources
-                if (picture.tagName === 'PICTURE') {
-                    const sources = picture.querySelectorAll('source');
-                    sources.forEach(source => {
-                        if (source.dataset.srcset) {
-                            source.srcset = source.dataset.srcset;
-                        }
-                    });
-                }
-
-                // Load the img src
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                }
-
-                img.classList.add('loaded');
-                observer.unobserve(img);
-            }
-        });
-    }, {
-        rootMargin: '50px', // Start loading 50px before visible
-        threshold: 0.01
-    });
-
-    // Set placeholder and observe each image
-    galleryImages.forEach(img => {
-        // Store original src
-        if (!img.dataset.src && img.getAttribute('src')) {
-            img.dataset.src = img.getAttribute('src');
-        }
-
-        // Store source srcset in data attribute
+    galleryImages.forEach((img, index) => {
         const picture = img.parentElement;
-        if (picture.tagName === 'PICTURE') {
-            const sources = picture.querySelectorAll('source');
-            sources.forEach(source => {
-                if (source.srcset && !source.dataset.srcset) {
-                    source.dataset.srcset = source.srcset;
-                    source.removeAttribute('srcset');
-                }
-            });
-        }
 
-        // Set placeholder
-        img.src = placeholder;
-        imageObserver.observe(img);
+        if (index < immediateLoadCount) {
+            // Load first 6 images immediately - no lazy loading
+            if (picture.tagName === 'PICTURE') {
+                const sources = picture.querySelectorAll('source');
+                sources.forEach(source => {
+                    // Sources already have srcset from HTML
+                });
+            }
+            // Image already has src from HTML, just mark as loaded
+            img.classList.add('loaded');
+        } else {
+            // Lazy load remaining images aggressively (load 500px before visible)
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '500px', // Start loading 500px before visible (very aggressive)
+                threshold: 0.01
+            });
+
+            imageObserver.observe(img);
+        }
     });
 
-    console.log(`🖼️ Lazy loading initialized for ${galleryImages.length} hero gallery images`);
+    console.log(`🖼️ ${immediateLoadCount} hero images loaded immediately, ${galleryImages.length - immediateLoadCount} lazy loading aggressively`);
 }
 
 // ===================================

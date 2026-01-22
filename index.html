@@ -9,6 +9,24 @@
     <title>Harvest Temple Apostolic - Home</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="mobile-responsive.css" as="style">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://hta-kwfr.onrender.com">
+
+    <!-- Preload critical hero gallery images (first 6 visible) -->
+    <link rel="preload" href="assets/bishop n wife.webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/banksgroup.webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/baptisam.webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/march.webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/roneil .webp" as="image" type="image/webp">
+    <link rel="preload" href="assets/pebs.webp" as="image" type="image/webp">
+
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="mobile-responsive.css">
     <link
@@ -438,7 +456,7 @@
         </footer>
     </main>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <script>
         // Hero Image/Video Carousel - Infinite Loop
         (function () {
@@ -605,11 +623,11 @@
     </script>
 
     <!-- Event Carousel Script -->
-    <script src="event-carousel.js"></script>
+    <script src="event-carousel.js" defer></script>
 
     <!-- CMS Content Loader -->
-    <script src="cms-config.js"></script>
-    <script src="cms-loader.js"></script>
+    <script src="cms-config.js" defer></script>
+    <script src="cms-loader.js" defer></script>
 </body>
 
 </html>
