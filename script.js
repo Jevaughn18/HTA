@@ -965,50 +965,12 @@ function lazyLoadHeroGallery() {
 
     if (!galleryImages.length) return;
 
-    // Load first 6 images immediately (visible on page load)
-    const immediateLoadCount = 6;
-
-    galleryImages.forEach((img, index) => {
-        if (index < immediateLoadCount) {
-            // First 6 images already have src/srcset in HTML - just mark as loaded
-            img.classList.add('loaded');
-        } else {
-            // Lazy load remaining images aggressively (load 500px before visible)
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        const picture = img.parentElement;
-
-                        // Swap data-srcset to srcset for picture sources
-                        if (picture.tagName === 'PICTURE') {
-                            const sources = picture.querySelectorAll('source[data-srcset]');
-                            sources.forEach(source => {
-                                source.srcset = source.dataset.srcset;
-                                source.removeAttribute('data-srcset');
-                            });
-                        }
-
-                        // Swap data-src to src for img
-                        if (img.dataset.src) {
-                            img.src = img.dataset.src;
-                            img.removeAttribute('data-src');
-                        }
-
-                        img.classList.add('loaded');
-                        observer.unobserve(img);
-                    }
-                });
-            }, {
-                rootMargin: '500px', // Start loading 500px before visible (very aggressive)
-                threshold: 0.01
-            });
-
-            imageObserver.observe(img);
-        }
+    // All 18 images load immediately - just mark them as loaded
+    galleryImages.forEach((img) => {
+        img.classList.add('loaded');
     });
 
-    console.log(`🖼️ ${immediateLoadCount} hero images loaded immediately, ${galleryImages.length - immediateLoadCount} lazy loading aggressively`);
+    console.log(`🖼️ All ${galleryImages.length} hero images loaded immediately for instant display`);
 }
 
 // ===================================
