@@ -458,6 +458,19 @@
         padding: 0 1rem !important;
     }
 
+    .service-buttons {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    .service-buttons a {
+        width: 100% !important;
+        max-width: 300px !important;
+        text-align: center !important;
+    }
+
     .gold-underline,
     .wave-underline,
     .wave-underline-white {

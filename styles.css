@@ -1330,8 +1330,8 @@ section[id] {
 /* Rectangle Poster Cards - Portrait Format */
 .carousel-item.event-poster-card {
     flex: 0 0 auto;
-    width: 620px;
-    height: 900px;
+    width: 500px;
+    height: 750px;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
