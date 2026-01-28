@@ -1312,7 +1312,7 @@ section[id] {
     overflow: hidden;
     width: 100%;
     cursor: grab;
-    min-height: 950px;
+    min-height: 470px;
 }
 
 .carousel-container:active {
@@ -1330,8 +1330,8 @@ section[id] {
 /* Rectangle Poster Cards - Portrait Format */
 .carousel-item.event-poster-card {
     flex: 0 0 auto;
-    width: 500px;
-    height: 750px;
+    width: 600px;
+    height: 420px;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
